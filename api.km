@@ -1,0 +1,225 @@
+{
+    "root": {
+        "data": {
+            "id": "cyv7hi8tqao0",
+            "created": 1706939311401,
+            "text": "GetStudentTaskListAsync",
+            "font-family": "JetBrains Mono",
+            "expandState": "expand",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "cyv7i6i8bag0",
+                    "created": 1706939364213,
+                    "text": "taskState",
+                    "font-family": "JetBrains Mono",
+                    "layout": null,
+                    "expandState": "expand"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "cyv7ip3y25s0",
+                            "created": 1706939404708,
+                            "text": "0",
+                            "font-family": "JetBrains Mono",
+                            "layout": null,
+                            "expandState": "expand"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cyv7kljjxc80",
+                                    "created": 1706939553673,
+                                    "text": "isNoStem",
+                                    "font-family": "JetBrains Mono",
+                                    "layout": null,
+                                    "expandState": "expand"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "cyv7krgllcw0",
+                                            "created": 1706939566555,
+                                            "text": "true",
+                                            "font-family": "JetBrains Mono",
+                                            "layout": null,
+                                            "expandState": "expand"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "cyv7kx4bccw0",
+                                                    "created": 1706939578873,
+                                                    "text": "GetNoQstExamTaskAsync",
+                                                    "layout": null,
+                                                    "expandState": "expand",
+                                                    "font-family": "JetBrains Mono"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "cyv7ktm3ic00",
+                                            "created": 1706939571241,
+                                            "text": "false",
+                                            "font-family": "JetBrains Mono",
+                                            "layout": null,
+                                            "expandState": "expand"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "cyv7l28vppc0",
+                                                    "created": 1706939590033,
+                                                    "text": "GetTaskAsync",
+                                                    "font-family": "JetBrains Mono",
+                                                    "layout": null,
+                                                    "expandState": "expand"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "cyv7icqtsug0",
+                            "created": 1706939377793,
+                            "text": "1",
+                            "font-family": "JetBrains Mono",
+                            "layout": null,
+                            "expandState": "expand"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cyv7if7ie000",
+                                    "created": 1706939383156,
+                                    "text": "GetTaskAsync",
+                                    "font-family": "JetBrains Mono",
+                                    "layout": null,
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "cyv7io96h540",
+                            "created": 1706939402848,
+                            "text": "2",
+                            "font-family": "JetBrains Mono",
+                            "layout": null,
+                            "expandState": "expand"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cyv7jt6dh6g0",
+                                    "created": 1706939491926,
+                                    "text": "?",
+                                    "font-family": "JetBrains Mono",
+                                    "layout": null,
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "cyv7ipm9y1s0",
+                            "created": 1706939405816,
+                            "text": "3",
+                            "font-family": "JetBrains Mono",
+                            "layout": null,
+                            "expandState": "expand"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cyv7k1sq0rc0",
+                                    "created": 1706939510692,
+                                    "text": "GetRevisingTaskAsync",
+                                    "font-family": "JetBrains Mono",
+                                    "layout": null,
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "cyv7ipvxmhk0",
+                            "created": 1706939406400,
+                            "text": "4",
+                            "font-family": "JetBrains Mono",
+                            "layout": null,
+                            "expandState": "expand"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cyv7kb0y7a80",
+                                    "created": 1706939530780,
+                                    "text": "GetRevisingTaskAsync",
+                                    "font-family": "JetBrains Mono",
+                                    "layout": null,
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "cyv7jhg7qy00",
+                            "created": 1706939466400,
+                            "text": "5",
+                            "font-family": "JetBrains Mono",
+                            "layout": null,
+                            "expandState": "expand"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "cyv7jjdufvs0",
+                            "created": 1706939470610,
+                            "text": "6",
+                            "font-family": "JetBrains Mono",
+                            "layout": null,
+                            "expandState": "expand"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cyv7kf7tpds0",
+                                    "created": 1706939539903,
+                                    "text": "GetTaskAsync",
+                                    "font-family": "JetBrains Mono",
+                                    "layout": null,
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "default",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
