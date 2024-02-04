@@ -2,7 +2,7 @@
 import { ChevronRightIcon, BellAlertIcon } from "@heroicons/vue/24/outline";
 import { useRouter } from "vue-router";
 
-import { type Exam } from "@/model/GetStudentTaskListResult";
+import { type Exam } from "@/models/GetStudentTaskListResult";
 
 const props = defineProps<{
   exam: Exam;

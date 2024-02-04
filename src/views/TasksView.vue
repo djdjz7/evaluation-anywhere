@@ -8,7 +8,7 @@ import { type CommonResponse } from "@/models/CommonResponse";
 import { type GetStudentTaskListResult } from "@/models/GetStudentTaskListResult";
 import tasksResponse from "@/references/get-student-task-list-response-reference.json";
 import { onMounted, ref } from "vue";
-import type { Exam } from "@/model/GetStudentTaskListResult";
+import type { Exam } from "@/models/GetStudentTaskListResult";
 
 // let exams = (tasksResponse as unknown as CommonResponse<GetStudentTaskListResult>).result.items;
 
