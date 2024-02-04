@@ -1,7 +1,7 @@
 import axios, { type AxiosRequestConfig } from "axios";
 import { useUserInfoStore } from "@/stores/userInfo";
 import type { CommonResponse } from "@/models/CommonResponse";
-import type { LoginRequest, LoginResponse, RefreshTokenResult } from "@/models/Login";
+import type { RefreshTokenResult } from "@/models/Login";
 import { useRouter } from "vue-router";
 
 export const axiosInstance = axios.create({
@@ -40,29 +40,7 @@ axiosInstance.interceptors.request.use(async (config) => {
     return config;
   }
 
-  console.log("重新登录...");
-  const loginResponse = await axios.post(
-    "http://sxz.api6.zykj.org/api/TokenAuth/Login",
-    {
-      userName: userInfo.userName,
-      password: userInfo.password,
-      clientType: 1,
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
-  const loginData = loginResponse.data as CommonResponse<LoginResponse>;
-  var loginResult = loginData.result as LoginResponse;
-  timeNow = Date.now();
-  useUserInfoStore().$patch({
-    accessToken: loginResult.accessToken,
-    expiresAt: timeNow + loginResult.expireInSeconds * 1000,
-    refreshToken: loginResult.refreshToken,
-    refreshExpiresAt: timeNow + loginResult.refreshExpireInSeconds * 1000,
-  });
-  config.headers.setAuthorization(`Bearer ${loginResult.accessToken}`, true);
-  return config;
+  useRouter().push("/login");
+  alert("登录信息已过期");
+  throw new Error("登录信息已过期");
 });

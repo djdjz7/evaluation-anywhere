@@ -60,8 +60,6 @@ async function login() {
     var loginResult = loginData.result as LoginResponse;
     const timeNow = Date.now();
     useUserInfoStore().$patch({
-      userName: account.value,
-      password: password.value,
       accessToken: loginResult.accessToken,
       expiresAt: timeNow + loginResult.expireInSeconds * 1000,
       refreshToken: loginResult.refreshToken,
