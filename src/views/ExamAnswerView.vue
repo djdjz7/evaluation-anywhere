@@ -4,6 +4,6 @@ const route = useRoute();
 const examTaskId = route.params.examTaskId;
 </script>
 <template>
-  <span block>ExamDetails</span>
+  <span block>ExamAnswer</span>
   <span block>{{ examTaskId }}</span>
 </template>

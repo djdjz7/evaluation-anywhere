@@ -11,13 +11,24 @@ const props = defineProps<{
 const router = useRouter();
 
 function navigateToExam(exam: Exam) {
+  var path: string;
+  if (exam.examState == 0) {
+    if (exam.taskState == 0) {
+      if (exam.isNoStem) {
+        path = `/exam/${exam.examTaskId}/answerNoStem`;
+      } else {
+        path = `/exam/${exam.examTaskId}/answer`;
+      }
+    } else if (exam.taskState == 3) {
+      path = `/exam/${exam.examTaskId}/revise`;
+    } else {
+      path = `/exam/${exam.examTaskId}/details`;
+    }
+  } else {
+    path = `/exam/${exam.examTaskId}/details`;
+  }
   router.push({
-    path: `/exam/${exam.examId}`,
-    query: {
-      taskState: exam.taskState,
-      examState: exam.examState,
-      isNoStem: exam.isNoStem.toString(),
-    },
+    path,
   });
 }
 </script>
@@ -77,10 +88,30 @@ function navigateToExam(exam: Exam) {
           >
         </div>
         <span block text-sm text-gray-600 dark:text-gray-300>{{ props.exam.startTime }}</span>
-        <div text-red color-red fill-red>
-          <span v-if="props.exam.answeringUrge != 0" text-sm flex="~ items-center">
+        <div text-red>
+          <span
+            v-if="
+              props.exam.taskState == 0 &&
+              props.exam.examState == 0 &&
+              props.exam.answeringUrge != 0
+            "
+            text-sm
+            flex="~ items-center"
+          >
             <BellAlertIcon class="h-4 m-r-1" />
             {{ props.exam.answeringUrge }}
+          </span>
+        </div>
+        <div text-red>
+          <span
+            v-if="
+              props.exam.taskState == 3 && props.exam.examState == 0 && props.exam.revisingUrge != 0
+            "
+            text-sm
+            flex="~ items-center"
+          >
+            <BellAlertIcon class="h-4 m-r-1" />
+            {{ props.exam.revisingUrge }}
           </span>
         </div>
       </div>

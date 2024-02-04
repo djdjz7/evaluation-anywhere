@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { type LoginRequest, type LoginResponse } from "@/models/Login";
+import { type CommonResponse } from "@/models/CommonResponse";
 import axios, { type AxiosRequestConfig } from "axios";
 import { useUserInfoStore } from "@/stores/userInfo";
 import router from "@/router";
@@ -51,13 +52,21 @@ async function login() {
       JSON.stringify(loginRequest),
       config
     );
-    var loginData = loginResponse.data as CommonResponse;
+    var loginData = loginResponse.data as CommonResponse<LoginResponse>;
     if (!loginData.success) {
       alert(loginData.error.details + "\n" + loginData.error.message);
       return;
     }
     var loginResult = loginData.result as LoginResponse;
-    useUserInfoStore().token = loginResult.accessToken;
+    const timeNow = Date.now();
+    useUserInfoStore().$patch({
+      userName: account.value,
+      password: password.value,
+      accessToken: loginResult.accessToken,
+      expiresAt: timeNow + loginResult.expireInSeconds * 1000,
+      refreshToken: loginResult.refreshToken,
+      refreshExpiresAt: timeNow + loginResult.refreshExpireInSeconds * 1000,
+    });
 
     router.push({
       path: "/",
