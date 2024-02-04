@@ -17,3 +17,11 @@ export interface LoginResponse {
 	refreshExpireInSeconds: number;
 	needSmsVerification: boolean;
 }
+
+export interface RefreshTokenResult {
+	accessToken: string
+	expireInSeconds: number
+	refreshToken: string
+	refreshExpireInSeconds: number
+  }
+  

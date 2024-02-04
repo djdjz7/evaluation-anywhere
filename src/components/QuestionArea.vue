@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Question } from "@/models/GetNoQstExamTask";
 import { RadioGroup, RadioGroupOption } from "@headlessui/vue";
-import { defineProps } from "vue";
 const props = defineProps<{
   question: Question;
 }>();
