@@ -1,16 +1,27 @@
 <script setup lang="ts">
 import type { Question } from "@/models/GetNoQstExamTask";
 import { RadioGroup, RadioGroupOption } from "@headlessui/vue";
+import DrawboardArea from "./DrawboardArea.vue";
+import { type AnswersToQuestion } from "@/models/Answers";
+import { axiosInstance } from "@/request/axiosInstance";
+import { ref } from "vue";
 const props = defineProps<{
   question: Question;
 }>();
+const singleDrawboardRef = ref<InstanceType<typeof DrawboardArea> | null>(null);
+const getAnswerAsync = (): Promise<AnswersToQuestion> => {
+  return new Promise((resolve, reject) => {});
+};
 </script>
 <template>
   <h3>{{ question.number }}. {{ question.name }}</h3>
   <div v-for="qstFlow in question.qstFlows">
     <!-- if no subQs -->
     <div v-if="Boolean(qstFlow.subQuestions?.length != 0)">
-      <RadioGroup v-if="qstFlow.qstType == 1 || qstFlow.qstType == 2">
+      <span>{{ qstFlow.qstType }}</span>
+
+      <!-- single select -->
+      <RadioGroup v-if="qstFlow.qstType == 0">
         <div class="gap-x-2" grid grid-cols-4>
           <RadioGroupOption
             as="template"
@@ -21,10 +32,10 @@ const props = defineProps<{
           >
             <div
               :class="[
-                active ? 'ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300' : '',
-                checked ? 'bg-sky-900/75 text-white ' : 'bg-white ',
+                active ? 'ring-2 ring-blue-700/60' : '',
+                checked ? 'bg-blue-500 text-white shadow-blue-700/40' : 'bg-white ',
               ]"
-              class="relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none"
+              class="relative flex justify-center cursor-pointer rounded-md px-5 py-4 shadow-md focus:outline-none"
             >
               <span :class="checked ? 'text-white' : 'text-gray-900'" class="font-medium">
                 {{ option }}
@@ -33,6 +44,7 @@ const props = defineProps<{
           </RadioGroupOption>
         </div>
       </RadioGroup>
+      <DrawboardArea v-if="qstFlow.qstType == 4" :uuid="qstFlow.uuid" ref="singleDrawboardRef" />
     </div>
 
     <!-- if has subQs -->

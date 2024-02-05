@@ -2,7 +2,7 @@ import axios, { type AxiosRequestConfig } from "axios";
 import { useUserInfoStore } from "@/stores/userInfo";
 import type { CommonResponse } from "@/models/CommonResponse";
 import type { RefreshTokenResult } from "@/models/Login";
-import { useRouter } from "vue-router";
+import router from "@/router";
 
 export const axiosInstance = axios.create({
   baseURL: "http://sxz.api6.zykj.org/",
@@ -40,7 +40,7 @@ axiosInstance.interceptors.request.use(async (config) => {
     return config;
   }
 
-  useRouter().push("/login");
+  router.push("/login");
   alert("登录信息已过期");
   throw new Error("登录信息已过期");
 });

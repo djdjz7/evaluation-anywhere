@@ -9,7 +9,7 @@ import { onMounted, ref } from "vue";
 import { type CommonResponse } from "@/models/CommonResponse";
 import { type GetNoQstExamTaskResult, type QuestionGroup } from "@/models/GetNoQstExamTask";
 
-import QuestionArea from "@/components/QuestionArea.vue";
+import AnswerArea from "@/components/AnswerArea.vue";
 
 const route = useRoute();
 const examTaskId = route.params.examTaskId;
@@ -31,7 +31,7 @@ onMounted(async () => {
   <div v-for="group in questionGroups">
     <h2>{{ group.number }}. {{ group.name }}（共 {{ group.score }} 分）</h2>
     <div v-for="question in group.questions">
-      <QuestionArea :question="question" />
+      <AnswerArea :question="question" />
     </div>
   </div>
 </template>
