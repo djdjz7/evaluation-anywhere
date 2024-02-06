@@ -3,10 +3,11 @@ import type { Question } from "@/models/GetNoQstExamTask";
 import { RadioGroup, RadioGroupOption } from "@headlessui/vue";
 import DrawboardArea from "./DrawboardArea.vue";
 import { type AnswersToQuestion } from "@/models/Answers";
-import { axiosInstance } from "@/request/axiosInstance";
 import { ref } from "vue";
+
 const props = defineProps<{
   question: Question;
+  examTaskId: number;
 }>();
 const singleDrawboardRef = ref<InstanceType<typeof DrawboardArea> | null>(null);
 const getAnswerAsync = (): Promise<AnswersToQuestion> => {
@@ -44,7 +45,13 @@ const getAnswerAsync = (): Promise<AnswersToQuestion> => {
           </RadioGroupOption>
         </div>
       </RadioGroup>
-      <DrawboardArea v-if="qstFlow.qstType == 4" :uuid="qstFlow.uuid" ref="singleDrawboardRef" />
+      <DrawboardArea
+        v-if="qstFlow.qstType == 4"
+        :uuid="qstFlow.uuid"
+        ref="singleDrawboardRef"
+        :question-id="question.id"
+        :exam-task-id="examTaskId"
+      />
     </div>
 
     <!-- if has subQs -->

@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { type AnswersToQstFlowWithBlob } from "@/models/Answers";
+import { type AnswersToQstFlow } from "@/models/Answers";
+import { useUserInfoStore } from "@/stores/userInfo";
 
 const props = defineProps<{
+  examTaskId: number;
+  questionId: number;
   uuid: string;
 }>();
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D | null;
+let lastUpdate = Date.now();
 
 onMounted(() => {
   if (canvasRef.value == null) {
@@ -37,6 +41,7 @@ function mousemove(e: MouseEvent) {
 function mouseup(e: MouseEvent) {
   ctx?.closePath();
   canvas.onmousemove = null;
+  lastUpdate = Date.now();
 }
 
 function touchstart(e: TouchEvent) {
@@ -59,14 +64,18 @@ function touchend(e: TouchEvent) {
   canvas.ontouchmove = null;
 }
 
-const getImageBlobAsync = (): Promise<AnswersToQstFlowWithBlob> => {
+const getImageBlobAsync = (): Promise<AnswersToQstFlow> => {
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
       if (blob == null) {
         reject(new Error("Canvas.toBlob returned null"));
       } else {
         resolve({
-          answers: blob,
+          // TODO: put object
+
+          answers: [
+            `http://ezy-sxz.oss-cn-hangzhou.aliyuncs.com/answers/${useUserInfoStore().userId}/ToCorrect/${props.examTaskId}/${props.questionId}/${props.uuid}}/sketch/answer_${lastUpdate}.webp`,
+          ],
           uuid: props.uuid,
         });
       }
