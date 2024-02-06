@@ -13,6 +13,9 @@ const router = createRouter({
       path: "/",
       name: "tasks",
       component: TasksView,
+      meta: {
+        keepAlive: true,
+      },
     },
     {
       path: "/login",
