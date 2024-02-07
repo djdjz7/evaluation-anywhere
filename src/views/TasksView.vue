@@ -73,16 +73,7 @@ async function handleScroll(e: Event) {
 <template>
   <div flex="~ col" max-h-screen>
     <TabGroup max-w-screen m-t-2 @change="tabChange" :selected-index="selectedIndex">
-      <TabList
-        space-x-2
-        overflow-x-auto
-        p-2
-        bg-slate-300
-        rounded-2xl
-        shadow-lg
-        flex
-        flex-shrink-0
-      >
+      <TabList space-x-2 overflow-x-auto p-2 bg-slate-300 rounded-2xl shadow-lg flex flex-shrink-0>
         <Tab flex-shrink-0>待处理</Tab>
         <Tab flex-shrink-0>全部测评</Tab>
         <Tab flex-shrink-0>收藏夹</Tab>

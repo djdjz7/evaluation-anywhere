@@ -8,6 +8,6 @@ import { KeepAlive } from "vue";
     <KeepAlive>
       <component v-if="$route.meta.keepAlive" :is="Component" />
     </KeepAlive>
-      <component v-if="!$route.meta.keepAlive" :is="Component" />
+    <component v-if="!$route.meta.keepAlive" :is="Component" />
   </RouterView>
 </template>

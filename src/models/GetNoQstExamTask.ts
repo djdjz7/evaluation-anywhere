@@ -88,14 +88,14 @@ export interface AnswerList {
 }
 
 export interface SubQuestion {
-  type: number
-  score: number
-  missScore: number
-  number: number
-  uuid: string
-  qstType: number
-  options: any
-  subQuestions: any
-  getScore: number
-  originScore: any
+  type: number;
+  score: number;
+  missScore: number;
+  number: number;
+  uuid: string;
+  qstType: number;
+  options: any;
+  subQuestions: any;
+  getScore: number;
+  originScore: any;
 }
