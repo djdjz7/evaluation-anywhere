@@ -7,15 +7,25 @@ import { onMounted, ref } from "vue";
 import type { Exam } from "@/models/GetStudentTaskListResult";
 
 import { axiosInstance } from "@/request/axiosInstance";
+import type { GetInfoResult } from "@/models/Login";
+import { UserCircleIcon } from "@heroicons/vue/24/outline";
 
 // let exams = (tasksResponse as unknown as CommonResponse<GetStudentTaskListResult>).result.items;
 
 const exams = ref(Array<Exam>());
-const selectedIndex = ref(0);
+let selectedIndex = 0;
+const avatarSrc = ref<string | null>(null);
+const studentName = ref("");
+
 let currentPage = 1;
 let isLoading = false;
 let isToBottom = false;
 onMounted(async () => {
+  const getUserInfoRespose = (await axiosInstance.get("api/services/app/User/GetInfoAsync"))
+    .data as CommonResponse<GetInfoResult>;
+  studentName.value = getUserInfoRespose.result.realName;
+  avatarSrc.value = getUserInfoRespose.result.photo;
+
   const getStudentTaskListResponse = (
     await axiosInstance.post("api/services/app/Task/GetStudentTaskListAsync", {
       maxResultCount: 90,
@@ -27,6 +37,7 @@ onMounted(async () => {
 });
 
 async function tabChange(index: number) {
+  selectedIndex = index;
   isLoading = true;
   exams.value = [];
   const getStudentTaskListResponse = (
@@ -55,7 +66,7 @@ async function handleScroll(e: Event) {
       await axiosInstance.post("api/services/app/Task/GetStudentTaskListAsync", {
         maxResultCount: 90,
         skipCount: currentPage * 90,
-        taskListType: selectedIndex.value + 1,
+        taskListType: selectedIndex + 1,
       })
     ).data as CommonResponse<GetStudentTaskListResult>;
     if (getStudentTaskListResponse.result.items.length == 0) {
@@ -72,7 +83,14 @@ async function handleScroll(e: Event) {
 
 <template>
   <div flex="~ col" max-h-screen>
-    <TabGroup max-w-screen m-t-2 @change="tabChange" :selected-index="selectedIndex">
+    <div flex="~ items-center" m-t-2>
+      <div v-if="avatarSrc" rounded-full overflow-clip h-8 w-8 m-r-2>
+        <img :src="avatarSrc" h-8 />
+      </div>
+      <UserCircleIcon v-else class="h-8 w-8 m-r-2" />
+      <span font-semibold>{{ studentName }}</span>
+    </div>
+    <TabGroup max-w-screen m-t-2 @change="tabChange">
       <TabList space-x-2 overflow-x-auto p-2 bg-slate-300 rounded-2xl shadow-lg flex flex-shrink-0>
         <Tab flex-shrink-0>待处理</Tab>
         <Tab flex-shrink-0>全部测评</Tab>

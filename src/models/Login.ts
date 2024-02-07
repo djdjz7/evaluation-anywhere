@@ -24,3 +24,15 @@ export interface RefreshTokenResult {
   refreshToken: string;
   refreshExpireInSeconds: number;
 }
+
+export interface GetInfoResult {
+  id: number;
+  userName: string;
+  realName: string;
+  surname: string;
+  name: string;
+  mobile?: any;
+  email?: any;
+  photo: string | null;
+  roles: number[];
+}
