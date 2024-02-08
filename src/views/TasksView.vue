@@ -8,7 +8,9 @@ import type { Exam } from "@/models/GetStudentTaskListResult";
 
 import { axiosInstance } from "@/request/axiosInstance";
 import type { GetInfoResult } from "@/models/Login";
-import { UserCircleIcon } from "@heroicons/vue/24/outline";
+import { UserCircleIcon, ArrowLeftStartOnRectangleIcon } from "@heroicons/vue/24/outline";
+import router from "@/router";
+import { useUserInfoStore } from "@/stores/userInfo";
 
 // let exams = (tasksResponse as unknown as CommonResponse<GetStudentTaskListResult>).result.items;
 
@@ -79,19 +81,61 @@ async function handleScroll(e: Event) {
     isLoading = false;
   }
 }
+
+function logOut() {
+  useUserInfoStore().$patch({
+    userId: 0,
+    accessToken: "",
+    expiresAt: 0,
+    refreshToken: "",
+    refreshExpiresAt: 0,
+  });
+  router
+}
 </script>
 
 <template>
   <div flex="~ col" max-h-screen>
-    <div flex="~ items-center" m-t-2>
+    <div class="group" flex="~ items-center" m-t-2 relative self-start>
       <div v-if="avatarSrc" rounded-full overflow-clip h-8 w-8 m-r-2>
         <img :src="avatarSrc" h-8 />
       </div>
       <UserCircleIcon v-else class="h-8 w-8 m-r-2" />
       <span font-semibold>{{ studentName }}</span>
+      <div
+        absolute
+        top-0
+        left-0
+        min-w-min
+        h-full
+        backdrop-blur-lg
+        invisible
+        group-hover:visible
+        opacity-0
+        group-hover:opacity-100
+        rounded-lg
+        transition-all
+        duration-150
+        shadow-md
+        flex="~ items-center"
+        class="bg-white/80"
+      >
+        <button
+          @click="logOut"
+          p-x-2
+          bg-transparent
+          text-red
+          flex="~ items-center justify-center"
+          border-0
+          whitespace-nowrap
+        >
+          <ArrowLeftStartOnRectangleIcon class="h-4 w-4" />
+          <span m-l-1 font-semibold>退出登录</span>
+        </button>
+      </div>
     </div>
     <TabGroup max-w-screen m-t-2 @change="tabChange">
-      <TabList space-x-2 overflow-x-auto p-2 bg-slate-300 rounded-2xl shadow-lg flex flex-shrink-0>
+      <TabList space-x-2 overflow-x-auto p-2 bg-slate-300 rounded-3xl shadow-lg flex flex-shrink-0>
         <Tab flex-shrink-0>待处理</Tab>
         <Tab flex-shrink-0>全部测评</Tab>
         <Tab flex-shrink-0>收藏夹</Tab>

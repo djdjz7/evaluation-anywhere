@@ -2,6 +2,7 @@
 import type { Question } from "@/models/GetNoQstExamTask";
 import { RadioGroup, RadioGroupOption } from "@headlessui/vue";
 import DrawboardArea from "./DrawboardArea.vue";
+import PhtotosArea from "./PhtotosArea.vue";
 import { type AnswersToQuestion } from "@/models/Answers";
 import { ref } from "vue";
 
@@ -16,7 +17,17 @@ const getAnswerAsync = (): Promise<AnswersToQuestion> => {
 </script>
 <template>
   <h3>{{ question.number }}. {{ question.name }}</h3>
-  <div v-for="qstFlow in question.qstFlows">
+  <!-- 解答题，合并 -->
+  <div v-if="question.qstFlows[0].qstType == 3">
+    <PhtotosArea
+      :exam-task-id="examTaskId"
+      :uuid="question.qstFlows[0].uuid"
+      :question-id="question.id"
+    />
+  </div>
+
+  <!-- 非解答题，不合并 -->
+  <div v-else v-for="qstFlow in question.qstFlows">
     <!-- if no subQs -->
     <div v-if="Boolean(qstFlow.subQuestions?.length != 0)">
       <span>{{ qstFlow.qstType }}</span>

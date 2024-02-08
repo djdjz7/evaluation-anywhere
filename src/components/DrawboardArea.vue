@@ -64,7 +64,7 @@ function touchend(e: TouchEvent) {
   canvas.ontouchmove = null;
 }
 
-const getImageBlobAsync = (): Promise<AnswersToQstFlow> => {
+const getQstAnswerAsync = (): Promise<AnswersToQstFlow> => {
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
       if (blob == null) {
@@ -83,7 +83,7 @@ const getImageBlobAsync = (): Promise<AnswersToQstFlow> => {
   });
 };
 
-defineExpose({ getImageBlobAsync });
+defineExpose({ getQstAnswerAsync });
 </script>
 
 <template>

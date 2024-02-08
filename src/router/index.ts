@@ -1,7 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import LoginView from "@/views/LoginView.vue";
-import TasksView from "@/views/TasksView.vue";
-import ExamDetailsView from "@/views/ExamDetailsView.vue";
 import ExamAnswerView from "@/views/ExamAnswerView.vue";
 import ExamAnswerNoStemView from "@/views/ExamAnswerNoStemView.vue";
 import ExamReviseView from "@/views/ExamReviseView.vue";
@@ -12,7 +9,7 @@ const router = createRouter({
     {
       path: "/",
       name: "tasks",
-      component: TasksView,
+      component: () => import("@/views/TasksView.vue"),
       meta: {
         keepAlive: true,
       },
@@ -20,27 +17,27 @@ const router = createRouter({
     {
       path: "/login",
       name: "login",
-      component: LoginView,
+      component: () => import("@/views/LoginView.vue"),
     },
     {
       path: "/exam/:examTaskId/details",
       name: "examDetails",
-      component: ExamDetailsView,
+      component: () => import("@/views/ExamDetailsView.vue"),
     },
     {
       path: "/exam/:examTaskId/answer",
       name: "examAnswer",
-      component: ExamAnswerView,
+      component: () => import("@/views/ExamAnswerView.vue"),
     },
     {
       path: "/exam/:examTaskId/answerNoStem",
       name: "examAnswerNoStem",
-      component: ExamAnswerNoStemView,
+      component: () => import("@/views/ExamAnswerNoStemView.vue"),
     },
     {
       path: "/exam/:examTaskId/revise",
       name: "examRevise",
-      component: ExamReviseView,
+      component: () => import("@/views/ExamReviseView.vue"),
     },
     {
       path: "/about",
