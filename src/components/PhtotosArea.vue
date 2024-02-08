@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { type AnswersToQstFlow } from "@/models/Answers";
 import { useUserInfoStore } from "@/stores/userInfo";
 
@@ -18,14 +18,18 @@ const hiddenInput = ref<HTMLInputElement | null>();
 
 const getQstAnswerAsync = (): Promise<AnswersToQstFlow> => {
   return new Promise((resolve, reject) => {
-    resolve({
-      // TODO: merge images and put object
+    try {
+      resolve({
+        // TODO: merge images and put object
 
-      answers: [
-        `http://ezy-sxz.oss-cn-hangzhou.aliyuncs.com/answers/${useUserInfoStore().userId}/ToCorrect/${props.examTaskId}/${props.questionId}/${props.uuid}}/sketch/answer_${lastUpdate}.webp`,
-      ],
-      uuid: props.uuid,
-    });
+        answers: [
+          `http://ezy-sxz.oss-cn-hangzhou.aliyuncs.com/answers/${useUserInfoStore().userId}/ToCorrect/${props.examTaskId}/${props.questionId}/${props.uuid}}/sketch/answer_${lastUpdate}.webp`,
+        ],
+        uuid: props.uuid,
+      });
+    } catch (e) {
+      reject(e);
+    }
   });
 };
 

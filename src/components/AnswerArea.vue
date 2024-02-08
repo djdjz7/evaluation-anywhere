@@ -6,7 +6,7 @@ import PhtotosArea from "./PhtotosArea.vue";
 import { type AnswersToQuestion } from "@/models/Answers";
 import { ref } from "vue";
 
-const props = defineProps<{
+defineProps<{
   question: Question;
   examTaskId: number;
 }>();
@@ -14,6 +14,8 @@ const singleDrawboardRef = ref<InstanceType<typeof DrawboardArea> | null>(null);
 const getAnswerAsync = (): Promise<AnswersToQuestion> => {
   return new Promise((resolve, reject) => {});
 };
+
+defineExpose({ getAnswerAsync });
 </script>
 <template>
   <h3>{{ question.number }}. {{ question.name }}</h3>

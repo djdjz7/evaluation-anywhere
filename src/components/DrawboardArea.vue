@@ -38,7 +38,7 @@ function mousemove(e: MouseEvent) {
   ctx?.stroke();
 }
 
-function mouseup(e: MouseEvent) {
+function mouseup() {
   ctx?.closePath();
   canvas.onmousemove = null;
   lastUpdate = Date.now();
@@ -59,7 +59,7 @@ function touchmove(e: TouchEvent) {
   ctx?.stroke();
 }
 
-function touchend(e: TouchEvent) {
+function touchend() {
   ctx?.closePath();
   canvas.ontouchmove = null;
 }

@@ -1,7 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import ExamAnswerView from "@/views/ExamAnswerView.vue";
-import ExamAnswerNoStemView from "@/views/ExamAnswerNoStemView.vue";
-import ExamReviseView from "@/views/ExamReviseView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

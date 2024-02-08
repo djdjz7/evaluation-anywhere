@@ -1,4 +1,4 @@
-import axios, { type AxiosRequestConfig } from "axios";
+import axios from "axios";
 import { useUserInfoStore } from "@/stores/userInfo";
 import type { CommonResponse } from "@/models/CommonResponse";
 import type { RefreshTokenResult } from "@/models/Login";
