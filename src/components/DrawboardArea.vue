@@ -24,6 +24,7 @@ onMounted(() => {
     alert("未知错误，请刷新页面后重试。");
     return;
   }
+
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -51,16 +52,17 @@ function mouseup() {
 }
 
 function touchstart(e: TouchEvent) {
+  e.preventDefault();
   e.stopPropagation();
   const rect = canvas.getBoundingClientRect();
   ctx?.beginPath();
   ctx?.moveTo(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
-  canvas.addEventListener("touchmove", touchmove, { passive: true });
+  canvas.addEventListener("touchmove", touchmove, { passive: false });
 }
 
 const touchmove = (e: TouchEvent) => {
+  console.log(e.cancelable);
   e.preventDefault();
-  e.stopPropagation();
   const rect = canvas.getBoundingClientRect();
   ctx?.lineTo(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
   ctx?.stroke();
