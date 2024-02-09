@@ -1,25 +1,39 @@
 <script setup lang="ts">
 import type { Question } from "@/models/GetNoQstExamTask";
-import { RadioGroup, RadioGroupOption } from "@headlessui/vue";
 import DrawboardArea from "./DrawboardArea.vue";
 import PhtotosArea from "./PhtotosArea.vue";
 import { type AnswersToQstFlow, type AnswersToQuestion } from "@/models/Answers";
 import { ref } from "vue";
-import { QuestionMarkCircleIcon } from "@heroicons/vue/24/outline";
-import SingleSelect from "@/components/SingleSelect.vue"
-import MultiSelectVue from "@/components/MultiSelect.vue";
+import SingleSelect from "@/components/SingleSelect.vue";
+import MultiSelect from "@/components/MultiSelect.vue";
 
 const props = defineProps<{
   question: Question;
   examTaskId: number;
 }>();
-const singleDrawboardRef = ref<InstanceType<typeof DrawboardArea> | null>(null);
+const drawboardRefs = ref<InstanceType<typeof DrawboardArea>[] | null>(null);
+const singleSelectRefs = ref<InstanceType<typeof SingleSelect>[] | null>(null);
+const multiSelectRefs = ref<InstanceType<typeof MultiSelect>[] | null>(null);
 const photoAreaRef = ref<InstanceType<typeof PhtotosArea> | null>(null);
+
 const getAnswerAsync = async (): Promise<AnswersToQuestion> => {
   const answers: AnswersToQstFlow[] = [];
+
   if (props.question.qstFlows[0].qstType == 3) {
     let qstAnswer = await photoAreaRef.value?.getQstAnswerAsync();
     if (qstAnswer != undefined) answers.push(qstAnswer);
+  } else {
+    singleSelectRefs.value?.forEach((ref) => {
+      answers.push(ref.getAnswer());
+    });
+    multiSelectRefs.value?.forEach((ref) => {
+      answers.push(ref.getAnswer());
+    });
+    if (drawboardRefs.value != null) {
+      for (let i = 0; i < drawboardRefs.value.length; i++) {
+        answers.push(await drawboardRefs.value[i].getQstAnswerAsync());
+      }
+    }
   }
   return {
     draft: "",
@@ -45,7 +59,7 @@ defineExpose({ getAnswerAsync });
   <!-- 非解答题，不合并 -->
   <div v-else v-for="qstFlow in question.qstFlows">
     <!-- if no subQs -->
-    <div v-if="Boolean(qstFlow.subQuestions?.length != 0)">
+    <div v-if="qstFlow.subQuestions == null || qstFlow.subQuestions.length == 0">
       <span>{{ qstFlow.qstType }}</span>
 
       <!-- single select -->
@@ -78,22 +92,30 @@ defineExpose({ getAnswerAsync });
         :uuid="qstFlow.uuid"
         :question-id="question.id"
         :options="qstFlow.options!"
+        ref="singleSelectRefs"
       />
-      <MultiSelectVue
+      <MultiSelect
         v-else-if="qstFlow.qstType == 2"
         :exam-task-id="examTaskId"
         :uuid="qstFlow.uuid"
         :question-id="question.id"
         :options="qstFlow.options!"
+        ref="multiSelectRefs"
       />
 
       <DrawboardArea
         v-else-if="qstFlow.qstType == 4"
         :uuid="qstFlow.uuid"
-        ref="singleDrawboardRef"
+        ref="drawboardRefs"
         :question-id="question.id"
         :exam-task-id="examTaskId"
       />
+
+      <div v-else bg-red-100 p-4 un-border="~ red 1 solid" rounded-xl flex="~ col items-center" text-red>
+        <span block font-bold>未知的问题类型</span>
+        <span block text-sm>qstFlow.qstType: {{ qstFlow.qstType }}</span>
+        <a un-text="sm red" block href="https://github.com/djdjz7/evaluation-anywhere/issues">报告此问题</a>
+      </div>
     </div>
 
     <!-- if has subQs -->

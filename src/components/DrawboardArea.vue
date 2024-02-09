@@ -87,5 +87,5 @@ defineExpose({ getQstAnswerAsync });
 </script>
 
 <template>
-  <canvas ref="canvasRef"></canvas>
+  <canvas ref="canvasRef" bg-white un-border="violet 1 solid"></canvas>
 </template>

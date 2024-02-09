@@ -23,8 +23,9 @@ let currentPage = 1;
 let isLoading = false;
 let isToBottom = false;
 onMounted(async () => {
-
-  alert("注意：\n本项目所有实现均为基于事实的猜测，与新测评行为并不完全一致。\n请自行承担使用后果。")
+  alert(
+    "注意：\n本项目所有实现均为基于事实的猜测，与新测评行为并不完全一致。\n请自行承担使用后果。"
+  );
 
   const getUserInfoRespose = (await axiosInstance.get("api/services/app/User/GetInfoAsync"))
     .data as CommonResponse<GetInfoResult>;
@@ -93,7 +94,7 @@ function logOut() {
     refreshToken: "",
     refreshExpiresAt: 0,
   });
-  router
+  router.push("/login");
 }
 </script>
 
@@ -138,7 +139,7 @@ function logOut() {
       </div>
     </div>
     <TabGroup max-w-screen m-t-2 @change="tabChange">
-      <TabList space-x-2 overflow-x-auto p-2 bg-slate-300 rounded-3xl shadow-lg flex flex-shrink-0>
+      <TabList space-x-2 overflow-x-auto p-2 bg-violet-200 rounded-3xl shadow-lg flex flex-shrink-0>
         <Tab flex-shrink-0>待处理</Tab>
         <Tab flex-shrink-0>全部测评</Tab>
         <Tab flex-shrink-0>收藏夹</Tab>
@@ -150,7 +151,7 @@ function logOut() {
       rounded-xl
       shadow-xl
       p-2
-      bg-slate-300
+      bg-violet-200
       m-y-2
       grid="~ cols-1 lg:cols-4 md:cols-3"
       gap-2

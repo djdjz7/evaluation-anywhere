@@ -71,19 +71,19 @@ function navigateToExam(exam: Exam) {
       <div flex="~ col" flex-grow-1>
         <div flex="~">
           <div
-            dark:bg-blue-300
+            dark:bg-violet-300
             w-.6
             m-r-1
             h-auto
             rounded-full
-            :class="['bg-blue-600', { '!bg-amber-700': props.exam.taskState === 3 }]"
+            :class="['bg-violet-500', { '!bg-amber-700': props.exam.taskState === 3 }]"
           ></div>
           <span
-            dark:text-blue-300
+            dark:text-violet-300
             rounded-sm
             text-sm
             w-fit
-            :class="['text-blue-600', { '!text-amber-700': props.exam.taskState === 3 }]"
+            :class="['text-violet-500', { '!text-amber-700': props.exam.taskState === 3 }]"
             >{{ props.exam.topicName }}</span
           >
         </div>

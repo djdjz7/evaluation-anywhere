@@ -11,7 +11,7 @@ const props = defineProps<{
 
 const selected = ref<string[]>([]);
 
-const getAnswers = (): AnswersToQstFlow => {
+const getAnswer = (): AnswersToQstFlow => {
   return {
     uuid: props.uuid,
     answers: selected.value
@@ -22,13 +22,24 @@ const getAnswers = (): AnswersToQstFlow => {
   };
 };
 
-defineExpose({ getAnswers });
+defineExpose({ getAnswer });
 </script>
 <template>
-  <div grid="~ cols-4">
-    <div v-for="option in options">
-      <input type="checkbox" :value="option" :id="uuid + option" v-model:="selected" />
-      <label :for="uuid + option">{{ option }}</label>
+  <div grid="~ cols-4" gap-2>
+    <div v-for="option in options" flex="~ items-center" h-10>
+      <input type="checkbox" :value="option" :id="uuid + option" v-model:="selected" un-hidden />
+      <label
+        flex-grow-1
+        :for="uuid + option"
+        bg-white
+        shadow-md
+        h-full
+        flex="~ items-center justify-center"
+        rounded-md
+        cursor-pointer
+        :class="{ '!bg-violet !text-white !shadow-violet-300': selected.indexOf(option) >= 0 }"
+        >{{ option }}</label
+      >
     </div>
   </div>
 </template>
