@@ -1,46 +1,17 @@
-# evaluation-anywhere
+# Evaluation Anywhere
 
-This template should help get you started developing with Vue 3 in Vite.
+> [!WARNING]
+> 本项目的所有实现均为基于事实的猜测，不保证与新测评的实现完全一致。  
+> 请自行承担使用后果。
 
-## Recommended IDE Setup
+## 浏览器兼容性
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+> [!NOTE]
+> 开发环境：  
+> Microsoft Edge 121+  
+> Apple Safari on iOS 17
 
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-pnpm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-pnpm dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-pnpm build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-pnpm lint
-```
+为与新测评行为对齐，图片的上传格式应为 WEBP。在 Google Chrome
+Microsoft Edge 及 Mozilla Firefox 中，画板及上传的图片能够转换为
+WEBP；然而， Safari 并不支持 Canvas 到 WEBP 的转换，故 Safari
+上使用 PNG 格式上传。
