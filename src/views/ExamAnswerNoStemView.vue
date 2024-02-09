@@ -30,4 +30,5 @@ onMounted(async () => {
       <AnswerArea :question="question" :exam-task-id="Number(examTaskId)" />
     </div>
   </div>
+  <button>提交</button>
 </template>

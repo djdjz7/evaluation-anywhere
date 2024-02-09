@@ -3,16 +3,29 @@ import type { Question } from "@/models/GetNoQstExamTask";
 import { RadioGroup, RadioGroupOption } from "@headlessui/vue";
 import DrawboardArea from "./DrawboardArea.vue";
 import PhtotosArea from "./PhtotosArea.vue";
-import { type AnswersToQuestion } from "@/models/Answers";
+import { type AnswersToQstFlow, type AnswersToQuestion } from "@/models/Answers";
 import { ref } from "vue";
+import { QuestionMarkCircleIcon } from "@heroicons/vue/24/outline";
+import SingleSelect from "@/components/SingleSelect.vue"
+import MultiSelectVue from "@/components/MultiSelect.vue";
 
-defineProps<{
+const props = defineProps<{
   question: Question;
   examTaskId: number;
 }>();
 const singleDrawboardRef = ref<InstanceType<typeof DrawboardArea> | null>(null);
-const getAnswerAsync = (): Promise<AnswersToQuestion> => {
-  return new Promise((resolve, reject) => {});
+const photoAreaRef = ref<InstanceType<typeof PhtotosArea> | null>(null);
+const getAnswerAsync = async (): Promise<AnswersToQuestion> => {
+  const answers: AnswersToQstFlow[] = [];
+  if (props.question.qstFlows[0].qstType == 3) {
+    let qstAnswer = await photoAreaRef.value?.getQstAnswerAsync();
+    if (qstAnswer != undefined) answers.push(qstAnswer);
+  }
+  return {
+    draft: "",
+    questionId: props.question.id,
+    answers,
+  };
 };
 
 defineExpose({ getAnswerAsync });
@@ -25,6 +38,7 @@ defineExpose({ getAnswerAsync });
       :exam-task-id="examTaskId"
       :uuid="question.qstFlows[0].uuid"
       :question-id="question.id"
+      ref="photoAreaRef"
     />
   </div>
 
@@ -35,7 +49,7 @@ defineExpose({ getAnswerAsync });
       <span>{{ qstFlow.qstType }}</span>
 
       <!-- single select -->
-      <RadioGroup v-if="qstFlow.qstType == 0">
+      <!-- <RadioGroup v-if="qstFlow.qstType == 0">
         <div class="gap-x-2" grid grid-cols-4>
           <RadioGroupOption
             as="template"
@@ -57,9 +71,24 @@ defineExpose({ getAnswerAsync });
             </div>
           </RadioGroupOption>
         </div>
-      </RadioGroup>
+      </RadioGroup> -->
+      <SingleSelect
+        v-if="qstFlow.qstType == 0"
+        :exam-task-id="examTaskId"
+        :uuid="qstFlow.uuid"
+        :question-id="question.id"
+        :options="qstFlow.options!"
+      />
+      <MultiSelectVue
+        v-else-if="qstFlow.qstType == 2"
+        :exam-task-id="examTaskId"
+        :uuid="qstFlow.uuid"
+        :question-id="question.id"
+        :options="qstFlow.options!"
+      />
+
       <DrawboardArea
-        v-if="qstFlow.qstType == 4"
+        v-else-if="qstFlow.qstType == 4"
         :uuid="qstFlow.uuid"
         ref="singleDrawboardRef"
         :question-id="question.id"

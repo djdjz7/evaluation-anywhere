@@ -23,6 +23,9 @@ let currentPage = 1;
 let isLoading = false;
 let isToBottom = false;
 onMounted(async () => {
+
+  alert("注意：\n本项目所有实现均为基于事实的猜测，与新测评行为并不完全一致。\n请自行承担使用后果。")
+
   const getUserInfoRespose = (await axiosInstance.get("api/services/app/User/GetInfoAsync"))
     .data as CommonResponse<GetInfoResult>;
   studentName.value = getUserInfoRespose.result.realName;

@@ -16,21 +16,14 @@ let lastUpdate: number = Date.now();
 
 const hiddenInput = ref<HTMLInputElement | null>();
 
-const getQstAnswerAsync = (): Promise<AnswersToQstFlow> => {
-  return new Promise((resolve, reject) => {
-    try {
-      resolve({
-        // TODO: merge images and put object
-
-        answers: [
-          `http://ezy-sxz.oss-cn-hangzhou.aliyuncs.com/answers/${useUserInfoStore().userId}/ToCorrect/${props.examTaskId}/${props.questionId}/${props.uuid}}/sketch/answer_${lastUpdate}.webp`,
-        ],
-        uuid: props.uuid,
-      });
-    } catch (e) {
-      reject(e);
-    }
-  });
+const getQstAnswerAsync = async (): Promise<AnswersToQstFlow> => {
+  // TODO: merge images and put object
+  return {
+    answers: [
+      `http://ezy-sxz.oss-cn-hangzhou.aliyuncs.com/answers/${useUserInfoStore().userId}/ToCorrect/${props.examTaskId}/${props.questionId}/${props.uuid}}/sketch/answer_${lastUpdate}.webp`,
+    ],
+    uuid: props.uuid,
+  };
 };
 
 function addImage() {
