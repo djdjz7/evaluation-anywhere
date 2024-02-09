@@ -31,13 +31,13 @@ defineExpose({ getAnswer });
       <label
         flex-grow-1
         :for="uuid + option"
-        bg-white
+        bg="white dark:dark"
         shadow-md
         h-full
         flex="~ items-center justify-center"
         rounded-md
         cursor-pointer
-        :class="{ '!bg-violet !text-white !shadow-violet-300': selected.indexOf(option) >= 0 }"
+        :class="{ '!bg-violet !text-white !shadow-violet-300 !dark:shadow-violet-700': selected.indexOf(option) >= 0 }"
         >{{ option }}</label
       >
     </div>

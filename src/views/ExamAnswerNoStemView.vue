@@ -50,8 +50,8 @@ async function submit() {
       p-x-4
       p-y-2
       text="white"
-      bg="violet hover:violet-500"
-      shadow="md violet-300 hover:lg"
+      bg="violet-500 hover:violet"
+      shadow="md violet-300 dark:violet-700 hover:lg"
       un-border="0"
       rounded-md
       self-center

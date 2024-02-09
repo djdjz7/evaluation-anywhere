@@ -39,7 +39,7 @@ function navigateToExam(exam: Exam) {
     flex="~ row"
     :class="[
       'bg-white',
-      { '!bg-amber-100 border-amber border-solid border-1 !shadow-amber-300/60': props.exam.taskState === 3 },
+      { '!bg-amber-100 !dark:bg-amber-950 border-amber dark:border-amber-600 border-solid border-1 !shadow-amber-300/60 !dark:shadow-amber-800/60': props.exam.taskState === 3 },
     ]"
     dark:bg-dark
     shadow-md
@@ -76,14 +76,14 @@ function navigateToExam(exam: Exam) {
             m-r-1
             h-auto
             rounded-full
-            :class="['bg-violet-500', { '!bg-amber-700': props.exam.taskState === 3 }]"
+            :class="['bg-violet-500', { '!bg-amber-700 !dark:bg-amber-300': props.exam.taskState === 3 }]"
           ></div>
           <span
             dark:text-violet-300
             rounded-sm
             text-sm
             w-fit
-            :class="['text-violet-500', { '!text-amber-700': props.exam.taskState === 3 }]"
+            :class="['text-violet-500', { '!text-amber-700 !dark:text-amber-300': props.exam.taskState === 3 }]"
             >{{ props.exam.topicName }}</span
           >
         </div>

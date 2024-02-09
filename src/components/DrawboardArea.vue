@@ -20,6 +20,12 @@ onMounted(() => {
   canvas = canvasRef.value;
 
   ctx = canvas.getContext("2d");
+  if (ctx == null) {
+    alert("未知错误，请刷新页面后重试。");
+    return;
+  }
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   canvas.onmousedown = mousedown;
   canvas.onmouseup = mouseup;
@@ -49,22 +55,23 @@ function touchstart(e: TouchEvent) {
   const rect = canvas.getBoundingClientRect();
   ctx?.beginPath();
   ctx?.moveTo(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
-  canvas.ontouchmove = touchmove;
+  canvas.addEventListener("touchmove", touchmove, { passive: true });
 }
 
-function touchmove(e: TouchEvent) {
+const touchmove = (e: TouchEvent) => {
   e.preventDefault();
+  e.stopPropagation();
   const rect = canvas.getBoundingClientRect();
   ctx?.lineTo(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
   ctx?.stroke();
-}
+};
 
 function touchend() {
   ctx?.closePath();
   canvas.ontouchmove = null;
 }
 
-const getQstAnswerAsync = (): Promise<AnswersToQstFlow> => {
+const getQstAnswerAsync = async (): Promise<AnswersToQstFlow> => {
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
       if (blob == null) {
@@ -72,14 +79,13 @@ const getQstAnswerAsync = (): Promise<AnswersToQstFlow> => {
       } else {
         resolve({
           // TODO: put object
-
           answers: [
-            `http://ezy-sxz.oss-cn-hangzhou.aliyuncs.com/answers/${useUserInfoStore().userId}/ToCorrect/${props.examTaskId}/${props.questionId}/${props.uuid}}/sketch/answer_${lastUpdate}.webp`,
+            `http://ezy-sxz.oss-cn-hangzhou.aliyuncs.com/answers/${useUserInfoStore().userId}/ToCorrect/${props.examTaskId}/${props.questionId}/${props.uuid}}/sketch/answer_${lastUpdate}.${blob.type == "image/webp" ? "webp" : "png"}}`,
           ],
           uuid: props.uuid,
         });
       }
-    });
+    }, "image/webp");
   });
 };
 

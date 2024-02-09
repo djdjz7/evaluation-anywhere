@@ -146,7 +146,7 @@ function logOut() {
       </div>
     </div>
     <TabGroup max-w-screen m-t-2 @change="tabChange">
-      <TabList space-x-2 overflow-x-auto p-2 bg-violet-200 rounded-xl shadow-lg flex flex-shrink-0>
+      <TabList space-x-2 overflow-x-auto p-2 bg="violet-200 dark:violet-900/40" rounded-xl shadow-lg flex flex-shrink-0>
         <Tab flex-shrink-0>待处理</Tab>
         <Tab flex-shrink-0>全部测评</Tab>
         <Tab flex-shrink-0>收藏夹</Tab>
@@ -158,7 +158,7 @@ function logOut() {
       rounded-xl
       shadow-xl
       p-2
-      bg-violet-200
+      bg="violet-200 dark:violet-900/40"
       m-y-2
       grid="~ cols-1 lg:cols-4 md:cols-3"
       gap-2
