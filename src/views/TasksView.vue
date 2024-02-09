@@ -101,7 +101,7 @@ function logOut() {
 <template>
   <div flex="~ col" max-h-screen>
     <div class="group" flex="~ items-center" m-t-2 relative self-start>
-      <div v-if="avatarSrc" rounded-full overflow-clip h-8 w-8 m-r-2>
+      <div v-if="avatarSrc" rounded-full overflow-clip h-8 w-8 m-r-2 shadow-md>
         <img :src="avatarSrc" h-8 />
       </div>
       <UserCircleIcon v-else class="h-8 w-8 m-r-2" />
@@ -128,7 +128,7 @@ function logOut() {
           @click="logOut"
           p-x-2
           bg-transparent
-          text-red
+          class="!text-red !hover:bg-white"
           flex="~ items-center justify-center"
           border-0
           whitespace-nowrap
@@ -139,7 +139,7 @@ function logOut() {
       </div>
     </div>
     <TabGroup max-w-screen m-t-2 @change="tabChange">
-      <TabList space-x-2 overflow-x-auto p-2 bg-violet-200 rounded-3xl shadow-lg flex flex-shrink-0>
+      <TabList space-x-2 overflow-x-auto p-2 bg-violet-200 rounded-xl shadow-lg flex flex-shrink-0>
         <Tab flex-shrink-0>待处理</Tab>
         <Tab flex-shrink-0>全部测评</Tab>
         <Tab flex-shrink-0>收藏夹</Tab>
@@ -164,3 +164,12 @@ function logOut() {
     </div>
   </div>
 </template>
+
+<style scoped>
+button {
+  --at-apply: "bg-white hover:bg-violet-100 p-x-4 p-y-2 text-black border-0 shadow-md rounded-md transition-all duration-150";
+}
+button[data-headlessui-state~="selected"] {
+  --at-apply: "bg-violet hover:bg-violet-500 text-white shadow-violet-300 hover:shadow-lg";
+}
+</style>

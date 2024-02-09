@@ -36,13 +36,31 @@ async function submit() {
 }
 </script>
 <template>
-  <span block>ExamAnswerNoStem</span>
-  <h1>{{ examName }}</h1>
-  <div v-for="group in questionGroups">
-    <h2>{{ group.number }}. {{ group.name }}（共 {{ group.score }} 分）</h2>
-    <div v-for="question in group.questions">
-      <AnswerArea :question="question" :exam-task-id="Number(examTaskId)" ref="answerAreas" />
+  <div flex="~ col">
+    <span block>ExamAnswerNoStem</span>
+    <h1>{{ examName }}</h1>
+    <div v-for="group in questionGroups">
+      <h2>{{ group.number }}. {{ group.name }}（共 {{ group.score }} 分）</h2>
+      <div v-for="question in group.questions">
+        <AnswerArea :question="question" :exam-task-id="Number(examTaskId)" ref="answerAreas" />
+      </div>
     </div>
+    <button
+      @click="submit"
+      p-x-4
+      p-y-2
+      text="white"
+      bg="violet hover:violet-500"
+      shadow="md violet-300 hover:lg"
+      un-border="0"
+      rounded-md
+      self-center
+      transition-all
+      duration-150
+      m-t-4
+      m-b-8
+    >
+      提 交
+    </button>
   </div>
-  <button @click="submit">提交</button>
 </template>

@@ -39,7 +39,7 @@ function navigateToExam(exam: Exam) {
     flex="~ row"
     :class="[
       'bg-white',
-      { '!bg-amber-100 border-amber border-solid border-1': props.exam.taskState === 3 },
+      { '!bg-amber-100 border-amber border-solid border-1 !shadow-amber-300/60': props.exam.taskState === 3 },
     ]"
     dark:bg-dark
     shadow-md
