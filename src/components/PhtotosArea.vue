@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { type AnswersToQstFlow } from "@/models/Answers";
 import { useUserInfoStore } from "@/stores/userInfo";
+import { CameraIcon, PhotoIcon } from "@heroicons/vue/24/outline";
 
 const props = defineProps<{
   examTaskId: number;
@@ -11,10 +12,12 @@ const props = defineProps<{
 
 const images: Blob[] = [];
 const imageSrc = ref<string[]>([]);
+const accpetedTypes = ["image/png", "image/jpg", "image/jpeg"];
 
 let lastUpdate: number = Date.now();
 
-const hiddenInput = ref<HTMLInputElement | null>();
+const cameraInput = ref<HTMLInputElement | null>();
+const albumnInput = ref<HTMLInputElement | null>();
 
 const getQstAnswerAsync = async (): Promise<AnswersToQstFlow> => {
   // TODO: merge images and put object
@@ -26,37 +29,71 @@ const getQstAnswerAsync = async (): Promise<AnswersToQstFlow> => {
   };
 };
 
-function addImage() {
+function addImage(input: HTMLInputElement | null | undefined) {
   if (images.length >= 3) {
     alert("图片数量已达上限。");
     return;
   }
-  hiddenInput.value?.click();
+  input?.click();
 }
 
-function handleImage() {
-  if (hiddenInput.value?.files == null) {
+function handleImage(input: HTMLInputElement | null | undefined) {
+  if (input?.files == null) {
     return;
   }
-  const file = hiddenInput.value.files[0];
+  const file = input.files[0];
+  if (accpetedTypes.indexOf(file.type) < 0) {
+    alert("不支持的文件格式");
+    return;
+  }
   images.push(file);
   imageSrc.value.push(URL.createObjectURL(file));
-  hiddenInput.value.files = null;
+  input.files = null;
 }
 
 defineExpose({ getQstAnswerAsync });
 </script>
 
 <template>
-  <img v-for="image in imageSrc" :src="image" />
+  <img v-for="image in imageSrc" :src="image" w-full />
   <input
     capture="environment"
-    hidden
+    un-hidden
     type="file"
     accpet="image/png, image/jpg, image/jpeg"
-    ref="hiddenInput"
-    @change="handleImage"
+    ref="cameraInput"
+    @change="handleImage(cameraInput)"
   />
-  <button @click="addImage"></button>
-  <!--TODO: photos upload -->
+  <input
+    un-hidden
+    type="file"
+    accpet="image/png, image/jpg, image/jpeg"
+    ref="albumnInput"
+    @change="handleImage(albumnInput)"
+  />
+  <div flex="~ items-center justify-center">
+    <button
+      flex="~ items-center"
+      rounded="0 tl-md bl-md"
+      text="dark dark:light"
+      bg="white dark:dark"
+      un-border="1 solid violet"
+      focus:outline-none
+      @click="addImage(cameraInput)"
+    >
+      <CameraIcon class="h-8" />
+    </button>
+    <button
+      flex="~ items-center"
+      rounded="0 tr-md br-md"
+      text="dark dark:light"
+      bg="white dark:dark"
+      un-border="1 solid violet"
+      focus:outline-none
+      @click="addImage(albumnInput)"
+      class="-m-l-1"
+    >
+      <PhotoIcon class="h-8" />
+    </button>
+  </div>
 </template>
