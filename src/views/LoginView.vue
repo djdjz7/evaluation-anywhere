@@ -67,9 +67,7 @@ async function login() {
       refreshExpiresAt: timeNow + loginResult.refreshExpireInSeconds * 1000,
     });
 
-    router.push({
-      path: "/",
-    });
+    router.push("/");
   } catch (e) {
     alert(e);
   } finally {
@@ -84,14 +82,8 @@ async function login() {
     <div flex="~ justify-center items-center col">
       <h1>登录</h1>
       <input type="text" v-model="account" m-t-2 placeholder="账号" v-on:keyup.enter="login" />
-      <input
-        type="password"
-        v-model="password"
-        placeholder="密码"
-        m-t-2
-        v-on:keyup.enter="login"
-      />
-      <button type="button" m-t-4 @click="login">登  录</button>
+      <input type="password" v-model="password" placeholder="密码" m-t-2 v-on:keyup.enter="login" />
+      <button type="button" m-t-4 @click="login">登 录</button>
       <a href="#" color-red no-underline m-t-2 @click="whyRef.show()">
         <div flex="~ items-center justify-center" text-sm>
           <span class="material-symbols-rounded"> info </span>
@@ -117,6 +109,6 @@ async function login() {
 </template>
 <style scoped>
 button {
-  --at-apply: "shadow-md bg-violet hover:bg-violet-500 text-white shadow-violet-300 hover:shadow-lg  p-x-4 p-y-2 border-0 rounded-md transition-all duration-150";
+  --at-apply: "shadow-md bg-violet-500 hover:bg-violet focus:bg-violet focus:outline-none text-white shadow-violet-300 hover:shadow-lg focus:shadow-lg  p-x-4 p-y-2 border-0 rounded-md transition-all duration-150";
 }
 </style>

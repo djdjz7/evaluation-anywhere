@@ -3,7 +3,7 @@ import { TabGroup, TabList, Tab } from "@headlessui/vue";
 import ExamCard from "@/components/ExamCard.vue";
 import { type CommonResponse } from "@/models/CommonResponse";
 import { type GetStudentTaskListResult } from "@/models/GetStudentTaskListResult";
-import { onMounted, ref } from "vue";
+import { onActivated, onMounted, ref } from "vue";
 import type { Exam } from "@/models/GetStudentTaskListResult";
 
 import { axiosInstance } from "@/request/axiosInstance";
@@ -12,34 +12,40 @@ import { UserCircleIcon, ArrowLeftStartOnRectangleIcon } from "@heroicons/vue/24
 import router from "@/router";
 import { useUserInfoStore } from "@/stores/userInfo";
 
-// let exams = (tasksResponse as unknown as CommonResponse<GetStudentTaskListResult>).result.items;
-
 const exams = ref(Array<Exam>());
 let selectedIndex = 0;
 const avatarSrc = ref<string | null>(null);
 const studentName = ref("");
+let needRefresh = false;
+
+onActivated(() => {
+  if (needRefresh) location.reload();
+});
 
 let currentPage = 1;
 let isLoading = false;
 let isToBottom = false;
 onMounted(async () => {
-  alert(
-    "注意：\n本项目所有实现均为基于事实的猜测，与新测评行为并不完全一致。\n请自行承担使用后果。"
-  );
+  // alert(
+  //   "注意：\n本项目所有实现均为基于事实的猜测，与新测评行为并不完全一致。\n请自行承担使用后果。"
+  // );
+  try {
+    const getUserInfoRespose = (await axiosInstance.get("api/services/app/User/GetInfoAsync"))
+      .data as CommonResponse<GetInfoResult>;
+    studentName.value = getUserInfoRespose.result.realName;
+    avatarSrc.value = getUserInfoRespose.result.photo;
 
-  const getUserInfoRespose = (await axiosInstance.get("api/services/app/User/GetInfoAsync"))
-    .data as CommonResponse<GetInfoResult>;
-  studentName.value = getUserInfoRespose.result.realName;
-  avatarSrc.value = getUserInfoRespose.result.photo;
-
-  const getStudentTaskListResponse = (
-    await axiosInstance.post("api/services/app/Task/GetStudentTaskListAsync", {
-      maxResultCount: 90,
-      skipCount: 0,
-      taskListType: 1,
-    })
-  ).data as CommonResponse<GetStudentTaskListResult>;
-  exams.value = getStudentTaskListResponse.result.items;
+    const getStudentTaskListResponse = (
+      await axiosInstance.post("api/services/app/Task/GetStudentTaskListAsync", {
+        maxResultCount: 90,
+        skipCount: 0,
+        taskListType: 1,
+      })
+    ).data as CommonResponse<GetStudentTaskListResult>;
+    exams.value = getStudentTaskListResponse.result.items;
+  } catch {
+    needRefresh = true;
+  }
 });
 
 async function tabChange(index: number) {
@@ -94,6 +100,7 @@ function logOut() {
     refreshToken: "",
     refreshExpiresAt: 0,
   });
+  needRefresh = true;
   router.push("/login");
 }
 </script>
@@ -167,9 +174,9 @@ function logOut() {
 
 <style scoped>
 button {
-  --at-apply: "bg-white hover:bg-violet-100 p-x-4 p-y-2 text-black border-0 shadow-md rounded-md transition-all duration-150";
+  --at-apply: "bg-white hover:bg-violet-100 focus:outline-none focus:bg-violet-100 p-x-4 p-y-2 text-black border-0 shadow-md rounded-md transition-all duration-150";
 }
 button[data-headlessui-state~="selected"] {
-  --at-apply: "bg-violet hover:bg-violet-500 text-white shadow-violet-300 hover:shadow-lg";
+  --at-apply: "bg-violet-500 hover:bg-violet focus:bg-violet text-white shadow-violet-700 shadow-inner ";
 }
 </style>

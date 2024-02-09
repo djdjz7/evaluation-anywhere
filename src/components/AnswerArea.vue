@@ -60,32 +60,6 @@ defineExpose({ getAnswerAsync });
   <div v-else v-for="qstFlow in question.qstFlows">
     <!-- if no subQs -->
     <div v-if="qstFlow.subQuestions == null || qstFlow.subQuestions.length == 0">
-      <span>{{ qstFlow.qstType }}</span>
-
-      <!-- single select -->
-      <!-- <RadioGroup v-if="qstFlow.qstType == 0">
-        <div class="gap-x-2" grid grid-cols-4>
-          <RadioGroupOption
-            as="template"
-            v-for="option in qstFlow.options"
-            :key="option"
-            :value="option"
-            v-slot="{ active, checked }"
-          >
-            <div
-              :class="[
-                active ? 'ring-2 ring-blue-700/60' : '',
-                checked ? 'bg-blue-500 text-white shadow-blue-700/40' : 'bg-white ',
-              ]"
-              class="relative flex justify-center cursor-pointer rounded-md px-5 py-4 shadow-md focus:outline-none"
-            >
-              <span :class="checked ? 'text-white' : 'text-gray-900'" class="font-medium">
-                {{ option }}
-              </span>
-            </div>
-          </RadioGroupOption>
-        </div>
-      </RadioGroup> -->
       <SingleSelect
         v-if="qstFlow.qstType == 0"
         :exam-task-id="examTaskId"
@@ -102,7 +76,6 @@ defineExpose({ getAnswerAsync });
         :options="qstFlow.options!"
         ref="multiSelectRefs"
       />
-
       <DrawboardArea
         v-else-if="qstFlow.qstType == 4"
         :uuid="qstFlow.uuid"
@@ -111,14 +84,64 @@ defineExpose({ getAnswerAsync });
         :exam-task-id="examTaskId"
       />
 
-      <div v-else bg-red-100 p-4 un-border="~ red 1 solid" rounded-xl flex="~ col items-center" text-red>
+      <div
+        v-else
+        bg-red-100
+        p-4
+        un-border="~ red 1 solid"
+        rounded-xl
+        flex="~ col items-center"
+        text-red
+      >
         <span block font-bold>未知的问题类型</span>
         <span block text-sm>qstFlow.qstType: {{ qstFlow.qstType }}</span>
-        <a un-text="sm red" block href="https://github.com/djdjz7/evaluation-anywhere/issues">报告此问题</a>
+        <a un-text="sm red" block href="https://github.com/djdjz7/evaluation-anywhere/issues"
+          >报告此问题</a
+        >
       </div>
     </div>
 
     <!-- if has subQs -->
-    <div v-else></div>
+    <div v-else v-for="subQ in qstFlow.subQuestions">
+      <SingleSelect
+        v-if="subQ.qstType == 0"
+        :exam-task-id="examTaskId"
+        :uuid="subQ.uuid"
+        :question-id="question.id"
+        :options="subQ.options!"
+        ref="singleSelectRefs"
+      />
+      <MultiSelect
+        v-else-if="subQ.qstType == 2"
+        :exam-task-id="examTaskId"
+        :uuid="subQ.uuid"
+        :question-id="question.id"
+        :options="subQ.options!"
+        ref="multiSelectRefs"
+      />
+      <DrawboardArea
+        v-else-if="subQ.qstType == 4"
+        :uuid="subQ.uuid"
+        ref="drawboardRefs"
+        :question-id="question.id"
+        :exam-task-id="examTaskId"
+      />
+
+      <div
+        v-else
+        bg-red-100
+        p-4
+        un-border="~ red 1 solid"
+        rounded-xl
+        flex="~ col items-center"
+        text-red
+      >
+        <span block font-bold>未知的问题类型</span>
+        <span block text-sm>qstFlow.qstType: {{ subQ.qstType }}</span>
+        <a un-text="sm red" block href="https://github.com/djdjz7/evaluation-anywhere/issues"
+          >报告此问题</a
+        >
+      </div>
+    </div>
   </div>
 </template>
