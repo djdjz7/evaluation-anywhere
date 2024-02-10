@@ -23,7 +23,7 @@
 
 <style scoped>
 .circle {
-  background-image: conic-gradient(transparent, transparent, gray, gray, gray);
+  background-image: conic-gradient(transparent, transparent, #8b5cf6, #8b5cf6, #8b5cf6);
   animation: loading-animation linear 1s infinite;
 }
 

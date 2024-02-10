@@ -152,24 +152,30 @@ defineExpose({ getQstAnswerAsync });
       flex="~ items-center"
       rounded="0 tl-md bl-md"
       text="dark dark:light"
-      bg="white dark:dark"
+      bg="white dark:dark hover:violet-100 dark:hover:violet-900"
       un-border="1 solid violet"
       focus:outline-none
+      shadow-md
       @click="addImage(cameraInput)"
+      transition-all
+      duration-100
     >
-      <CameraIcon class="h-8" />
+      <CameraIcon class="h-6 m-1" />
     </button>
     <button
       flex="~ items-center"
       rounded="0 tr-md br-md"
       text="dark dark:light"
-      bg="white dark:dark"
+      bg="white dark:dark hover:violet-100 dark:hover:violet-900"
       un-border="1 solid violet"
       focus:outline-none
+      shadow-md
       @click="addImage(albumnInput)"
       class="-m-l-1"
+      transition-all
+      duration-100
     >
-      <PhotoIcon class="h-8" />
+      <PhotoIcon class="h-6 m-1" />
     </button>
   </div>
 </template>

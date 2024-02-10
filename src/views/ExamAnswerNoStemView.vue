@@ -4,14 +4,16 @@ import { axiosInstance } from "@/request/axiosInstance";
 import { onMounted, ref } from "vue";
 import { type CommonResponse } from "@/models/CommonResponse";
 import { type GetNoQstExamTaskResult, type QuestionGroup } from "@/models/GetNoQstExamTask";
-
+import Loading from "@/components/Loading.vue";
 import AnswerArea from "@/components/AnswerArea.vue";
 import type { AnswersToQuestion } from "@/models/Answers";
 
+const isLoading = ref(true);
 const route = useRoute();
 const router = useRouter();
 const examTaskId = route.params.examTaskId;
 const examName = ref("");
+const examStartTime = ref("");
 const questionGroups = ref<QuestionGroup[]>();
 const answerAreas = ref<InstanceType<typeof AnswerArea>[] | null>(null);
 
@@ -21,10 +23,13 @@ onMounted(async () => {
   ).data as CommonResponse<GetNoQstExamTaskResult>;
   const task = response.result;
   examName.value = task.examName;
+  examStartTime.value = task.startTime;
   questionGroups.value = task.groups;
+  isLoading.value = false;
 });
 
 async function submit() {
+  isLoading.value = true;
   try {
     let allAnswers: AnswersToQuestion[] = [];
     if (answerAreas.value == null) {
@@ -52,13 +57,15 @@ async function submit() {
   } catch (e) {
     console.log(e);
     alert("出现异常，请查看控制台输出。");
+  } finally {
+    isLoading.value = false;
   }
 }
 </script>
 <template>
   <div flex="~ col">
-    <span block>ExamAnswerNoStem</span>
-    <h1>{{ examName }}</h1>
+    <h1 m-b-0>{{ examName }}</h1>
+    <span block m-b-4>{{ examStartTime }}</span>
     <div v-for="group in questionGroups">
       <h2>{{ group.number }}. {{ group.name }}（共 {{ group.score }} 分）</h2>
       <div v-for="question in group.questions">
@@ -83,4 +90,5 @@ async function submit() {
       提 交
     </button>
   </div>
+  <Loading v-if="isLoading" />
 </template>

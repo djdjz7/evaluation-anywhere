@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { TabGroup, TabList, Tab } from "@headlessui/vue";
 import ExamCard from "@/components/ExamCard.vue";
+import Loading from "@/components/Loading.vue";
 import { type CommonResponse } from "@/models/CommonResponse";
 import { type GetStudentTaskListResult } from "@/models/GetStudentTaskListResult";
 import { onActivated, onMounted, ref } from "vue";
@@ -17,15 +18,16 @@ const avatarSrc = ref<string | null>(null);
 const studentName = ref("");
 const router = useRouter();
 let currentPage = 1;
-let isLoading = false;
+let isLoading = ref(false);
 let isToBottom = false;
 let selectedIndex = 0;
 
 onActivated(async () => {
+  isLoading.value = false;
   if (useRoute().query.needRefresh == "true") {
     router.push("/");
     currentPage = 0;
-
+    isLoading.value = true;
     const getUserInfoRespose = (await axiosInstance.get("api/services/app/User/GetInfoAsync"))
       .data as CommonResponse<GetInfoResult>;
     studentName.value = getUserInfoRespose.result.realName;
@@ -67,8 +69,7 @@ onMounted(async () => {
 
 async function tabChange(index: number) {
   selectedIndex = index;
-  isLoading = true;
-  exams.value = [];
+  isLoading.value = true;
   const getStudentTaskListResponse = (
     await axiosInstance.post("api/services/app/Task/GetStudentTaskListAsync", {
       maxResultCount: 90,
@@ -78,19 +79,19 @@ async function tabChange(index: number) {
   ).data as CommonResponse<GetStudentTaskListResult>;
   exams.value = getStudentTaskListResponse.result.items;
   currentPage = 0;
-  isLoading = false;
+  isLoading.value = false;
   isToBottom = false;
 }
 
 async function handleScroll(e: Event) {
-  if (isLoading || isToBottom) {
+  if (isLoading.value || isToBottom) {
     return;
   }
   const target = e.target as unknown as HTMLDivElement;
   const fullHeight = target.scrollHeight;
   const currentHeight = target.scrollTop + target.clientHeight;
   if (fullHeight - currentHeight < 100) {
-    isLoading = true;
+    isLoading.value = true;
     const getStudentTaskListResponse = (
       await axiosInstance.post("api/services/app/Task/GetStudentTaskListAsync", {
         maxResultCount: 90,
@@ -100,12 +101,12 @@ async function handleScroll(e: Event) {
     ).data as CommonResponse<GetStudentTaskListResult>;
     if (getStudentTaskListResponse.result.items.length == 0) {
       isToBottom = true;
-      isLoading = false;
+      isLoading.value = false;
       return;
     }
     exams.value = exams.value.concat(getStudentTaskListResponse.result.items);
     currentPage++;
-    isLoading = false;
+    isLoading.value = false;
   }
 }
 
@@ -195,6 +196,7 @@ function logOut() {
       </div>
     </div>
   </div>
+  <Loading v-if="isLoading" />
 </template>
 
 <style scoped>

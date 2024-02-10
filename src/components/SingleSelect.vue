@@ -33,8 +33,11 @@ defineExpose({ getAnswer });
         flex="~ items-center justify-center"
         rounded-md
         cursor-pointer
+        transition-all
+        duration-150
         :class="{
-          '!bg-violet !text-white !shadow-violet-300 !dark:shadow-violet-700': option == selected,
+          '!bg-violet-500 !text-white !shadow-violet-300 !dark:shadow-violet-700 !hover:bg-violet !dark:hover:bg-violet-600':
+            option == selected,
         }"
         >{{ option }}</label
       >
