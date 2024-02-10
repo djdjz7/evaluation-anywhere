@@ -88,7 +88,7 @@ async function login() {
     <span text-lg>Evaluation Anywhere</span>
     <div flex="~ justify-center items-center col">
       <h1>登录</h1>
-      <input type="text" v-model="account" m-t-2 placeholder="账号" v-on:keyup.enter="login" />
+      <input type="text" v-model="account" placeholder="账号" v-on:keyup.enter="login" />
       <input type="password" v-model="password" placeholder="密码" m-t-2 v-on:keyup.enter="login" />
       <button
         type="button"
@@ -135,3 +135,21 @@ async function login() {
   </Popup>
   <Loading v-if="isLoading" />
 </template>
+
+<style scoped>
+input[type="text"],
+input[type="password"],
+input[type="file"] {
+  font-family: Inter;
+  @apply p-y-2 p-x-3 border-1 border-solid border-violet/40 rounded-2 dark:bg-dark;
+  @apply transition-all duration-200;
+  @apply focus:ring-2 ring-offset-1 ring-violet/50;
+  @apply text-dark dark:text-light;
+  @apply hover:shadow-md;
+}
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="file"]:focus {
+  outline: none;
+}
+</style>
