@@ -6,9 +6,9 @@ import type { CommonResponse } from "@/models/CommonResponse";
 function getOssTokenAsync(): Promise<GetOssTokenResult> {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = (await axiosInstance.get(
-        "api/services/app/ObjectStorage/GeneratorTokenAsync"
-      )) as CommonResponse<GetOssTokenResult>;
+      const response = (
+        await axiosInstance.get("api/services/app/ObjectStorage/GeneratorTokenAsync")
+      ).data as CommonResponse<GetOssTokenResult>;
       const result = response.result;
       resolve(result);
     } catch (e) {

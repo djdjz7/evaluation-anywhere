@@ -24,15 +24,29 @@ onMounted(async () => {
 });
 
 async function submit() {
-  let allAnswers: AnswersToQuestion[] = [];
-  if (answerAreas.value == null) {
-    alert("未知错误，请刷新页面后重试。");
-    return;
+  try {
+    let allAnswers: AnswersToQuestion[] = [];
+    if (answerAreas.value == null) {
+      alert("未知错误，请刷新页面后重试。");
+      return;
+    }
+    for (let i = 0; i < answerAreas.value.length; i++) {
+      allAnswers.push(await answerAreas.value[i].getAnswerAsync());
+    }
+
+    const response = (
+      await axiosInstance.post(
+        `http://sxz.api6.zykj.org/api/services/app/Task/NoQstExamAnswerAsync?taskId=${examTaskId}`,
+        allAnswers
+      )
+    ).data;
+    console.log(response);
+    alert("成功");
+
+  } catch (e) {
+    console.log(e);
+    alert("出现异常，请查看控制台输出。");
   }
-  for (let i = 0; i < answerAreas.value.length; i++) {
-    allAnswers.push(await answerAreas.value[i].getAnswerAsync());
-  }
-  console.log(allAnswers);
 }
 </script>
 <template>
