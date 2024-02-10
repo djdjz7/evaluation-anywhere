@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { axiosInstance } from "@/request/axiosInstance";
 import { onMounted, ref } from "vue";
 import { type CommonResponse } from "@/models/CommonResponse";
@@ -7,9 +7,9 @@ import { type GetNoQstExamTaskResult, type QuestionGroup } from "@/models/GetNoQ
 
 import AnswerArea from "@/components/AnswerArea.vue";
 import type { AnswersToQuestion } from "@/models/Answers";
-import router from "@/router";
 
 const route = useRoute();
+const router = useRouter();
 const examTaskId = route.params.examTaskId;
 const examName = ref("");
 const questionGroups = ref<QuestionGroup[]>();

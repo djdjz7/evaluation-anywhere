@@ -9,13 +9,13 @@ import type { Exam } from "@/models/GetStudentTaskListResult";
 import { axiosInstance } from "@/request/axiosInstance";
 import type { GetInfoResult } from "@/models/Login";
 import { UserCircleIcon, ArrowLeftStartOnRectangleIcon } from "@heroicons/vue/24/outline";
-import router from "@/router";
 import { useUserInfoStore } from "@/stores/userInfo";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const exams = ref(Array<Exam>());
 const avatarSrc = ref<string | null>(null);
 const studentName = ref("");
+const router = useRouter();
 let currentPage = 1;
 let isLoading = false;
 let isToBottom = false;

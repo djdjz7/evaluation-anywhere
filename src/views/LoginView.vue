@@ -4,7 +4,7 @@ import { type LoginRequest, type LoginResponse } from "@/models/Login";
 import { type CommonResponse } from "@/models/CommonResponse";
 import axios, { type AxiosRequestConfig } from "axios";
 import { useUserInfoStore } from "@/stores/userInfo";
-import router from "@/router";
+import { useRouter } from "vue-router";
 import Popup from "@/components/Popup.vue";
 import Loading from "@/components/Loading.vue";
 
@@ -15,6 +15,8 @@ const protocolRef = ref();
 const whyRef = ref();
 
 const isLoading = ref(false);
+
+const router = useRouter();
 
 onMounted(() => {
   if (document.location.protocol.toLowerCase() == "https:") {
