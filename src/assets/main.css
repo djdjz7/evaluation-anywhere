@@ -22,13 +22,8 @@ body {
 
 @media (prefers-color-scheme: dark) {
   body {
-    background: rgb(25, 27, 33);
+    background: rgb(24, 21, 27);
   }
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
 }
 
 .card {
