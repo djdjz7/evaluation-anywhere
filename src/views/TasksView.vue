@@ -41,6 +41,7 @@ onActivated(async () => {
       })
     ).data as CommonResponse<GetStudentTaskListResult>;
     exams.value = getStudentTaskListResponse.result.items;
+    isLoading.value = false;
   }
 });
 
