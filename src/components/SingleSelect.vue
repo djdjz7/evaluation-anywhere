@@ -33,7 +33,9 @@ defineExpose({ getAnswer });
         flex="~ items-center justify-center"
         rounded-md
         cursor-pointer
-        :class="{ '!bg-violet !text-white !shadow-violet-300 !dark:shadow-violet-700': option == selected }"
+        :class="{
+          '!bg-violet !text-white !shadow-violet-300 !dark:shadow-violet-700': option == selected,
+        }"
         >{{ option }}</label
       >
     </div>

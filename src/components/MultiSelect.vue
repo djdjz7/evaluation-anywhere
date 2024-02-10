@@ -37,7 +37,10 @@ defineExpose({ getAnswer });
         flex="~ items-center justify-center"
         rounded-md
         cursor-pointer
-        :class="{ '!bg-violet !text-white !shadow-violet-300 !dark:shadow-violet-700': selected.indexOf(option) >= 0 }"
+        :class="{
+          '!bg-violet !text-white !shadow-violet-300 !dark:shadow-violet-700':
+            selected.indexOf(option) >= 0,
+        }"
         >{{ option }}</label
       >
     </div>

@@ -42,7 +42,6 @@ async function submit() {
     ).data;
     console.log(response);
     alert("成功");
-
   } catch (e) {
     console.log(e);
     alert("出现异常，请查看控制台输出。");
