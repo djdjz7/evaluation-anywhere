@@ -3,6 +3,7 @@ import { onMounted, ref } from "vue";
 import { type AnswersToQstFlow } from "@/models/Answers";
 import { useUserInfoStore } from "@/stores/userInfo";
 import { CameraIcon, PhotoIcon } from "@heroicons/vue/24/outline";
+import { ossClient } from "@/oss/client";
 
 const props = defineProps<{
   examTaskId: number;
@@ -38,16 +39,28 @@ onMounted(() => {
 });
 
 const getQstAnswerAsync = async (): Promise<AnswersToQstFlow> => {
-  const canvas = new HTMLCanvasElement();
-  canvas.width = 1600;
-
-  // TODO: merge images and put object
-  return {
-    answers: [
-      `http://ezy-sxz.oss-cn-hangzhou.aliyuncs.com/answers/${useUserInfoStore().userId}/ToCorrect/${props.examTaskId}/${props.questionId}/${props.uuid}}/sketch/answer_${lastUpdate}.webp`,
-    ],
-    uuid: props.uuid,
-  };
+  return new Promise((resolve, reject) => {
+    if (canvas == null) {
+      reject(new Error("Canvas is null or undefined."));
+    } else {
+      canvas.toBlob(async (blob) => {
+        if (blob == null) {
+          reject(new Error("Canvas.toBlob returned null"));
+        } else {
+          const path = `answers/${useUserInfoStore().userId}/ToCorrect/${props.examTaskId}/${props.questionId}/${props.uuid}}/sketch/answer_${lastUpdate}.${blob.type == "image/webp" ? "webp" : "png"}}`;
+          try {
+            await ossClient.put(path, blob);
+          } catch (e) {
+            reject(e);
+          }
+          resolve({
+            answers: [`http://ezy-sxz.oss-cn-hangzhou.aliyuncs.com/${path}`],
+            uuid: props.uuid,
+          });
+        }
+      }, "image/webp");
+    }
+  });
 };
 
 function addImage(input: HTMLInputElement | null | undefined) {
@@ -111,10 +124,7 @@ async function handleImage(input: HTMLInputElement | null | undefined) {
     }
   });
   input.files = null;
-
-  console.log(imageBitmaps);
-  console.log(deltaHeight);
-  console.log(totalHeight);
+  lastUpdate = Date.now();
 }
 
 defineExpose({ getQstAnswerAsync });

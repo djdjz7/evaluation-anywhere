@@ -2,6 +2,7 @@
 import { onMounted, ref } from "vue";
 import { type AnswersToQstFlow } from "@/models/Answers";
 import { useUserInfoStore } from "@/stores/userInfo";
+import { ossClient } from "@/oss/client";
 
 const props = defineProps<{
   examTaskId: number;
@@ -75,15 +76,18 @@ function touchend() {
 
 const getQstAnswerAsync = async (): Promise<AnswersToQstFlow> => {
   return new Promise((resolve, reject) => {
-    canvas.toBlob((blob) => {
+    canvas.toBlob(async (blob) => {
       if (blob == null) {
         reject(new Error("Canvas.toBlob returned null"));
       } else {
+        const path = `answers/${useUserInfoStore().userId}/ToCorrect/${props.examTaskId}/${props.questionId}/${props.uuid}}/sketch/answer_${lastUpdate}.${blob.type == "image/webp" ? "webp" : "png"}}`;
+        try {
+          await ossClient.put(path, blob);
+        } catch (e) {
+          reject(e);
+        }
         resolve({
-          // TODO: put object
-          answers: [
-            `http://ezy-sxz.oss-cn-hangzhou.aliyuncs.com/answers/${useUserInfoStore().userId}/ToCorrect/${props.examTaskId}/${props.questionId}/${props.uuid}}/sketch/answer_${lastUpdate}.${blob.type == "image/webp" ? "webp" : "png"}}`,
-          ],
+          answers: [`http://ezy-sxz.oss-cn-hangzhou.aliyuncs.com/${path}`],
           uuid: props.uuid,
         });
       }
