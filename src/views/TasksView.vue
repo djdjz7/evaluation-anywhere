@@ -11,20 +11,37 @@ import type { GetInfoResult } from "@/models/Login";
 import { UserCircleIcon, ArrowLeftStartOnRectangleIcon } from "@heroicons/vue/24/outline";
 import router from "@/router";
 import { useUserInfoStore } from "@/stores/userInfo";
+import { useRoute } from "vue-router";
 
 const exams = ref(Array<Exam>());
-let selectedIndex = 0;
 const avatarSrc = ref<string | null>(null);
 const studentName = ref("");
-let needRefresh = false;
-
-onActivated(() => {
-  if (needRefresh) location.reload();
-});
-
 let currentPage = 1;
 let isLoading = false;
 let isToBottom = false;
+let selectedIndex = 0;
+
+onActivated(async () => {
+  if (useRoute().query.needRefresh == "true") {
+    router.push("/");
+    currentPage = 0;
+
+    const getUserInfoRespose = (await axiosInstance.get("api/services/app/User/GetInfoAsync"))
+      .data as CommonResponse<GetInfoResult>;
+    studentName.value = getUserInfoRespose.result.realName;
+    avatarSrc.value = getUserInfoRespose.result.photo;
+
+    const getStudentTaskListResponse = (
+      await axiosInstance.post("api/services/app/Task/GetStudentTaskListAsync", {
+        maxResultCount: 90,
+        skipCount: 0,
+        taskListType: selectedIndex + 1,
+      })
+    ).data as CommonResponse<GetStudentTaskListResult>;
+    exams.value = getStudentTaskListResponse.result.items;
+  }
+});
+
 onMounted(async () => {
   // alert(
   //   "注意：\n本项目所有实现均为基于事实的猜测，与新测评行为并不完全一致。\n请自行承担使用后果。"
@@ -44,7 +61,7 @@ onMounted(async () => {
     ).data as CommonResponse<GetStudentTaskListResult>;
     exams.value = getStudentTaskListResponse.result.items;
   } catch {
-    needRefresh = true;
+    alert("异常");
   }
 });
 
@@ -100,7 +117,6 @@ function logOut() {
     refreshToken: "",
     refreshExpiresAt: 0,
   });
-  needRefresh = true;
   router.push("/login");
 }
 </script>

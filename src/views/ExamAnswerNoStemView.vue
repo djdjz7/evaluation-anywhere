@@ -7,6 +7,7 @@ import { type GetNoQstExamTaskResult, type QuestionGroup } from "@/models/GetNoQ
 
 import AnswerArea from "@/components/AnswerArea.vue";
 import type { AnswersToQuestion } from "@/models/Answers";
+import router from "@/router";
 
 const route = useRoute();
 const examTaskId = route.params.examTaskId;
@@ -42,6 +43,12 @@ async function submit() {
     ).data;
     console.log(response);
     alert("成功");
+    router.push({
+      path: "/",
+      query: {
+        needRefresh: "true",
+      },
+    });
   } catch (e) {
     console.log(e);
     alert("出现异常，请查看控制台输出。");

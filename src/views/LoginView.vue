@@ -67,7 +67,12 @@ async function login() {
       refreshExpiresAt: timeNow + loginResult.refreshExpireInSeconds * 1000,
     });
 
-    router.push("/");
+    router.push({
+      path: "/",
+      query: {
+        needRefresh: "true",
+      },
+    });
   } catch (e) {
     alert(e);
   } finally {
