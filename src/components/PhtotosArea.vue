@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { type AnswersToQstFlow } from "@/models/Answers";
 import { useUserInfoStore } from "@/stores/userInfo";
 import { CameraIcon, PhotoIcon } from "@heroicons/vue/24/outline";
 import { ossClient } from "@/oss/client";
+import { windowSize } from "./windowSize";
 
 const props = defineProps<{
   examTaskId: number;
@@ -36,6 +37,16 @@ onMounted(() => {
     alert("未知错误，请刷新页面后重试。");
     return;
   }
+
+  watch(
+    windowSize,
+    (value) => {
+      resizeCanvas(value[0]);
+    },
+    {
+      immediate: true,
+    }
+  );
 });
 
 const getQstAnswerAsync = async (): Promise<AnswersToQstFlow> => {
@@ -125,9 +136,21 @@ async function handleImage(input: HTMLInputElement | null | undefined) {
   });
   input.files = null;
   lastUpdate = Date.now();
+  resizeCanvas();
 }
 
 defineExpose({ getQstAnswerAsync });
+
+function resizeCanvas(newWidth: number | null = null) {
+  if (canvas == null) return;
+  if (newWidth == null) newWidth = windowSize.value[0];
+  if (newWidth > 1280) newWidth = 1280;
+  // remove the scrollbar width
+  newWidth -= 20;
+  const aspectRatio = canvas.width / canvas.height;
+  canvas.style.width = `${newWidth}px`;
+  canvas.style.height = `${newWidth / aspectRatio}px`;
+}
 </script>
 
 <template>

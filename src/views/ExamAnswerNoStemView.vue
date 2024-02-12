@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
 import { axiosInstance } from "@/request/axiosInstance";
-import { onMounted, ref } from "vue";
+import { onMounted, onBeforeUnmount, ref } from "vue";
 import { type CommonResponse } from "@/models/CommonResponse";
 import { type GetNoQstExamTaskResult, type QuestionGroup } from "@/models/GetNoQstExamTask";
 import Loading from "@/components/Loading.vue";
 import AnswerArea from "@/components/AnswerArea.vue";
 import type { AnswersToQuestion } from "@/models/Answers";
+import { windowSize } from "@/components/windowSize";
 
 const isLoading = ref(true);
 const route = useRoute();
@@ -18,6 +19,7 @@ const questionGroups = ref<QuestionGroup[]>();
 const answerAreas = ref<InstanceType<typeof AnswerArea>[] | null>(null);
 
 onMounted(async () => {
+  setWindowSize();
   const response = (
     await axiosInstance.get(`api/services/app/Task/GetNoQstExamTaskAsync?id=${examTaskId}`)
   ).data as CommonResponse<GetNoQstExamTaskResult>;
@@ -26,7 +28,18 @@ onMounted(async () => {
   examStartTime.value = task.startTime;
   questionGroups.value = task.groups;
   isLoading.value = false;
+  window.addEventListener("resize", setWindowSize);
 });
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", setWindowSize);
+});
+
+const setWindowSize = () => {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  windowSize.value = [w, h];
+};
 
 async function submit() {
   isLoading.value = true;
