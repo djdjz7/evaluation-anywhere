@@ -7,7 +7,7 @@ import { type GetNoQstExamTaskResult, type QuestionGroup } from "@/models/GetNoQ
 import Loading from "@/components/Loading.vue";
 import AnswerArea from "@/components/AnswerArea.vue";
 import type { AnswersToQuestion } from "@/models/Answers";
-import { windowSize } from "@/components/windowSize";
+import { documentWidth } from "@/components/documentWidth";
 
 const isLoading = ref(true);
 const route = useRoute();
@@ -36,9 +36,7 @@ onBeforeUnmount(() => {
 });
 
 const setWindowSize = () => {
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-  windowSize.value = [w, h];
+  documentWidth.value = document.body.clientWidth;
 };
 
 async function submit() {

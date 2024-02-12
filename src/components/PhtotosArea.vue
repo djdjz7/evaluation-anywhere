@@ -4,7 +4,7 @@ import { type AnswersToQstFlow } from "@/models/Answers";
 import { useUserInfoStore } from "@/stores/userInfo";
 import { CameraIcon, PhotoIcon } from "@heroicons/vue/24/outline";
 import { ossClient } from "@/oss/client";
-import { windowSize } from "./windowSize";
+import { documentWidth } from "./documentWidth";
 
 const props = defineProps<{
   examTaskId: number;
@@ -39,9 +39,9 @@ onMounted(() => {
   }
 
   watch(
-    windowSize,
+    documentWidth,
     (value) => {
-      resizeCanvas(value[0]);
+      resizeCanvas(value);
     },
     {
       immediate: true,
@@ -143,10 +143,8 @@ defineExpose({ getQstAnswerAsync });
 
 function resizeCanvas(newWidth: number | null = null) {
   if (canvas == null) return;
-  if (newWidth == null) newWidth = windowSize.value[0];
+  if (newWidth == null) newWidth = documentWidth.value;
   if (newWidth > 1280) newWidth = 1280;
-  // remove the scrollbar width
-  newWidth -= 20;
   const aspectRatio = canvas.width / canvas.height;
   canvas.style.width = `${newWidth}px`;
   canvas.style.height = `${newWidth / aspectRatio}px`;
