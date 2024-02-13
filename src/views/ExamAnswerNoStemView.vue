@@ -74,7 +74,7 @@ async function submit() {
 }
 </script>
 <template>
-  <div flex="~ col">
+  <div flex="~ col" w-full>
     <h1 m-b-0>{{ examName }}</h1>
     <span block m-b-4>{{ examStartTime }}</span>
     <div v-for="group in questionGroups">

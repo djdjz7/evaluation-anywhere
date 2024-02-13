@@ -175,9 +175,9 @@ function resizeCanvas(newWidth: number | null = null) {
       text="dark dark:light"
       bg="white dark:dark hover:violet-100 dark:hover:violet-900"
       un-border="1 solid violet"
-      focus:outline-none
       shadow-md
       @click="addImage(cameraInput)"
+      class="focus:outline-violet-300/60 focus:outline"
       transition-all
       duration-100
     >
@@ -189,10 +189,9 @@ function resizeCanvas(newWidth: number | null = null) {
       text="dark dark:light"
       bg="white dark:dark hover:violet-100 dark:hover:violet-900"
       un-border="1 solid violet"
-      focus:outline-none
       shadow-md
       @click="addImage(albumnInput)"
-      class="-m-l-1"
+      class="-m-l-1 focus:outline-violet-300/60 focus:outline"
       transition-all
       duration-100
     >

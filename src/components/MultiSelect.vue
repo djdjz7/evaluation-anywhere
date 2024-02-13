@@ -25,7 +25,7 @@ const getAnswer = (): AnswersToQstFlow => {
 defineExpose({ getAnswer });
 </script>
 <template>
-  <div grid="~ cols-4" gap-2>
+  <div grid="~ cols-4 md:cols-5 lg:cols-7" gap-2>
     <div v-for="option in options" flex="~ items-center" h-10>
       <input type="checkbox" :value="option" :id="uuid + option" v-model:="selected" un-hidden />
       <label
