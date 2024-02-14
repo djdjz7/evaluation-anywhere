@@ -192,7 +192,7 @@ function logOut() {
       flex-shrink-1
       overflow-y-scroll
     >
-      <div v-for="exam in exams">
+      <div v-for="exam in exams" :key="exam.examTaskId">
         <ExamCard :exam="exam" />
       </div>
     </div>

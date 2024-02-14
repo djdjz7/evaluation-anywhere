@@ -1,14 +1,24 @@
 <script setup lang="ts">
 import { ChevronRightIcon, BellAlertIcon } from "@heroicons/vue/24/outline";
+import { StarIcon } from "@heroicons/vue/24/solid";
 import { useRouter } from "vue-router";
 
 import { type Exam } from "@/models/GetStudentTaskListResult";
+import { axiosInstance } from "@/request/axiosInstance";
+import axios from "axios";
+import type { CommonResponse } from "@/models/CommonResponse";
+import { onMounted, ref } from "vue";
 
 const props = defineProps<{
   exam: Exam;
 }>();
 
 const router = useRouter();
+const isCollect = ref();
+
+onMounted(() => {
+  isCollect.value = props.exam.isCollect;
+});
 
 function navigateToExam(exam: Exam) {
   var path: string;
@@ -31,12 +41,25 @@ function navigateToExam(exam: Exam) {
     path,
   });
 }
+
+async function updateCollectStatus() {
+  let response = (
+    await axiosInstance.post("api/services/app/Task/SetExamTaskCollectAsync", {
+      examTaskId: props.exam.examTaskId,
+      isCollect: !props.exam.isCollect,
+    })
+  ).data as CommonResponse<any>;
+  if (response.success) {
+    isCollect.value = !props.exam.isCollect;
+    props.exam.isCollect = !props.exam.isCollect;
+  }
+}
 </script>
 <template>
   <div
     @click="navigateToExam(props.exam)"
     class="group"
-    flex="~ row"
+    flex="~ row items-center"
     :class="[
       'bg-white',
       {
@@ -70,6 +93,17 @@ function navigateToExam(exam: Exam) {
           h-2
           rounded-full
         ></span>
+        <span
+          v-if="props.exam.isRead === false"
+          text-sm
+          m-l-2
+          bg-red-500
+          dark:bg-red
+          w-2
+          flex-shrink-0
+          h-2
+          rounded-full
+        ></span>
       </div>
       <div flex="~ col" flex-grow-1>
         <div flex="~">
@@ -97,8 +131,14 @@ function navigateToExam(exam: Exam) {
           >
         </div>
         <span block text-sm text-gray-600 dark:text-gray-300>{{ props.exam.startTime }}</span>
-        <div text-red>
+        <div flex="~ items-center" m-t-1>
+          <div flex="~ items-center" @click.stop="updateCollectStatus" cursor-pointer>
+            <StarIcon class="text-gray h-4" :class="{ 'text-yellow': isCollect }" />
+            <span m-l-1 text-sm>{{ isCollect ? "已收藏" : "收藏" }}</span>
+          </div>
           <span
+            text-red
+            m-l-2
             v-if="
               props.exam.taskState == 0 &&
               props.exam.examState == 0 &&
@@ -111,6 +151,7 @@ function navigateToExam(exam: Exam) {
             {{ props.exam.answeringUrge }}
           </span>
         </div>
+
         <div text-red>
           <span
             v-if="
