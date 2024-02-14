@@ -1,5 +1,12 @@
 :root {
-  font-family: Inter, -apple-system, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family:
+    Inter,
+    -apple-system,
+    system-ui,
+    Avenir,
+    Helvetica,
+    Arial,
+    sans-serif;
   line-height: 1.5;
   font-weight: 400;
   font-size: 16px;
@@ -17,7 +24,14 @@
 
 @supports (font-variation-settings: normal) {
   :root {
-    font-family: InterVariable, -apple-system, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family:
+      InterVariable,
+      -apple-system,
+      system-ui,
+      Avenir,
+      Helvetica,
+      Arial,
+      sans-serif;
   }
 }
 

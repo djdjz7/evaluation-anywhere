@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ChevronRightIcon, BellAlertIcon } from "@heroicons/vue/24/outline";
-import { StarIcon } from "@heroicons/vue/24/solid";
+import { ChevronRightIcon } from "@heroicons/vue/24/outline";
+import { StarIcon, BellAlertIcon } from "@heroicons/vue/24/solid";
 import { useRouter } from "vue-router";
 
 import { type Exam } from "@/models/GetStudentTaskListResult";
 import { axiosInstance } from "@/request/axiosInstance";
-import axios from "axios";
 import type { CommonResponse } from "@/models/CommonResponse";
 import { onMounted, ref } from "vue";
 
@@ -167,7 +166,7 @@ async function updateCollectStatus() {
       </div>
     </div>
     <div flex="~ items-center" transition-transform duration-200 group-hover:translate-x-1>
-      <ChevronRightIcon class="h-5 color-slate-500" />
+      <ChevronRightIcon class="h-5 color-gray" />
     </div>
   </div>
 </template>
