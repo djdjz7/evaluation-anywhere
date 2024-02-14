@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { InformationCircleIcon } from "@heroicons/vue/24/outline";
 import { type LoginRequest, type LoginResponse } from "@/models/Login";
 import { type CommonResponse } from "@/models/CommonResponse";
 import axios, { type AxiosRequestConfig } from "axios";
@@ -114,24 +115,20 @@ async function login() {
       </button>
       <a href="#" color-red no-underline m-t-2 @click="whyRef.show()">
         <div flex="~ items-center justify-center" text-sm>
-          <span class="material-symbols-rounded"> info </span>
-          <span m-l-1>Why HTTP?</span>
+          <InformationCircleIcon class="h-5" />
+          <span m-l-1>为何使用 HTTP？</span>
         </div>
       </a>
     </div>
   </div>
-  <Popup title="Protocol Error" ref="protocolRef" :can-close="false">
+  <Popup title="协议错误" ref="protocolRef" :can-close="false">
     <p>
-      HTTPS is not currently supported by ZY's API, and mixed content is not allowed by modern
-      browsers for security reasons.<br />
-      Please use HTTP instead.
+      中育目前并不支持 HTTPS 内容，并且混合协议的请求已在主流浏览器上出于安全目的禁用。<br />
+      请使用 HTTP。
     </p>
   </Popup>
-  <Popup title="Why HTTP?" ref="whyRef">
-    <p>
-      HTTPS is not currently supported by ZY's API, and mixed content is not allowed by modern
-      browsers for security reasons.
-    </p>
+  <Popup title="为何使用 HTTP？" ref="whyRef">
+    <p>中育目前并不支持 HTTPS 内容，并且混合协议的请求已在主流浏览器上出于安全目的禁用。</p>
   </Popup>
   <Loading v-if="isLoading" />
 </template>

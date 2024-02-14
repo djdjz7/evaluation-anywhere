@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { XMarkIcon } from "@heroicons/vue/24/outline";
+
 const isShowing = ref(false);
 
 export interface Props {
@@ -33,7 +35,7 @@ defineExpose({ show });
       overflow-x-clip
     >
       <div
-        bg-light
+        bg-violet-100
         dark:bg-dark
         md:rounded-4
         absolute
@@ -49,6 +51,9 @@ defineExpose({ show });
       >
         <h1>{{ props.title }}</h1>
         <button
+          bg="violet-200 dark:violet-900/20"
+          focus:ring="2 offset-1 violet/50 offset-transparent"
+          transition-all duration-150
           v-if="props.canClose"
           flex="~ justify-center items-center"
           h-10
@@ -63,7 +68,7 @@ defineExpose({ show });
           dark-bg-dark
           @click="isShowing = false"
         >
-          <span class="material-symbols-rounded" dark:text-light> close </span>
+          <XMarkIcon class="h-6" />
         </button>
         <slot></slot>
       </div>
