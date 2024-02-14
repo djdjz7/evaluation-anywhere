@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ChevronRightIcon } from "@heroicons/vue/24/outline";
-import { StarIcon, BellAlertIcon } from "@heroicons/vue/24/solid";
+import { StarIcon, BellAlertIcon } from "@heroicons/vue/20/solid";
 import { useRouter } from "vue-router";
 
 import { type Exam } from "@/models/GetStudentTaskListResult";
