@@ -1,6 +1,31 @@
-import type { QuestionBase } from "./QuestionBase";
+export interface Question {
+  id: number;
+  relatedGroupId?: any;
+  number: number;
+  name?: string;
+  score: number;
+  myScore: number;
+  itemType: number;
+  completed: boolean;
+  hasMicroClass: boolean;
+  state: number;
+  askForHelp: boolean;
+  revisingResult: number;
+  originScore?: any;
+}
 
-export interface GetNoQstExamTaskResult {
+export interface QuestionGroup {
+  number: number;
+  name: string;
+  showGroupNumber: boolean;
+  description?: any;
+  score: number;
+  myScore: number;
+  qstCount: number;
+  questions: Question[];
+}
+
+export interface GetExamTaskResult {
   isRepresentative: boolean;
   myScore: number;
   groups: QuestionGroup[];
@@ -8,27 +33,27 @@ export interface GetNoQstExamTaskResult {
   topicName: string;
   testPagerId: number;
   testPagerName: string;
-  testTips: string;
-  testDescription: string;
+  testTips?: any;
+  testDescription?: any;
   specificTrainingType: number;
   examId: number;
   examName: string;
-  examTips: any;
+  examTips?: any;
   noQstStem: boolean;
   answerSheet: boolean;
-  answerSheetId: number;
-  address: any;
+  answerSheetId?: any;
+  address?: any;
   answerPad: boolean;
   qstCount: number;
   enableScore: boolean;
   score: number;
   creationTime: string;
   startTime: string;
-  endTime: any;
+  endTime?: any;
   studentUserId: number;
   state: number;
   examState: number;
-  serialNum: any;
+  serialNum?: any;
   correctWithSelf: boolean;
   correctOnline: boolean;
   displayAnswer: number;
@@ -45,29 +70,3 @@ export interface GetNoQstExamTaskResult {
   isRead: boolean;
   id: number;
 }
-
-export interface QuestionGroup {
-  number: number;
-  name: string;
-  showGroupNumber: boolean;
-  description: any;
-  score: number;
-  myScore: number;
-  qstCount: number;
-  questions: Question[];
-}
-
-export interface Question extends QuestionBase {
-  myScore: number;
-  completed: boolean;
-  answerList: AnswerList[];
-}
-
-
-
-export interface AnswerList {
-  uuid: string;
-  answers: string[];
-  pid: any;
-}
-

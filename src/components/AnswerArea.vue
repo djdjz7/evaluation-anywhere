@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Question } from "@/models/GetNoQstExamTask";
+import type { QuestionBase } from "@/models/QuestionBase";
 import DrawboardArea from "./DrawboardArea.vue";
 import PhtotosArea from "./PhtotosArea.vue";
 import { type AnswersToQstFlow, type AnswersToQuestion } from "@/models/Answers";
@@ -8,7 +8,7 @@ import SingleSelect from "@/components/SingleSelect.vue";
 import MultiSelect from "@/components/MultiSelect.vue";
 
 const props = defineProps<{
-  question: Question;
+  question: QuestionBase;
   examTaskId: number;
 }>();
 const drawboardRefs = ref<InstanceType<typeof DrawboardArea>[] | null>(null);
