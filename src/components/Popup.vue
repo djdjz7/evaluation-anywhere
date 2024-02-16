@@ -53,7 +53,8 @@ defineExpose({ show });
         <button
           bg="violet-200 dark:violet-900/20"
           focus:ring="2 offset-1 violet/50 offset-transparent"
-          transition-all duration-150
+          transition-all
+          duration-150
           v-if="props.canClose"
           flex="~ justify-center items-center"
           h-10

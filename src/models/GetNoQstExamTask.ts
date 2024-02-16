@@ -63,11 +63,8 @@ export interface Question extends QuestionBase {
   answerList: AnswerList[];
 }
 
-
-
 export interface AnswerList {
   uuid: string;
   answers: string[];
   pid: any;
 }
-
