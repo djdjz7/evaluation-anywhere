@@ -6,6 +6,7 @@ import { type AnswersToQstFlow, type AnswersToQuestion } from "@/models/Answers"
 import { ref, watch } from "vue";
 import SingleSelect from "@/components/SingleSelect.vue";
 import MultiSelect from "@/components/MultiSelect.vue";
+import Loading from "./Loading.vue";
 import type { GetQuestionViewResult } from "@/models/GetQuestionView";
 import { axiosInstance } from "@/request/axiosInstance";
 import type { CommonResponse } from "@/models/CommonResponse";
@@ -17,6 +18,8 @@ const props = defineProps<{
   examId: number;
   isShowing: boolean;
 }>();
+
+const isLoading = ref(false);
 const questionView = ref<GetQuestionViewResult>();
 const drawboardRefs = ref<InstanceType<typeof DrawboardArea>[] | null>(null);
 const singleSelectRefs = ref<InstanceType<typeof SingleSelect>[] | null>(null);
@@ -26,6 +29,7 @@ const questionHtml = ref("");
 watch(props, async (val) => {
   if (initialized) return;
   if (!val.isShowing) return;
+  isLoading.value = true;
   const response = (
     await axiosInstance.get(
       `api/services/app/Task/GetQuestionViewAsync?examId=${props.examId}&questionId=${props.question.id}`
@@ -43,6 +47,7 @@ watch(props, async (val) => {
     questionHtml.value = doc.querySelector(".stem")?.outerHTML ?? "无法加载试题题干。";
     initialized = true;
   }
+  isLoading.value = false;
 });
 
 const getAnswerAsync = async (): Promise<AnswersToQuestion | null> => {
@@ -177,4 +182,5 @@ defineExpose({ getAnswerAsync });
       </div>
     </div>
   </div>
+  <Loading v-if="isLoading" />
 </template>

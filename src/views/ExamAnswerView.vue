@@ -6,6 +6,7 @@ import type { CommonResponse } from "@/models/CommonResponse";
 import { type Question, type GetExamTaskResult, type QuestionGroup } from "@/models/GetExamTask";
 import { RectangleGroupIcon } from "@heroicons/vue/24/outline";
 import AnswerAreaWithQuestion from "@/components/AnswerAreaWithQuestion.vue";
+import Loading from "@/components/Loading.vue"
 import { documentWidth } from "@/components/documentWidth";
 import type { AnswersToQuestion } from "@/models/Answers";
 
