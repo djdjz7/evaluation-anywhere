@@ -82,7 +82,7 @@ defineExpose({ getAnswerAsync });
 </script>
 <template>
   <div v-show="isShowing">
-    <div v-html="questionHtml" bg-white text-black invert></div>
+    <div v-html="questionHtml" bg-white text-black dark:invert></div>
     <!-- 解答题，合并 -->
     <div v-if="questionView?.itemType == 5" class="-m-x-2">
       <PhtotosArea
