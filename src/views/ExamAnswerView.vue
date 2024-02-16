@@ -4,7 +4,7 @@ import { axiosInstance } from "@/request/axiosInstance";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import type { CommonResponse } from "@/models/CommonResponse";
 import { type Question, type GetExamTaskResult, type QuestionGroup } from "@/models/GetExamTask";
-import { Square3Stack3DIcon } from "@heroicons/vue/24/outline";
+import { Square3Stack3DIcon, QuestionMarkCircleIcon } from "@heroicons/vue/24/outline";
 import AnswerAreaWithQuestion from "@/components/AnswerAreaWithQuestion.vue";
 import Loading from "@/components/Loading.vue";
 import { documentWidth } from "@/components/documentWidth";
@@ -101,6 +101,10 @@ async function delay(ms: number): Promise<void> {
     }, ms);
   });
 }
+
+function showDescription(description: string | null) {
+  if (Boolean(description)) alert(description);
+}
 </script>
 <template>
   <div flex="~ col" h-screen max-h-full flex-grow-1>
@@ -131,16 +135,19 @@ async function delay(ms: number): Promise<void> {
           shadow-md
           overflow-hidden
         >
-          <div
-            flex="~ items-center"
-            w-full
-            m-l-2
-            m-t-2
-            p-b-1.5
-            border-b="black/20 dark:white/30 1 solid"
-          >
-            <Square3Stack3DIcon class="h-5" />
-            <span text-lg font-bold m-l-2>{{ group.name }}</span>
+          <div flex="~ items-center" w-full m-t-2 p-b-1.5 border-b="black/20 dark:white/30 1 solid">
+            <Square3Stack3DIcon class="hidden md:block h-5 min-h-5 m-l-2" />
+            <span text-lg font-bold m-l-2 flex-grow-1 truncate text-ellipsis text-nowrap>{{
+              group.name
+            }}</span>
+            <div
+              v-if="Boolean(group.description)"
+              :title="group.description"
+              @click="showDescription(group.description)"
+              ;
+            >
+              <QuestionMarkCircleIcon class="h-5 min-h-5 m-r-2" />
+            </div>
           </div>
           <div
             relative
