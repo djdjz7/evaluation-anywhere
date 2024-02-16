@@ -62,7 +62,6 @@ function touchstart(e: TouchEvent) {
 }
 
 const touchmove = (e: TouchEvent) => {
-  console.log(e.cancelable);
   e.preventDefault();
   const rect = canvas.getBoundingClientRect();
   ctx?.lineTo(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
@@ -72,6 +71,7 @@ const touchmove = (e: TouchEvent) => {
 function touchend() {
   ctx?.closePath();
   canvas.ontouchmove = null;
+  lastUpdate = Date.now();
 }
 
 const getQstAnswerAsync = async (): Promise<AnswersToQstFlow> => {

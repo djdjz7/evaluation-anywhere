@@ -1,37 +1,30 @@
 <script setup lang="ts">
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { axiosInstance } from "@/request/axiosInstance";
-import { onMounted, ref, watch } from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import type { CommonResponse } from "@/models/CommonResponse";
-import type { GetExamTaskResult, QuestionGroup } from "@/models/GetExamTask";
+import { type Question, type GetExamTaskResult, type QuestionGroup } from "@/models/GetExamTask";
 import { RectangleGroupIcon } from "@heroicons/vue/24/outline";
-import type { GetQuestionViewResult } from "@/models/GetQuestionView";
-import type { QstFlow } from "@/models/QuestionBase";
+import AnswerAreaWithQuestion from "@/components/AnswerAreaWithQuestion.vue";
+import { documentWidth } from "@/components/documentWidth";
+import type { AnswersToQuestion } from "@/models/Answers";
+
 const route = useRoute();
+const router = useRouter();
+const isLoading = ref(false);
 const examTaskId = route.params.examTaskId;
 const questionGroups = ref<QuestionGroup[]>([]);
 const examName = ref("");
 const examStartTime = ref("");
-let examId = 0;
+const examId = ref(0);
 const currentQuestionId = ref(0);
-const questionSrc = ref("");
-const currentQstFlows = ref<QstFlow[]>();
-watch(currentQuestionId, async (value) => {
-  await loadQuestion(value);
-});
-
-async function loadQuestion(questionId: number) {
-  const response = (
-    await axiosInstance.get(
-      `api/services/app/Task/GetQuestionViewAsync?examId=${examId}&questionId=${questionId}`
-    )
-  ).data as CommonResponse<GetQuestionViewResult>;
-  const result = response.result;
-  currentQstFlows.value = result.qstFlows;
-  questionSrc.value = `http://sxz.api6.zykj.org${result.path}`;
-}
+const allQuestions = ref<Question[]>([]);
+const answerAreaContainer = ref<HTMLDivElement | null>(null);
+const answerAreas = ref<InstanceType<typeof AnswerAreaWithQuestion>[] | null>(null);
 
 onMounted(async () => {
+  isLoading.value = true;
+  setWindowSize();
   const response = (
     await axiosInstance.get(`api/services/app/Task/GetExamTaskAsync?id=${examTaskId}`)
   ).data as CommonResponse<GetExamTaskResult>;
@@ -39,32 +32,152 @@ onMounted(async () => {
   questionGroups.value = result.groups;
   examName.value = result.examName;
   examStartTime.value = result.startTime;
-  examId = result.examId;
+  examId.value = result.examId;
+
+  questionGroups.value.forEach((x) => {
+    allQuestions.value = allQuestions.value.concat(x.questions);
+  });
+
+  window.addEventListener("resize", setWindowSize);
+
+  isLoading.value = false;
 });
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", setWindowSize);
+});
+
+const setWindowSize = () => {
+  if (answerAreaContainer.value == null) return;
+  documentWidth.value = answerAreaContainer.value.clientWidth;
+};
+
+async function submit() {
+  isLoading.value = true;
+  try {
+    let allAnswers: AnswersToQuestion[] = [];
+    if (answerAreas.value == null) {
+      alert("未知错误，请刷新页面后重试。");
+      return;
+    }
+    for (let i = 0; i < answerAreas.value.length; i++) {
+      const answer = await answerAreas.value[i].getAnswerAsync();
+      if (answer != null) allAnswers.push(answer);
+    }
+
+    for (let i = 0; i < allAnswers.length; i++) {
+      const response = (
+        await axiosInstance.post(
+          `api/services/app/Task/ExamAnswerAsync?taskId=${examTaskId}`,
+          allAnswers[i]
+        )
+      ).data;
+      await delay(1000);
+    }
+
+    await axiosInstance.post(
+      `api/services/app/Task/CompleteAsync?id=${examTaskId}&isRevising=false`
+    );
+    alert("成功");
+    router.push({
+      path: "/",
+      query: {
+        needRefresh: "true",
+      },
+    });
+  } catch (e) {
+    console.log(e);
+    alert("出现异常，请查看控制台输出。");
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+async function delay(ms: number): Promise<void> {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
+  });
+}
 </script>
 <template>
-  <div flex="~ col" h-full flex-grow-1>
+  <div flex="~ col" h-screen max-h-full flex-grow-1>
     <h1 m-b-0>{{ examName }}</h1>
     <span block m-b-4>{{ examStartTime }}</span>
-    <div grid="~ cols-4" flex-grow-1>
-      <div w-full rounded="lt-lg lb-lg" un-border="1 solid violet" overflow-auto>
-        <div v-for="group in questionGroups" p-2 w-full box-border>
+    <div grid="~ cols-4" flex-grow-1 min-h-0>
+      <div
+        flex="~ col"
+        min-h-0
+        w-full
+        rounded="lt-lg lb-lg"
+        un-border="1 solid violet"
+        overflow-auto
+      >
+        <div v-for="group in questionGroups" w-full box-border>
           <div flex="~ items-center" w-full>
             <RectangleGroupIcon class="h-6" />
             <span text-lg font-bold m-l-2>{{ group.name }}</span>
           </div>
           <div
+            relative
             v-for="question in group.questions"
             un-border-t="1 violet sold"
             @click="currentQuestionId = question.id"
+            p-y-1
           >
-            <span>{{ question.number }}. {{ question.name }}</span>
+            <span m-x-2>{{ question.number }}. {{ question.name }}</span>
+            <div
+              h-full
+              w-1
+              absolute
+              left-0
+              top-0
+              :class="{
+                'bg-violet-500 ': currentQuestionId == question.id,
+              }"
+            ></div>
           </div>
         </div>
+        <button
+          @click="submit"
+          p-x-4
+          p-y-2
+          text="white"
+          bg="violet-500 hover:violet"
+          shadow="md violet-300 dark:violet-700 hover:lg"
+          un-border="0"
+          rounded-md
+          self-center
+          transition-all
+          duration-150
+          m-t-4
+          m-b-8
+        >
+          提 交
+        </button>
       </div>
-      <div col-span-3 w-full h-full rounded="rt-lg rb-lg" p-2 box-border>
-        <iframe :src="questionSrc"></iframe>
+      <div
+        ref="answerAreaContainer"
+        col-span-3
+        w-full
+        h-full
+        rounded="rt-lg rb-lg"
+        p-2
+        box-border
+        overflow-y-auto
+        bg="white dark:dark"
+      >
+        <AnswerAreaWithQuestion
+          v-for="question in allQuestions"
+          :is-showing="currentQuestionId == question.id"
+          :question="question"
+          :exam-task-id="Number(examTaskId as string)"
+          :exam-id="examId"
+          ref="answerAreas"
+        />
       </div>
     </div>
   </div>
+  <Loading v-if="isLoading" />
 </template>

@@ -56,7 +56,8 @@ const getQstAnswerAsync = async (): Promise<AnswersToQstFlow> => {
     } else {
       canvas.toBlob(async (blob) => {
         if (blob == null) {
-          reject(new Error("Canvas.toBlob returned null"));
+          if (canvas?.height == 0) resolve({ answers: [], uuid: props.uuid });
+          else reject(new Error("Canvas.toBlob returned null"));
         } else {
           const path = `answers/${useUserInfoStore().userId}/ToCorrect/${props.examTaskId}/${props.questionId}/${props.uuid}}/sketch/answer_${lastUpdate}.${blob.type == "image/webp" ? "webp" : "png"}}`;
           try {

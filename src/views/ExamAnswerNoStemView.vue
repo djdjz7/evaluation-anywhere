@@ -53,7 +53,7 @@ async function submit() {
 
     const response = (
       await axiosInstance.post(
-        `http://sxz.api6.zykj.org/api/services/app/Task/NoQstExamAnswerAsync?taskId=${examTaskId}`,
+        `api/services/app/Task/NoQstExamAnswerAsync?taskId=${examTaskId}`,
         allAnswers
       )
     ).data;

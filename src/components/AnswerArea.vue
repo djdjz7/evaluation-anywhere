@@ -62,7 +62,6 @@ defineExpose({ getAnswerAsync });
     <div v-if="qstFlow.subQuestions == null || qstFlow.subQuestions.length == 0">
       <SingleSelect
         v-if="qstFlow.qstType == 0"
-        :exam-task-id="examTaskId"
         :uuid="qstFlow.uuid"
         :question-id="question.id"
         :options="qstFlow.options!"
@@ -70,7 +69,6 @@ defineExpose({ getAnswerAsync });
       />
       <MultiSelect
         v-else-if="qstFlow.qstType == 2"
-        :exam-task-id="examTaskId"
         :uuid="qstFlow.uuid"
         :question-id="question.id"
         :options="qstFlow.options!"

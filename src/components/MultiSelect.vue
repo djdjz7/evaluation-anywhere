@@ -3,7 +3,6 @@ import type { AnswersToQstFlow } from "@/models/Answers";
 import { ref } from "vue";
 
 const props = defineProps<{
-  examTaskId: number;
   questionId: number;
   uuid: string;
   options: string[];
