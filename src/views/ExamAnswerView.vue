@@ -182,7 +182,7 @@ async function delay(ms: number): Promise<void> {
         p-2
         box-border
         overflow-y-auto
-        bg="white dark:dark"
+        bg="white dark:black"
       >
         <AnswerAreaWithQuestion
           v-for="question in allQuestions"
