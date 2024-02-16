@@ -6,7 +6,7 @@ import type { CommonResponse } from "@/models/CommonResponse";
 import { type Question, type GetExamTaskResult, type QuestionGroup } from "@/models/GetExamTask";
 import { RectangleGroupIcon } from "@heroicons/vue/24/outline";
 import AnswerAreaWithQuestion from "@/components/AnswerAreaWithQuestion.vue";
-import Loading from "@/components/Loading.vue"
+import Loading from "@/components/Loading.vue";
 import { documentWidth } from "@/components/documentWidth";
 import type { AnswersToQuestion } from "@/models/Answers";
 
@@ -106,36 +106,51 @@ async function delay(ms: number): Promise<void> {
   <div flex="~ col" h-screen max-h-full flex-grow-1>
     <h1 m-b-0>{{ examName }}</h1>
     <span block m-b-4>{{ examStartTime }}</span>
-    <div grid="~ cols-4" flex-grow-1 min-h-0>
-      <div
-        flex="~ col"
-        min-h-0
-        w-full
-        rounded="lt-lg lb-lg"
-        un-border="1 solid violet"
-        overflow-auto
-      >
-        <div v-for="group in questionGroups" w-full box-border>
-          <div flex="~ items-center" w-full>
+    <div grid="~ cols-4" flex-grow-1 min-h-0 drop-shadow-md>
+      <div flex="~ col" min-h-0 w-full overflow-y-auto gap-2>
+        <div
+          flex-shrink-0
+          v-for="group in questionGroups"
+          w-full
+          box-border
+          rounded="lt-lg lb-lg"
+          bg-white
+          dark:bg-dark
+          overflow-hidden
+        >
+          <div flex="~ items-center" w-full m-l-2 m-t-2>
             <RectangleGroupIcon class="h-6" />
             <span text-lg font-bold m-l-2>{{ group.name }}</span>
           </div>
           <div
             relative
+            transition-all
+            duration-150
             v-for="question in group.questions"
-            un-border-t="1 violet sold"
             @click="currentQuestionId = question.id"
-            p-y-1
+            p-y-2
+            hover:bg="violet/20"
           >
-            <span m-x-2>{{ question.number }}. {{ question.name }}</span>
+            <span
+              transition-all
+              duration-150
+              m-x-2
+              :class="{
+                'm-l-3': currentQuestionId == question.id,
+              }"
+              >{{ question.number }}. {{ question.name }}</span
+            >
             <div
+              transition-all
+              duration-150
               h-full
               w-1
               absolute
-              left-0
               top-0
+              bg-violet-500
+              class="-left-1"
               :class="{
-                'bg-violet-500 ': currentQuestionId == question.id,
+                '!left-0': currentQuestionId == question.id,
               }"
             ></div>
           </div>
