@@ -21,7 +21,7 @@ iOS/iPadOS 15 及以上的设备应当兼容大部分功能，但可能与新测
 
 为与新测评行为对齐，图片的上传格式应为 WEBP。在 Google Chrome，
 Microsoft Edge 及 Mozilla Firefox 中，画板及上传的图片能够转换为
-WEBP；然而， Safari 并不支持 Canvas 到 WEBP 的转换，故 Safari
+WEBP；然而，Safari 并不支持 Canvas 到 WEBP 的转换，故 Safari
 上使用 PNG 格式上传。
 
 ## 目前实现的功能
