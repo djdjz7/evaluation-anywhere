@@ -4,7 +4,7 @@ import { axiosInstance } from "@/request/axiosInstance";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import type { CommonResponse } from "@/models/CommonResponse";
 import { type Question, type GetExamTaskResult, type QuestionGroup } from "@/models/GetExamTask";
-import { RectangleGroupIcon } from "@heroicons/vue/24/outline";
+import { Square3Stack3DIcon } from "@heroicons/vue/24/outline";
 import AnswerAreaWithQuestion from "@/components/AnswerAreaWithQuestion.vue";
 import Loading from "@/components/Loading.vue";
 import { documentWidth } from "@/components/documentWidth";
@@ -119,8 +119,8 @@ async function delay(ms: number): Promise<void> {
           shadow-md
           overflow-hidden
         >
-          <div flex="~ items-center" w-full m-l-2 m-t-2>
-            <RectangleGroupIcon class="h-6" />
+          <div flex="~ items-center" w-full m-l-2 m-t-2 p-b-1.5 border-b="black/20 dark:white/30 1 solid">
+            <Square3Stack3DIcon class="h-5" />
             <span text-lg font-bold m-l-2>{{ group.name }}</span>
           </div>
           <div
