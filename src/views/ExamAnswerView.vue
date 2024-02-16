@@ -106,16 +106,17 @@ async function delay(ms: number): Promise<void> {
   <div flex="~ col" h-screen max-h-full flex-grow-1>
     <h1 m-b-0>{{ examName }}</h1>
     <span block m-b-4>{{ examStartTime }}</span>
-    <div grid="~ cols-4" flex-grow-1 min-h-0 drop-shadow-md>
-      <div flex="~ col" min-h-0 w-full overflow-y-auto gap-2>
+    <div grid="~ cols-4" flex-grow-1 min-h-0 drop-shadow-lg>
+      <div flex="~ col" min-h-0 w-full overflow-y-auto gap-2 bg-white dark:bg-black p-2 p-r-0 rounded="lt-lg lb-lg" box-border>
         <div
           flex-shrink-0
           v-for="group in questionGroups"
           w-full
           box-border
-          rounded="lt-lg lb-lg"
-          bg-white
+          rounded="lt-sm lb-sm"
+          bg-light
           dark:bg-dark
+          shadow-md
           overflow-hidden
         >
           <div flex="~ items-center" w-full m-l-2 m-t-2>
