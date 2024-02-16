@@ -86,8 +86,16 @@ defineExpose({ getAnswerAsync });
     <!-- 解答题，合并 -->
     <div v-if="questionView?.itemType == 5" class="-m-x-2">
       <PhtotosArea
+        v-if="questionView.qstFlows[0].subQuestions != null"
         :exam-task-id="examTaskId"
-        :uuid="questionView.qstFlows[0].subQuestions![0].uuid"
+        :uuid="questionView.qstFlows[0].subQuestions[0].uuid"
+        :question-id="questionView.id"
+        ref="photoAreaRef"
+      />
+      <PhtotosArea
+        v-else
+        :exam-task-id="examTaskId"
+        :uuid="questionView.qstFlows[0].uuid"
         :question-id="questionView.id"
         ref="photoAreaRef"
       />
