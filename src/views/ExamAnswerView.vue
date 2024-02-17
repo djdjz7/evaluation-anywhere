@@ -114,22 +114,19 @@ function showDescription(description: string | null) {
       <div
         flex="~ col"
         min-h-0
-        w-full
         overflow-y-auto
-        gap-2
+        gap-1
         bg-violet-100
         dark:bg-black
-        p-2
-        p-r-0
+        p-1
         rounded="lt-lg lb-lg"
         box-border
       >
         <div
           flex-shrink-0
           v-for="group in questionGroups"
-          w-full
           box-border
-          rounded="lt-sm lb-sm"
+          rounded="lt-md lb-md"
           bg-white
           dark:bg-dark
           shadow-md
@@ -194,8 +191,7 @@ function showDescription(description: string | null) {
           self-center
           transition-all
           duration-150
-          m-t-4
-          m-b-8
+          m-y-2
         >
           提 交
         </button>
