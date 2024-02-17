@@ -51,7 +51,7 @@ defineExpose({ showDialog });
         shadow-lg
       >
         <h1 m-y-0>{{ _title }}</h1>
-        <div v-html="_contentHtml" flex-grow-1></div>
+        <div v-html="_contentHtml"></div>
         <button
           @click="closeDialog"
           self-end

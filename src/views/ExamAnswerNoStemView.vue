@@ -83,7 +83,7 @@ async function showDescription(title: string, description: string) {
 }
 </script>
 <template>
-  <div flex="~ col" w-full>
+  <div flex="~ col" m-x-2>
     <div>
       <h1 m-b-0 inline align-middle>{{ examName }}</h1>
       <div
