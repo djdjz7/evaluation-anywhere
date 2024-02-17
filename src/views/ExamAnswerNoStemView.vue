@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
+import { QuestionMarkCircleIcon } from "@heroicons/vue/24/outline";
 import { axiosInstance } from "@/request/axiosInstance";
 import { onMounted, onBeforeUnmount, ref } from "vue";
 import { type CommonResponse } from "@/models/CommonResponse";
@@ -72,13 +73,39 @@ async function submit() {
     isLoading.value = false;
   }
 }
+
+function showDescription(description: string) {
+  if (Boolean(description)) alert(description);
+}
 </script>
 <template>
   <div flex="~ col" w-full>
     <h1 m-b-0>{{ examName }}</h1>
     <span block m-b-4>{{ examStartTime }}</span>
     <div v-for="group in questionGroups">
-      <h2>{{ group.number }}. {{ group.name }}（共 {{ group.score }} 分）</h2>
+      <div flex="~ items-center">
+        <h2 truncate flex-shrink-1>
+          {{ group.number }}. {{ group.name }}（共 {{ group.score }} 分）
+        </h2>
+        <div
+          text-violet-500
+          dark:text-violet-300
+          rounded-full
+          p-1
+          cursor-pointer
+          transition-all
+          duration-150
+          hover:bg="violet-500/20 dark:violet-300/30"
+          shadow="violet/20"
+          hover:shadow-md
+          flex="~ items-center"
+          v-if="Boolean(group.description)"
+          :title="group.description"
+          @click="showDescription(group.description)"
+        >
+          <QuestionMarkCircleIcon class="h-7" />
+        </div>
+      </div>
       <div v-for="question in group.questions">
         <AnswerArea :question="question" :exam-task-id="Number(examTaskId)" ref="answerAreas" />
       </div>
