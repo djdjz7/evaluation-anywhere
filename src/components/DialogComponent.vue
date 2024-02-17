@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, Transition } from "vue";
 
 const _title = ref("");
 const _contentHtml = ref("");
@@ -23,49 +23,60 @@ const closeDialog = () => {
 defineExpose({ showDialog });
 </script>
 <template>
-  <div
-    fixed
-    top-0
-    left-0
-    w-screen
-    h-screen
-    flex="~ items-center justify-center"
-    v-if="_isShowing"
-    @wheel.prevent=""
-    @touchmove.prevent=""
-    md:backdrop-blur-lg
-  >
+  <Transition transition-all duration-200>
     <div
-      flex="~ col"
-      p-4
-      bg="[#f9f4ff]"
-      dark:bg-dark
-      w-full
-      h-full
-      md:w-auto
-      md:h-auto
-      md:min-w-100
-      md:max-w="70%"
-      rounded-lg
-      shadow-lg
+      fixed
+      top-0
+      left-0
+      w-screen
+      h-screen
+      flex="~ items-center justify-center"
+      v-if="_isShowing"
+      @wheel.prevent=""
+      @touchmove.prevent=""
+      md:backdrop-blur-lg
     >
-      <h1 m-y-0>{{ _title }}</h1>
-      <div v-html="_contentHtml" flex-grow-1></div>
-      <button
-        @click="closeDialog"
-        self-end
-        p-x-4
-        p-y-2
-        text="white"
-        bg="violet-500 hover:violet"
-        shadow="md violet-300 dark:violet-700 hover:lg"
-        un-border="0"
-        rounded-md
-        transition-all
-        duration-150
+      <div
+        flex="~ col"
+        p-4
+        bg="[#f9f4ff]"
+        dark:bg-dark
+        w-full
+        h-full
+        md:w-auto
+        md:h-auto
+        md:min-w-100
+        md:max-w="70%"
+        rounded-lg
+        shadow-lg
       >
-        关 闭
-      </button>
+        <h1 m-y-0>{{ _title }}</h1>
+        <div v-html="_contentHtml" flex-grow-1></div>
+        <button
+          @click="closeDialog"
+          self-end
+          p-x-4
+          p-y-2
+          text="white"
+          bg="violet-500 hover:violet"
+          shadow="md violet-300 dark:violet-700 hover:lg"
+          un-border="0"
+          rounded-md
+          transition-all
+          duration-150
+        >
+          关 闭
+        </button>
+      </div>
     </div>
-  </div>
+  </Transition>
 </template>
+
+<style scoped>
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+  transform: scale(.98);
+}
+</style>
