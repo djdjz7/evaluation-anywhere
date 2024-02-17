@@ -110,8 +110,8 @@ async function delay(ms: number): Promise<void> {
   });
 }
 
-function showDescription(title: string, description: string | null) {
-  if (Boolean(description)) dialogRef.value?.showDialog(title, description!);
+async function showDescription(title: string, description: string | null) {
+  if (Boolean(description)) await dialogRef.value?.showDialog(title, description!);
 }
 </script>
 <template>
