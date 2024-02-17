@@ -19,6 +19,7 @@ const examName = ref("");
 const examStartTime = ref("");
 const testDescription = ref("");
 const questionGroups = ref<QuestionGroup[]>();
+const contentAreaRef = ref<HTMLDivElement | null>(null);
 const answerAreas = ref<InstanceType<typeof AnswerArea>[] | null>(null);
 const dialogRef = ref<InstanceType<typeof DialogComponent> | null>(null);
 
@@ -41,7 +42,8 @@ onBeforeUnmount(() => {
 });
 
 const setWindowSize = () => {
-  documentWidth.value = document.body.clientWidth;
+  if(contentAreaRef.value == null) return;
+  documentWidth.value = contentAreaRef.value.clientWidth;
 };
 
 async function submit() {
@@ -83,7 +85,7 @@ async function showDescription(title: string, description: string) {
 }
 </script>
 <template>
-  <div flex="~ col" m-x-2>
+  <div flex="~ col" m-x-2 ref="contentAreaRef">
     <div>
       <h1 m-b-0 inline align-middle>{{ examName }}</h1>
       <div
