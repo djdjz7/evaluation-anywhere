@@ -6,7 +6,7 @@ import { onMounted, onBeforeUnmount, ref } from "vue";
 import { type CommonResponse } from "@/models/CommonResponse";
 import { type GetNoQstExamTaskResult, type QuestionGroup } from "@/models/GetNoQstExamTask";
 import Loading from "@/components/Loading.vue";
-import AnswerArea from "@/components/AnswerArea.vue";
+import AnswerArea from "@/components/answer/AnswerArea.vue";
 import DialogComponent from "@/components/DialogComponent.vue";
 import type { AnswersToQuestion } from "@/models/Answers";
 import { documentWidth } from "@/components/documentWidth";

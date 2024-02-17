@@ -9,7 +9,7 @@ import {
   QuestionMarkCircleIcon,
   PencilSquareIcon,
 } from "@heroicons/vue/24/outline";
-import AnswerAreaWithQuestion from "@/components/AnswerAreaWithQuestion.vue";
+import AnswerAreaWithQuestion from "@/components/answer/AnswerAreaWithQuestion.vue";
 import Loading from "@/components/Loading.vue";
 import DialogComponent from "@/components/DialogComponent.vue";
 import { documentWidth } from "@/components/documentWidth";
@@ -149,7 +149,7 @@ async function showDescription(title: string, description: string | null) {
         bg-violet-100
         dark:bg-black
         p-1
-        rounded="lt-lg lb-lg"
+        rounded="lt-lg"
         box-border
       >
         <div
@@ -242,7 +242,7 @@ async function showDescription(title: string, description: string | null) {
         col-span-3
         w-full
         h-full
-        rounded="rt-lg rb-lg"
+        rounded="rt-lg"
         p-2
         box-border
         overflow-y-auto

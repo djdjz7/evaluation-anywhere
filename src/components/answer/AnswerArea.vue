@@ -4,8 +4,8 @@ import DrawboardArea from "./DrawboardArea.vue";
 import PhtotosArea from "./PhtotosArea.vue";
 import { type AnswersToQstFlow, type AnswersToQuestion } from "@/models/Answers";
 import { ref } from "vue";
-import SingleSelect from "@/components/SingleSelect.vue";
-import MultiSelect from "@/components/MultiSelect.vue";
+import SingleSelect from "./SingleSelect.vue";
+import MultiSelect from "./MultiSelect.vue";
 
 const props = defineProps<{
   question: QuestionBase;

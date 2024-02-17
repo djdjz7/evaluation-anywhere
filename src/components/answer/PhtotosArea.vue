@@ -4,7 +4,7 @@ import { type AnswersToQstFlow } from "@/models/Answers";
 import { useUserInfoStore } from "@/stores/userInfo";
 import { CameraIcon, PhotoIcon } from "@heroicons/vue/24/outline";
 import { ossClient } from "@/oss/client";
-import { documentWidth } from "./documentWidth";
+import { documentWidth } from "@/components/documentWidth";
 
 const props = defineProps<{
   examTaskId: number;
