@@ -127,7 +127,7 @@ function logOut() {
 </script>
 
 <template>
-  <div flex="~ col" m-x-2>
+  <div flex="~ col" max-h-screen m-x-2>
     <div class="group" flex="~ items-center" m-t-2 relative self-start>
       <div v-if="avatarSrc" rounded-full overflow-clip h-8 w-8 m-r-2 shadow-md>
         <img :src="avatarSrc" h-8 />
