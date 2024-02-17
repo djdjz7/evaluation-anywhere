@@ -4,7 +4,11 @@ import { axiosInstance } from "@/request/axiosInstance";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import type { CommonResponse } from "@/models/CommonResponse";
 import { type Question, type GetExamTaskResult, type QuestionGroup } from "@/models/GetExamTask";
-import { Square3Stack3DIcon, QuestionMarkCircleIcon, PencilSquareIcon } from "@heroicons/vue/24/outline";
+import {
+  Square3Stack3DIcon,
+  QuestionMarkCircleIcon,
+  PencilSquareIcon,
+} from "@heroicons/vue/24/outline";
 import AnswerAreaWithQuestion from "@/components/AnswerAreaWithQuestion.vue";
 import Loading from "@/components/Loading.vue";
 import { documentWidth } from "@/components/documentWidth";
@@ -22,6 +26,7 @@ const currentQuestionId = ref(0);
 const allQuestions = ref<Question[]>([]);
 const answerAreaContainer = ref<HTMLDivElement | null>(null);
 const answerAreas = ref<InstanceType<typeof AnswerAreaWithQuestion>[] | null>(null);
+const testDescription = ref("");
 
 onMounted(async () => {
   isLoading.value = true;
@@ -34,6 +39,7 @@ onMounted(async () => {
   examName.value = result.examName;
   examStartTime.value = result.startTime;
   examId.value = result.examId;
+  testDescription.value = result.testDescription;
 
   questionGroups.value.forEach((x) => {
     allQuestions.value = allQuestions.value.concat(x.questions);
@@ -108,7 +114,27 @@ function showDescription(description: string | null) {
 </script>
 <template>
   <div flex="~ col" h-screen max-h-full flex-grow-1>
-    <h1 m-b-0>{{ examName }}</h1>
+    <div>
+      <h1 m-b-0 inline align-middle>{{ examName }}</h1>
+      <div inline-flex m-l-2
+        text-violet-500
+        dark:text-violet-300
+        rounded-full
+        p-1
+        cursor-pointer
+        transition-all
+        duration-150
+        hover:bg="violet-500/20 dark:violet-300/30"
+        shadow="violet/20"
+        hover:shadow-md
+        align-middle
+        v-if="Boolean(testDescription)"
+        @click="showDescription(testDescription)"
+      >
+        <QuestionMarkCircleIcon class="h-8" />
+      </div>
+    </div>
+
     <span block m-b-4>{{ examStartTime }}</span>
     <div grid="~ cols-4" flex-grow-1 min-h-0 drop-shadow-lg>
       <div
@@ -226,7 +252,14 @@ function showDescription(description: string | null) {
           :exam-id="examId"
           ref="answerAreas"
         />
-        <div v-if="currentQuestionId == 0" text-gray-500 dark:text-gray-300 w-full h-full flex="~ col items-center justify-center">
+        <div
+          v-if="currentQuestionId == 0"
+          text-gray-500
+          dark:text-gray-300
+          w-full
+          h-full
+          flex="~ col items-center justify-center"
+        >
           <PencilSquareIcon class="h-8" />
           <span m-t-2>选择一道题目</span>
         </div>
