@@ -16,10 +16,8 @@ import AnswerAreaWithQuestion from "@/components/readonly/AnswerAreaWithQuestion
 import Loading from "@/components/Loading.vue";
 import DialogComponent from "@/components/DialogComponent.vue";
 import { documentWidth } from "@/components/documentWidth";
-import type { AnswersToQuestion } from "@/models/Answers";
 
 const route = useRoute();
-const router = useRouter();
 const isLoading = ref(false);
 const examTaskId = route.params.examTaskId;
 const questionGroups = ref<QuestionGroup[]>([]);
@@ -33,6 +31,7 @@ const answerAreas = ref<InstanceType<typeof AnswerAreaWithQuestion>[] | null>(nu
 const testDescription = ref("");
 const isNoStem = ref(true);
 const dialogRef = ref<InstanceType<typeof DialogComponent> | null>(null);
+const enableScore = ref(false);
 
 onMounted(async () => {
   isLoading.value = true;
@@ -47,6 +46,7 @@ onMounted(async () => {
   examId.value = result.examId;
   testDescription.value = result.testDescription;
   isNoStem.value = result.noQstStem;
+  enableScore.value = result.enableScore;
 
   questionGroups.value.forEach((x) => {
     allQuestions.value = allQuestions.value.concat(x.questions);
@@ -166,21 +166,27 @@ async function showDescription(title: string, description: string | null) {
                 >{{ question.number }}. {{ question.name }}</span
               >
               <div flex="~ col items-center" m-r-2>
-                <CheckIcon v-if="question.myScore == question.score" class="text-green-500 dark:text-green-300 h-4" />
+                <CheckIcon
+                  v-if="question.myScore == question.score || question.state == 3"
+                  class="text-green-500 dark:text-green-300 h-4"
+                />
                 <CheckCircleIcon
                   v-else-if="question.revisingResult == 2"
                   class="text-amber-500 dark:text-amber-300 h-4"
                 />
                 <XMarkIcon v-else class="text-red-500 dark:text-red-300 h-4" />
                 <span
+                  v-if="enableScore"
                   text-sm
                   text-red="500 dark:300"
                   :class="[
-                    { '!text-green-500 !dark:text-green-300': question.myScore == question.score },
+                    {
+                      '!text-green-500 !dark:text-green-300':
+                        question.myScore == question.score || question.state == 3 // don't know what is this,
+                    },
                     { '!text-amber-500 !dark:text-amber-300': question.revisingResult == 2 },
                   ]"
-                  >{{ question.myScore }}/{{ question.score }}: state
-                  {{ question.state }}</span
+                  >{{ question.myScore }}/{{ question.score }}</span
                 >
               </div>
             </div>

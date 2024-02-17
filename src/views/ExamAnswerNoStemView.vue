@@ -42,7 +42,7 @@ onBeforeUnmount(() => {
 });
 
 const setWindowSize = () => {
-  if(contentAreaRef.value == null) return;
+  if (contentAreaRef.value == null) return;
   documentWidth.value = contentAreaRef.value.clientWidth;
 };
 

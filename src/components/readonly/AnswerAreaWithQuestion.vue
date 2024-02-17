@@ -46,30 +46,29 @@ watch(props, async (val) => {
 });
 </script>
 <template>
-  <div v-show="isShowing">
+  <div v-show="isShowing" flex="~ col" gap-2>
     <div v-html="questionHtml" bg-white text-black dark:invert v-if="!props.isNoStem"></div>
     <!-- 解答题，合并 -->
-    <div v-if="questionView?.itemType == 5" class="-m-x-2">
+    <div v-if="questionView?.itemType == 5">
       <PhtotosArea
         v-if="questionView.qstFlows[0].subQuestions != null"
         :uuid="questionView.qstFlows[0].subQuestions[0].uuid"
-        :question-id="questionView.id"
         :answer-list="questionView.answerList"
         :initialized="initialized"
       />
       <PhtotosArea
         v-else
         :uuid="questionView.qstFlows[0].uuid"
-        :question-id="questionView.id"
         :answer-list="questionView.answerList"
         :initialized="initialized"
       />
     </div>
 
     <!-- 非解答题，不合并 -->
-    <div v-else v-for="qstFlow in questionView?.qstFlows">
+    <div v-else v-for="qstFlow in questionView?.qstFlows" flex="~ col" gap-1>
       <!-- if no subQs -->
       <div v-if="qstFlow.subQuestions == null || qstFlow.subQuestions.length == 0">
+        <h3 m-0>{{ qstFlow.number }}.（{{ qstFlow.getScore }}/{{ qstFlow.score }}）</h3>
         <Select
           v-if="qstFlow.qstType == 0 || qstFlow.qstType == 2"
           :uuid="qstFlow.uuid"
@@ -78,11 +77,11 @@ watch(props, async (val) => {
           :qst-answers="questionView?.qstAnswers"
           :initialized="initialized"
         />
-        <DrawboardArea
+        <PhtotosArea
           v-else-if="qstFlow.qstType == 4"
           :uuid="qstFlow.uuid"
-          :question-id="question.id"
-          :exam-task-id="examTaskId"
+          :answer-list="questionView?.answerList"
+          :initialized="initialized"
         />
 
         <div
@@ -104,6 +103,7 @@ watch(props, async (val) => {
 
       <!-- if has subQs -->
       <div v-else v-for="subQ in qstFlow.subQuestions">
+        <h3 m-0>{{ qstFlow.number }}.{{ subQ.number }}.（{{ subQ.getScore }}/{{ subQ.score }}）</h3>
         <Select
           v-if="subQ.qstType == 0 || subQ.qstType == 2"
           :uuid="subQ.uuid"
@@ -112,11 +112,11 @@ watch(props, async (val) => {
           :qst-answers="questionView?.qstAnswers"
           :initialized="initialized"
         />
-        <DrawboardArea
+        <PhtotosArea
           v-else-if="subQ.qstType == 4"
           :uuid="subQ.uuid"
-          :question-id="question.id"
-          :exam-task-id="examTaskId"
+          :answer-list="questionView?.answerList"
+          :initialized="initialized"
         />
 
         <div

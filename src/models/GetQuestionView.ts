@@ -47,7 +47,7 @@ export interface GetQuestionViewResult extends QuestionBase {
 }
 
 export interface QstAnswer {
-	uuid: string;
-	answers: string[];
-	pid: string;
+  uuid: string;
+  answers: string[];
+  pid: string;
 }
