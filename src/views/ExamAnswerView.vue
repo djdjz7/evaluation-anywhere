@@ -116,7 +116,7 @@ async function showDescription(title: string, description: string | null) {
 </script>
 <template>
   <div flex="~ col" h-screen max-h-full flex-grow-1>
-    <div>
+    <div m-x-2>
       <h1 m-b-0 inline align-middle>{{ examName }}</h1>
       <div
         inline-flex
@@ -139,7 +139,7 @@ async function showDescription(title: string, description: string | null) {
       </div>
     </div>
 
-    <span block m-b-4>{{ examStartTime }}</span>
+    <span block m-b-4 m-x-2>{{ examStartTime }}</span>
     <div grid="~ cols-4" flex-grow-1 min-h-0 drop-shadow-lg>
       <div
         flex="~ col"
