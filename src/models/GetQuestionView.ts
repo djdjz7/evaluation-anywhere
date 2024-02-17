@@ -22,7 +22,7 @@ export interface AnswerList {
 
 export interface GetQuestionViewResult extends QuestionBase {
   attachments: string;
-  qstAnswers: any[];
+  qstAnswers: QstAnswer[];
   analysis: string;
   microClassToQuestionList: any[];
   microClassToStudentList: any[];
@@ -44,4 +44,10 @@ export interface GetQuestionViewResult extends QuestionBase {
   originScore?: any;
   answerList: AnswerList[];
   microClassList?: any;
+}
+
+export interface QstAnswer {
+	uuid: string;
+	answers: string[];
+	pid: string;
 }

@@ -14,14 +14,16 @@ const revisedImage = ref<string | undefined>("");
 const revisedComment = ref<string | undefined>("");
 
 watch(props, (val) => {
-  val.answerList.forEach((x) => {
-    if (x.uuid == props.uuid) {
+  for (let i = 0; i < val.answerList.length; i++) {
+    const x = val.answerList[i];
+    if (x.uuid == val.uuid) {
       answerImage.value = x.examAnswers[0];
       answerComment.value = x.examComments[0];
       revisedImage.value = x.revisingAnswers[0];
       revisedComment.value = x.revisingComments[0];
+      break;
     }
-  });
+  }
 });
 </script>
 

@@ -2,10 +2,8 @@
 import type { Question } from "@/models/GetExamTask";
 import DrawboardArea from "./DrawboardArea.vue";
 import PhtotosArea from "./PhtotosArea.vue";
-import { type AnswersToQstFlow, type AnswersToQuestion } from "@/models/Answers";
 import { ref, watch } from "vue";
-import SingleSelect from "./SingleSelect.vue";
-import MultiSelect from "./MultiSelect.vue";
+import Select from "./Select.vue";
 import Loading from "@/components/Loading.vue";
 import type { GetQuestionViewResult } from "@/models/GetQuestionView";
 import { axiosInstance } from "@/request/axiosInstance";
@@ -22,10 +20,6 @@ const props = defineProps<{
 
 const isLoading = ref(false);
 const questionView = ref<GetQuestionViewResult>();
-const drawboardRefs = ref<InstanceType<typeof DrawboardArea>[] | null>(null);
-const singleSelectRefs = ref<InstanceType<typeof SingleSelect>[] | null>(null);
-const multiSelectRefs = ref<InstanceType<typeof MultiSelect>[] | null>(null);
-const photoAreaRef = ref<InstanceType<typeof PhtotosArea> | null>(null);
 const questionHtml = ref("");
 watch(props, async (val) => {
   if (initialized.value) return;
@@ -62,7 +56,6 @@ watch(props, async (val) => {
         :question-id="questionView.id"
         :answer-list="questionView.answerList"
         :initialized="initialized"
-        ref="photoAreaRef"
       />
       <PhtotosArea
         v-else
@@ -70,7 +63,6 @@ watch(props, async (val) => {
         :question-id="questionView.id"
         :answer-list="questionView.answerList"
         :initialized="initialized"
-        ref="photoAreaRef"
       />
     </div>
 
@@ -78,26 +70,17 @@ watch(props, async (val) => {
     <div v-else v-for="qstFlow in questionView?.qstFlows">
       <!-- if no subQs -->
       <div v-if="qstFlow.subQuestions == null || qstFlow.subQuestions.length == 0">
-        <SingleSelect
-          v-if="qstFlow.qstType == 0"
-          :exam-task-id="examTaskId"
+        <Select
+          v-if="qstFlow.qstType == 0 || qstFlow.qstType == 2"
           :uuid="qstFlow.uuid"
-          :question-id="questionView!.id"
           :options="qstFlow.options!"
-          ref="singleSelectRefs"
-        />
-        <MultiSelect
-          v-else-if="qstFlow.qstType == 2"
-          :exam-task-id="examTaskId"
-          :uuid="qstFlow.uuid"
-          :question-id="question.id"
-          :options="qstFlow.options!"
-          ref="multiSelectRefs"
+          :answer-list="questionView?.answerList"
+          :qst-answers="questionView?.qstAnswers"
+          :initialized="initialized"
         />
         <DrawboardArea
           v-else-if="qstFlow.qstType == 4"
           :uuid="qstFlow.uuid"
-          ref="drawboardRefs"
           :question-id="question.id"
           :exam-task-id="examTaskId"
         />
@@ -121,26 +104,17 @@ watch(props, async (val) => {
 
       <!-- if has subQs -->
       <div v-else v-for="subQ in qstFlow.subQuestions">
-        <SingleSelect
-          v-if="subQ.qstType == 0"
-          :exam-task-id="examTaskId"
+        <Select
+          v-if="subQ.qstType == 0 || subQ.qstType == 2"
           :uuid="subQ.uuid"
-          :question-id="question.id"
           :options="subQ.options!"
-          ref="singleSelectRefs"
-        />
-        <MultiSelect
-          v-else-if="subQ.qstType == 2"
-          :exam-task-id="examTaskId"
-          :uuid="subQ.uuid"
-          :question-id="question.id"
-          :options="subQ.options!"
-          ref="multiSelectRefs"
+          :answer-list="questionView?.answerList"
+          :qst-answers="questionView?.qstAnswers"
+          :initialized="initialized"
         />
         <DrawboardArea
           v-else-if="subQ.qstType == 4"
           :uuid="subQ.uuid"
-          ref="drawboardRefs"
           :question-id="question.id"
           :exam-task-id="examTaskId"
         />
