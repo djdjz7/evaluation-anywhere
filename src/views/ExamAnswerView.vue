@@ -4,7 +4,7 @@ import { axiosInstance } from "@/request/axiosInstance";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import type { CommonResponse } from "@/models/CommonResponse";
 import { type Question, type GetExamTaskResult, type QuestionGroup } from "@/models/GetExamTask";
-import { Square3Stack3DIcon, QuestionMarkCircleIcon } from "@heroicons/vue/24/outline";
+import { Square3Stack3DIcon, QuestionMarkCircleIcon, PencilSquareIcon } from "@heroicons/vue/24/outline";
 import AnswerAreaWithQuestion from "@/components/AnswerAreaWithQuestion.vue";
 import Loading from "@/components/Loading.vue";
 import { documentWidth } from "@/components/documentWidth";
@@ -138,12 +138,23 @@ function showDescription(description: string | null) {
               group.name
             }}</span>
             <div
+              m-r-2
+              text-violet-500
+              dark:text-violet-300
+              rounded-full
+              p-1
+              cursor-pointer
+              transition-all
+              duration-150
+              hover:bg="violet-500/20 dark:violet-300/30"
+              shadow="violet/20"
+              hover:shadow-md
+              flex="~ items-center"
               v-if="Boolean(group.description)"
               :title="group.description"
               @click="showDescription(group.description)"
-              ;
             >
-              <QuestionMarkCircleIcon class="h-5 min-h-5 m-r-2" />
+              <QuestionMarkCircleIcon class="h-5 min-h-5" />
             </div>
           </div>
           <div
@@ -215,6 +226,10 @@ function showDescription(description: string | null) {
           :exam-id="examId"
           ref="answerAreas"
         />
+        <div v-if="currentQuestionId == 0" text-gray-500 dark:text-gray-300 w-full h-full flex="~ col items-center justify-center">
+          <PencilSquareIcon class="h-8" />
+          <span m-t-2>选择一道题目</span>
+        </div>
       </div>
     </div>
   </div>
