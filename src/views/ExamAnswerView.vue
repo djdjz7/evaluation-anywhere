@@ -11,6 +11,7 @@ import {
 } from "@heroicons/vue/24/outline";
 import AnswerAreaWithQuestion from "@/components/AnswerAreaWithQuestion.vue";
 import Loading from "@/components/Loading.vue";
+import DialogComponent from "@/components/DialogComponent.vue";
 import { documentWidth } from "@/components/documentWidth";
 import type { AnswersToQuestion } from "@/models/Answers";
 
@@ -27,6 +28,7 @@ const allQuestions = ref<Question[]>([]);
 const answerAreaContainer = ref<HTMLDivElement | null>(null);
 const answerAreas = ref<InstanceType<typeof AnswerAreaWithQuestion>[] | null>(null);
 const testDescription = ref("");
+const dialogRef = ref<InstanceType<typeof DialogComponent> | null>(null);
 
 onMounted(async () => {
   isLoading.value = true;
@@ -108,15 +110,17 @@ async function delay(ms: number): Promise<void> {
   });
 }
 
-function showDescription(description: string | null) {
-  if (Boolean(description)) alert(description);
+function showDescription(title: string, description: string | null) {
+  if (Boolean(description)) dialogRef.value?.showDialog(title, description!);
 }
 </script>
 <template>
   <div flex="~ col" h-screen max-h-full flex-grow-1>
     <div>
       <h1 m-b-0 inline align-middle>{{ examName }}</h1>
-      <div inline-flex m-l-2
+      <div
+        inline-flex
+        m-l-2
         text-violet-500
         dark:text-violet-300
         rounded-full
@@ -129,7 +133,7 @@ function showDescription(description: string | null) {
         hover:shadow-md
         align-middle
         v-if="Boolean(testDescription)"
-        @click="showDescription(testDescription)"
+        @click="showDescription('试卷说明', testDescription)"
       >
         <QuestionMarkCircleIcon class="h-8" />
       </div>
@@ -178,7 +182,7 @@ function showDescription(description: string | null) {
               flex="~ items-center"
               v-if="Boolean(group.description)"
               :title="group.description"
-              @click="showDescription(group.description)"
+              @click="showDescription('大题说明', group.description)"
             >
               <QuestionMarkCircleIcon class="h-5 min-h-5" />
             </div>
@@ -267,4 +271,5 @@ function showDescription(description: string | null) {
     </div>
   </div>
   <Loading v-if="isLoading" />
+  <DialogComponent ref="dialogRef" />
 </template>

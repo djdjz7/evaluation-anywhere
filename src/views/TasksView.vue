@@ -82,7 +82,7 @@ async function tabChange(index: number) {
   exams.value = getStudentTaskListResponse.result.items;
   if (exams.value.length < 90) isToBottom = true;
   else isToBottom = false;
-  
+
   currentPage = 0;
   isLoading.value = false;
 }

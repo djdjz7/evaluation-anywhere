@@ -7,6 +7,7 @@ import { type CommonResponse } from "@/models/CommonResponse";
 import { type GetNoQstExamTaskResult, type QuestionGroup } from "@/models/GetNoQstExamTask";
 import Loading from "@/components/Loading.vue";
 import AnswerArea from "@/components/AnswerArea.vue";
+import DialogComponent from "@/components/DialogComponent.vue";
 import type { AnswersToQuestion } from "@/models/Answers";
 import { documentWidth } from "@/components/documentWidth";
 
@@ -18,6 +19,7 @@ const examName = ref("");
 const examStartTime = ref("");
 const questionGroups = ref<QuestionGroup[]>();
 const answerAreas = ref<InstanceType<typeof AnswerArea>[] | null>(null);
+const dialogRef = ref<InstanceType<typeof DialogComponent> | null>(null);
 
 onMounted(async () => {
   setWindowSize();
@@ -74,8 +76,8 @@ async function submit() {
   }
 }
 
-function showDescription(description: string) {
-  if (Boolean(description)) alert(description);
+function showDescription(title: string, description: string) {
+  if (Boolean(description)) dialogRef.value?.showDialog(title, description);
 }
 </script>
 <template>
@@ -101,7 +103,7 @@ function showDescription(description: string) {
           flex="~ items-center"
           v-if="Boolean(group.description)"
           :title="group.description"
-          @click="showDescription(group.description)"
+          @click="showDescription('大题说明', group.description)"
         >
           <QuestionMarkCircleIcon class="h-7" />
         </div>
@@ -129,4 +131,5 @@ function showDescription(description: string) {
     </button>
   </div>
   <Loading v-if="isLoading" />
+  <DialogComponent ref="dialogRef" />
 </template>
