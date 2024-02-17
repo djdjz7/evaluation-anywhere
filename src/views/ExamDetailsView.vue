@@ -9,7 +9,8 @@ import {
   QuestionMarkCircleIcon,
   PencilSquareIcon,
   CheckIcon,
-  XMarkIcon
+  CheckCircleIcon,
+  XMarkIcon,
 } from "@heroicons/vue/24/outline";
 import AnswerAreaWithQuestion from "@/components/readonly/AnswerAreaWithQuestion.vue";
 import Loading from "@/components/Loading.vue";
@@ -30,6 +31,7 @@ const allQuestions = ref<Question[]>([]);
 const answerAreaContainer = ref<HTMLDivElement | null>(null);
 const answerAreas = ref<InstanceType<typeof AnswerAreaWithQuestion>[] | null>(null);
 const testDescription = ref("");
+const isNoStem = ref(true);
 const dialogRef = ref<InstanceType<typeof DialogComponent> | null>(null);
 
 onMounted(async () => {
@@ -44,6 +46,7 @@ onMounted(async () => {
   examStartTime.value = result.startTime;
   examId.value = result.examId;
   testDescription.value = result.testDescription;
+  isNoStem.value = result.noQstStem;
 
   questionGroups.value.forEach((x) => {
     allQuestions.value = allQuestions.value.concat(x.questions);
@@ -62,55 +65,6 @@ const setWindowSize = () => {
   if (answerAreaContainer.value == null) return;
   documentWidth.value = answerAreaContainer.value.clientWidth;
 };
-
-async function submit() {
-  isLoading.value = true;
-  try {
-    let allAnswers: AnswersToQuestion[] = [];
-    if (answerAreas.value == null) {
-      alert("未知错误，请刷新页面后重试。");
-      return;
-    }
-    for (let i = 0; i < answerAreas.value.length; i++) {
-      const answer = await answerAreas.value[i].getAnswerAsync();
-      if (answer != null) allAnswers.push(answer);
-    }
-
-    for (let i = 0; i < allAnswers.length; i++) {
-      const response = (
-        await axiosInstance.post(
-          `api/services/app/Task/ExamAnswerAsync?taskId=${examTaskId}`,
-          allAnswers[i]
-        )
-      ).data;
-      await delay(1000);
-    }
-
-    await axiosInstance.post(
-      `api/services/app/Task/CompleteAsync?id=${examTaskId}&isRevising=false`
-    );
-    alert("成功");
-    router.push({
-      path: "/",
-      query: {
-        needRefresh: "true",
-      },
-    });
-  } catch (e) {
-    console.log(e);
-    alert("出现异常，请查看控制台输出。");
-  } finally {
-    isLoading.value = false;
-  }
-}
-
-async function delay(ms: number): Promise<void> {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve();
-    }, ms);
-  });
-}
 
 async function showDescription(title: string, description: string | null) {
   if (Boolean(description)) await dialogRef.value?.showDialog(title, description!);
@@ -212,13 +166,21 @@ async function showDescription(title: string, description: string | null) {
                 >{{ question.number }}. {{ question.name }}</span
               >
               <div flex="~ col items-center" m-r-2>
-                <CheckIcon v-if="question.myScore == question.score" class="text-green-500 h-4" />
-                <XMarkIcon v-else class="text-red-500 h-4" />
+                <CheckIcon v-if="question.myScore == question.score" class="text-green-500 dark:text-green-300 h-4" />
+                <CheckCircleIcon
+                  v-else-if="question.revisingResult == 2"
+                  class="text-amber-500 dark:text-amber-300 h-4"
+                />
+                <XMarkIcon v-else class="text-red-500 dark:text-red-300 h-4" />
                 <span
                   text-sm
-                  text-red-500
-                  :class="{ '!text-green-500': question.myScore == question.score }"
-                  >{{ question.myScore }}/{{ question.score }}</span
+                  text-red="500 dark:300"
+                  :class="[
+                    { '!text-green-500 !dark:text-green-300': question.myScore == question.score },
+                    { '!text-amber-500 !dark:text-amber-300': question.revisingResult == 2 },
+                  ]"
+                  >{{ question.myScore }}/{{ question.score }}: state
+                  {{ question.state }}</span
                 >
               </div>
             </div>
@@ -230,7 +192,7 @@ async function showDescription(title: string, description: string | null) {
               w-1
               absolute
               top-0
-              bg-violet-500
+              bg-violet="500 dark:300"
               class="-left-1"
               :class="{
                 '!left-0': currentQuestionId == question.id,
@@ -256,6 +218,7 @@ async function showDescription(title: string, description: string | null) {
           :question="question"
           :exam-task-id="Number(examTaskId as string)"
           :exam-id="examId"
+          :is-no-stem="isNoStem"
           ref="answerAreas"
         />
         <div

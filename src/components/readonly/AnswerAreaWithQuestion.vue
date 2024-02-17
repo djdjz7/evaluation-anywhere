@@ -11,12 +11,13 @@ import type { GetQuestionViewResult } from "@/models/GetQuestionView";
 import { axiosInstance } from "@/request/axiosInstance";
 import type { CommonResponse } from "@/models/CommonResponse";
 
-let initialized = false;
+const initialized = ref(false);
 const props = defineProps<{
   question: Question;
   examTaskId: number;
   examId: number;
   isShowing: boolean;
+  isNoStem: boolean;
 }>();
 
 const isLoading = ref(false);
@@ -27,7 +28,7 @@ const multiSelectRefs = ref<InstanceType<typeof MultiSelect>[] | null>(null);
 const photoAreaRef = ref<InstanceType<typeof PhtotosArea> | null>(null);
 const questionHtml = ref("");
 watch(props, async (val) => {
-  if (initialized) return;
+  if (initialized.value) return;
   if (!val.isShowing) return;
   isLoading.value = true;
   const response = (
@@ -45,58 +46,30 @@ watch(props, async (val) => {
     questionHtml.value = "无法加载试题题干。";
   } else {
     questionHtml.value = doc.querySelector(".stem")?.outerHTML ?? "无法加载试题题干。";
-    initialized = true;
+    initialized.value = true;
   }
   isLoading.value = false;
 });
-
-const getAnswerAsync = async (): Promise<AnswersToQuestion | null> => {
-  if (!initialized || questionView.value == null) {
-    return null;
-  }
-  const answers: AnswersToQstFlow[] = [];
-  if (questionView?.value.itemType == 5) {
-    let qstAnswer = await photoAreaRef.value?.getQstAnswerAsync();
-    if (qstAnswer != undefined) answers.push(qstAnswer);
-  } else {
-    singleSelectRefs.value?.forEach((ref) => {
-      answers.push(ref.getAnswer());
-    });
-    multiSelectRefs.value?.forEach((ref) => {
-      answers.push(ref.getAnswer());
-    });
-    if (drawboardRefs.value != null) {
-      for (let i = 0; i < drawboardRefs.value.length; i++) {
-        answers.push(await drawboardRefs.value[i].getQstAnswerAsync());
-      }
-    }
-  }
-  return {
-    draft: "",
-    questionId: props.question.id,
-    answers,
-  };
-};
-
-defineExpose({ getAnswerAsync });
 </script>
 <template>
   <div v-show="isShowing">
-    <div v-html="questionHtml" bg-white text-black dark:invert></div>
+    <div v-html="questionHtml" bg-white text-black dark:invert v-if="!props.isNoStem"></div>
     <!-- 解答题，合并 -->
     <div v-if="questionView?.itemType == 5" class="-m-x-2">
       <PhtotosArea
         v-if="questionView.qstFlows[0].subQuestions != null"
-        :exam-task-id="examTaskId"
         :uuid="questionView.qstFlows[0].subQuestions[0].uuid"
         :question-id="questionView.id"
+        :answer-list="questionView.answerList"
+        :initialized="initialized"
         ref="photoAreaRef"
       />
       <PhtotosArea
         v-else
-        :exam-task-id="examTaskId"
         :uuid="questionView.qstFlows[0].uuid"
         :question-id="questionView.id"
+        :answer-list="questionView.answerList"
+        :initialized="initialized"
         ref="photoAreaRef"
       />
     </div>
