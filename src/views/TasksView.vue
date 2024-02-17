@@ -78,10 +78,13 @@ async function tabChange(index: number) {
       taskListType: index + 1,
     })
   ).data as CommonResponse<GetStudentTaskListResult>;
+
   exams.value = getStudentTaskListResponse.result.items;
+  if (exams.value.length < 90) isToBottom = true;
+  else isToBottom = false;
+  
   currentPage = 0;
   isLoading.value = false;
-  isToBottom = false;
 }
 
 async function handleScroll(e: Event) {
@@ -190,7 +193,7 @@ function logOut() {
       grid="~ cols-1 lg:cols-4 md:cols-3"
       gap-2
       flex-shrink-1
-      overflow-y-scroll
+      overflow-y-auto
     >
       <div v-for="exam in exams" :key="exam.examTaskId">
         <ExamCard :exam="exam" />
