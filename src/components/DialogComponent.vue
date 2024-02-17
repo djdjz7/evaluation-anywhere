@@ -32,8 +32,6 @@ defineExpose({ showDialog });
       h-screen
       flex="~ items-center justify-center"
       v-if="_isShowing"
-      @wheel.prevent=""
-      @touchmove.prevent=""
       md:backdrop-blur-lg
     >
       <div
@@ -47,16 +45,18 @@ defineExpose({ showDialog });
         md:h-auto
         md:min-w-100
         md:max-w="70%"
+        md:max-h="70%"
         rounded-lg
         shadow-lg
       >
         <h1 m-y-0>{{ _title }}</h1>
-        <div v-html="_contentHtml"></div>
+        <div flex-shrink-1 v-html="_contentHtml" overflow-y-auto></div>
         <button
           @click="closeDialog"
           self-end
           p-x-4
           p-y-2
+          m-t-2
           text="white"
           bg="violet-500 hover:violet"
           shadow="md violet-300 dark:violet-700 hover:lg"
@@ -73,10 +73,9 @@ defineExpose({ showDialog });
 </template>
 
 <style scoped>
-
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
-  transform: scale(.98);
+  transform: scale(0.98);
 }
 </style>
