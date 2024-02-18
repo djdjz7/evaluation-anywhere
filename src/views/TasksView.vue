@@ -198,7 +198,7 @@ function showMobileSearch() {
         space-x-2
         overflow-x-auto
         p-2
-        bg="violet-200 dark:violet-900/40"
+        bg="violet-200 dark:dark-400"
         rounded-xl
         shadow-lg
         flex
@@ -216,7 +216,7 @@ function showMobileSearch() {
         <Tab flex-shrink-0>收藏夹</Tab>
         <Tab flex-shrink-0>已完成</Tab>
         <div flex-grow-1 hidden sm:flex="~ items-stretch justify-end" m-l-2>
-          <div flex bg-white shadow="md has-[:focus]:inner" p-x-2 rounded-md>
+          <div flex bg-white dark:bg-dark-100 shadow="md has-[:focus]:inner" p-x-2 rounded-md>
             <div flex="~ items-center">
               <MagnifyingGlassIcon class="h-5" />
             </div>
@@ -249,19 +249,19 @@ function showMobileSearch() {
       rounded-xl
       shadow-lg
       flex="~ items-center"
-      bg="violet-200 dark:violet-900/40"
+      bg="violet-200 dark:dark-400"
     >
       <span flex-grow-1 flex-shrink-1 overflow-hidden text-ellipsis
         >"{{ searchKeyword }}" 的搜索结果：</span
       >
-      <XCircleIcon class="h-4 text-gray-500" @click="searchKeyword = ''" />
+      <XCircleIcon class="h-4 text-gray-500 dark:text-gray-200" @click="searchKeyword = ''" />
     </div>
     <div
       @scroll="handleScroll"
       rounded-xl
       shadow-xl
       p-2
-      bg="violet-200 dark:violet-900/40"
+      bg="violet-200 dark:dark-400"
       m-y-2
       grid="~ cols-1 lg:cols-4 md:cols-3"
       gap-2
@@ -285,7 +285,7 @@ function showMobileSearch() {
     backdrop-blur-lg
     @click="showingMobileSearch = false"
   >
-    <div h-10 m-t-4 m-x-4 flex bg-white shadow="md" p-x-2 rounded-md @click.stop="">
+    <div h-10 m-t-4 m-x-4 flex bg-white dark:bg-gray-700 shadow="md" p-x-2 rounded-md @click.stop="">
       <div flex="~ items-center">
         <MagnifyingGlassIcon class="h-5" />
       </div>
@@ -308,7 +308,7 @@ function showMobileSearch() {
 <style scoped>
 button {
   font-family: inherit;
-  --at-apply: "bg-white hover:bg-violet-100 focus:outline-none focus:bg-violet-100 p-x-4 p-y-2 text-black border-0 shadow-md rounded-md transition-all duration-150";
+  --at-apply: "bg-white hover:bg-violet-100 focus:outline-none focus:bg-violet-100 p-x-4 p-y-2 text-black border-0 shadow-md rounded-md transition-all duration-150 dark:bg-dark-100 dark-text-white dark:hover:bg-dark-50";
 }
 button[data-headlessui-state~="selected"] {
   --at-apply: "bg-violet-500 hover:bg-violet focus:bg-violet text-white shadow-violet-700 shadow-inner ";

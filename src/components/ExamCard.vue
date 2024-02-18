@@ -66,7 +66,7 @@ async function updateCollectStatus() {
           props.exam.taskState === 3,
       },
     ]"
-    dark:bg-dark
+    dark:bg-dark-200
     shadow-md
     hover:shadow-lg
     min-h-25
