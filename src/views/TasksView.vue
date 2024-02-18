@@ -23,8 +23,9 @@ const avatarSrc = ref<string | null>(null);
 const studentName = ref("");
 const router = useRouter();
 const searchKeyword = ref("");
-const showMobileSearch = ref(false);
+const showingMobileSearch = ref(false);
 const taskCount = ref(0);
+const mobileInputRef = ref<HTMLInputElement | null>(null);
 let currentPage = 1;
 let isLoading = ref(false);
 let isToBottom = false;
@@ -145,6 +146,11 @@ function logOut() {
 watch(searchKeyword, (val) => {
   tabChange(selectedIndex);
 });
+
+function showMobileSearch() {
+  showingMobileSearch.value = true;
+  mobileInputRef.value?.focus();
+}
 </script>
 
 <template>
@@ -228,7 +234,7 @@ watch(searchKeyword, (val) => {
           </div>
         </div>
         <div flex-grow-1 flex-shrink-0 flex="~ justify-end" sm:hidden class="!m-l-2">
-          <button h-8 w-8 class="!p-0" @click="showMobileSearch = true">
+          <button h-8 w-8 class="!p-0" @click="showMobileSearch()">
             <MagnifyingGlassIcon class="h-4" />
           </button>
         </div>
@@ -269,21 +275,31 @@ watch(searchKeyword, (val) => {
   </div>
   <Loading v-if="isLoading" />
 
-  <div v-if="showMobileSearch" fixed top-0 left-0 h-screen w-screen backdrop-blur-lg>
-    <div h-10 m-t-4 m-x-4 flex bg-white shadow="md" p-x-2 rounded-md>
+  <div
+    v-show="showingMobileSearch"
+    fixed
+    top-0
+    left-0
+    h-screen
+    w-screen
+    backdrop-blur-lg
+    @click="showingMobileSearch = false"
+  >
+    <div h-10 m-t-4 m-x-4 flex bg-white shadow="md" p-x-2 rounded-md @click.stop="">
       <div flex="~ items-center">
         <MagnifyingGlassIcon class="h-5" />
       </div>
       <input
+        ref="mobileInputRef"
         m-l-1
         bg-transparent
         border-0
-        focus:outline-0
+        focus:outline-none
         justify-self-stretch
         flex-grow-1
         type="text"
         v-model.lazy="searchKeyword"
-        @keyup.enter="showMobileSearch = false"
+        @keyup.enter="showingMobileSearch = false"
       />
     </div>
   </div>
