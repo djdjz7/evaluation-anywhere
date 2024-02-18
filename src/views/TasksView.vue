@@ -291,7 +291,7 @@ function showMobileSearch() {
       m-x-4
       flex
       bg-white
-      dark:bg-gray-700
+      dark:bg-dark-100
       shadow="md"
       p-x-2
       rounded-md
