@@ -19,11 +19,11 @@ const isLoading = ref(false);
 
 const router = useRouter();
 
-onMounted(() => {
-  if (document.location.protocol.toLowerCase() == "https:") {
-    protocolRef.value.show();
-  }
-});
+// onMounted(() => {
+//   if (document.location.protocol.toLowerCase() == "https:") {
+//      protocolRef.value.show();
+//   }
+// });
 
 function goHttp() {
   document.location.protocol = "http:";
