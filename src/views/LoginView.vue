@@ -25,6 +25,10 @@ onMounted(() => {
   }
 });
 
+function goHttp() {
+  document.location.protocol = "http:";
+}
+
 async function login() {
   isLoading.value = true;
   try {
@@ -126,6 +130,7 @@ async function login() {
       中育目前并不支持 HTTPS 内容，并且混合协议的请求已在主流浏览器上出于安全目的禁用。<br />
       请使用 HTTP。
     </p>
+    <button @click="goHttp">GO HTTP</button>
   </Popup>
   <Popup title="为何使用 HTTP？" ref="whyRef">
     <p>中育目前并不支持 HTTPS 内容，并且混合协议的请求已在主流浏览器上出于安全目的禁用。</p>
