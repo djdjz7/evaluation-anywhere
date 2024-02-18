@@ -166,9 +166,7 @@ async function showDescription(title: string, description: string | null) {
                 :class="{
                   'm-l-3': currentQuestionId == question.id,
                 }"
-                >{{ question.number }}. {{ question.name }} s:{{ question.state }}, rere:{{
-                  question.revisingResult
-                }}</span
+                >{{ question.number }}. {{ question.name }}</span
               >
               <div flex="~ col items-end" m-r-2>
                 <EllipsisHorizontalIcon
