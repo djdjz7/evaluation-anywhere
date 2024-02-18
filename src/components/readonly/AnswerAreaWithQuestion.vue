@@ -16,6 +16,7 @@ const props = defineProps<{
   examId: number;
   isShowing: boolean;
   isNoStem: boolean;
+  taskState: number;
 }>();
 
 const isLoading = ref(false);
@@ -76,6 +77,7 @@ watch(props, async (val) => {
           :answer-list="questionView?.answerList"
           :qst-answers="questionView?.qstAnswers"
           :initialized="initialized"
+          :task-state="taskState"
         />
         <PhtotosArea
           v-else-if="qstFlow.qstType == 4"
@@ -111,6 +113,7 @@ watch(props, async (val) => {
           :answer-list="questionView?.answerList"
           :qst-answers="questionView?.qstAnswers"
           :initialized="initialized"
+          :task-state="taskState"
         />
         <PhtotosArea
           v-else-if="subQ.qstType == 4"

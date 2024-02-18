@@ -54,7 +54,7 @@ watch(props, (val) => {
   <div m-t-4 v-if="Boolean(revisedImage)">
     <div flex="~">
       <div self-stretch w-1 rounded-full bg-violet="500 dark:300"></div>
-      <span m-0 m-l-1>订正答案</span>
+      <span font-bold m-0 m-l-1>订正答案</span>
     </div>
     <div w-full relative m-t-2>
       <img w-full :src="revisedImage" />

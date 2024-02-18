@@ -16,6 +16,7 @@ const props = defineProps<{
   answerList: AnswerList[] | undefined;
   qstAnswers: QstAnswer[] | undefined;
   initialized: boolean;
+  taskState: number;
 }>();
 
 const originalAnswer = ref<string[]>([]);
@@ -71,18 +72,20 @@ watch(props, (val) => {
       else revisedJudgeResult.value = JudgeResult.wrong;
     }
   });
-  props.qstAnswers?.forEach((x) => {
-    if (x.uuid == val.uuid) {
-      qstAnswers.value = x.answers ?? [];
-    }
-  });
+  if (val.taskState != 1) {
+    props.qstAnswers?.forEach((x) => {
+      if (x.uuid == val.uuid) {
+        qstAnswers.value = x.answers ?? [];
+      }
+    });
+  }
 });
 </script>
 <template>
   <div>
     <div flex="~">
       <div self-stretch w-1 rounded-full bg-violet="500 dark:300"></div>
-      <span text-lg font-bold m-0 m-l-1>我的答案</span>
+      <span font-bold m-0 m-l-1>我的答案</span>
     </div>
     <div grid="~ cols-4 md:cols-5 lg:cols-7" gap-2 m-t-2>
       <div v-for="option in options" flex="~ items-center" h-10>
@@ -98,7 +101,8 @@ watch(props, (val) => {
           :class="[
             {
               '!bg-violet-500 !dark:bg-violet-300 !text-white !dark:text-black !shadow-violet-300 !dark:shadow-violet-700':
-                originalAnswer.indexOf(option) >= 0 && originalJudgeResult == JudgeResult.unknown,
+                originalAnswer.indexOf(option) >= 0 &&
+                (originalJudgeResult == JudgeResult.unknown || taskState == 1),
             },
             {
               '!bg-green-500 !dark:bg-green-300 !text-white !dark:text-black !shadow-green-300 !dark:shadow-green-700':
@@ -134,7 +138,7 @@ watch(props, (val) => {
     <div v-if="revisedAnswer.length > 0" m-t-4>
       <div flex="~">
         <div self-stretch w-1 rounded-full bg-violet="500 dark:300"></div>
-        <span text-lg font-bold m-0 m-l-1>订正答案</span>
+        <span font-bold m-0 m-l-1>订正答案</span>
       </div>
       <div grid="~ cols-4 md:cols-5 lg:cols-7" gap-2 m-t-2>
         <div v-for="option in options" flex="~ items-center" h-10>

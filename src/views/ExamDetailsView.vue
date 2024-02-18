@@ -11,6 +11,7 @@ import {
   CheckIcon,
   CheckCircleIcon,
   XMarkIcon,
+  EllipsisHorizontalIcon,
 } from "@heroicons/vue/24/outline";
 import AnswerAreaWithQuestion from "@/components/readonly/AnswerAreaWithQuestion.vue";
 import Loading from "@/components/Loading.vue";
@@ -32,6 +33,7 @@ const testDescription = ref("");
 const isNoStem = ref(true);
 const dialogRef = ref<InstanceType<typeof DialogComponent> | null>(null);
 const enableScore = ref(false);
+const taskState = ref(0);
 
 onMounted(async () => {
   isLoading.value = true;
@@ -47,6 +49,7 @@ onMounted(async () => {
   testDescription.value = result.testDescription;
   isNoStem.value = result.noQstStem;
   enableScore.value = result.enableScore;
+  taskState.value = result.state;
 
   questionGroups.value.forEach((x) => {
     allQuestions.value = allQuestions.value.concat(x.questions);
@@ -163,11 +166,20 @@ async function showDescription(title: string, description: string | null) {
                 :class="{
                   'm-l-3': currentQuestionId == question.id,
                 }"
-                >{{ question.number }}. {{ question.name }}</span
+                >{{ question.number }}. {{ question.name }} s:{{ question.state }}, rere:{{
+                  question.revisingResult
+                }}</span
               >
-              <div flex="~ col items-center" m-r-2>
+              <div flex="~ col items-end" m-r-2>
+                <EllipsisHorizontalIcon
+                  v-if="
+                    taskState == 1 ||
+                    (taskState == 4 && question.state == 0 && question.revisingResult == 1)
+                  "
+                  class="text-violet-500 dark:text-violet-300 h-4"
+                />
                 <CheckIcon
-                  v-if="question.myScore == question.score || question.state == 3"
+                  v-else-if="question.state == 1 || question.state == 3"
                   class="text-green-500 dark:text-green-300 h-4"
                 />
                 <CheckCircleIcon
@@ -176,15 +188,27 @@ async function showDescription(title: string, description: string | null) {
                 />
                 <XMarkIcon v-else class="text-red-500 dark:text-red-300 h-4" />
                 <span
-                  v-if="enableScore"
+                  v-if="
+                    taskState == 1 ||
+                    (taskState == 4 && question.state == 0 && question.revisingResult == 1)
+                  "
+                  text-sm
+                  text-violet="500 dark:300"
+                  >批改中</span
+                >
+                <span
+                  v-else-if="enableScore"
                   text-sm
                   text-red="500 dark:300"
                   :class="[
                     {
                       '!text-green-500 !dark:text-green-300':
-                        question.myScore == question.score || question.state == 3 // don't know what is this,
+                        question.state == 1 || question.state == 3, // don't know what is this,
                     },
-                    { '!text-amber-500 !dark:text-amber-300': question.revisingResult == 2 },
+                    {
+                      '!text-amber-500 !dark:text-amber-300':
+                        question.state == 2 && question.revisingResult == 2,
+                    },
                   ]"
                   >{{ question.myScore }}/{{ question.score }}</span
                 >
@@ -225,6 +249,7 @@ async function showDescription(title: string, description: string | null) {
           :exam-task-id="Number(examTaskId as string)"
           :exam-id="examId"
           :is-no-stem="isNoStem"
+          :task-state="taskState"
           ref="answerAreas"
         />
         <div

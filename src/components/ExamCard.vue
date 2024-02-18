@@ -104,6 +104,7 @@ async function updateCollectStatus() {
           rounded-full
         ></span>
       </div>
+      <span>s:{{ props.exam.taskState }} es:{{ props.exam.examState }}</span>
       <div flex="~ col" flex-grow-1>
         <div flex="~">
           <div
