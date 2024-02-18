@@ -4,12 +4,16 @@ import ExamCard from "@/components/ExamCard.vue";
 import Loading from "@/components/Loading.vue";
 import { type CommonResponse } from "@/models/CommonResponse";
 import { type GetStudentTaskListResult } from "@/models/GetStudentTaskListResult";
-import { onActivated, onMounted, ref } from "vue";
+import { onActivated, onMounted, ref, watch } from "vue";
 import type { Exam } from "@/models/GetStudentTaskListResult";
 
 import { axiosInstance } from "@/request/axiosInstance";
 import type { GetInfoResult } from "@/models/Login";
-import { UserCircleIcon, ArrowLeftStartOnRectangleIcon } from "@heroicons/vue/24/outline";
+import {
+  UserCircleIcon,
+  ArrowLeftStartOnRectangleIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/vue/24/outline";
 import { useUserInfoStore } from "@/stores/userInfo";
 import { useRoute, useRouter } from "vue-router";
 
@@ -17,6 +21,7 @@ const exams = ref(Array<Exam>());
 const avatarSrc = ref<string | null>(null);
 const studentName = ref("");
 const router = useRouter();
+const searchKeyword = ref("");
 let currentPage = 1;
 let isLoading = ref(false);
 let isToBottom = false;
@@ -27,6 +32,7 @@ onActivated(async () => {
   if (useRoute().query.needRefresh == "true") {
     router.push("/");
     currentPage = 0;
+    searchKeyword.value = "";
     isLoading.value = true;
     const getUserInfoRespose = (await axiosInstance.get("api/services/app/User/GetInfoAsync"))
       .data as CommonResponse<GetInfoResult>;
@@ -64,7 +70,7 @@ onMounted(async () => {
     ).data as CommonResponse<GetStudentTaskListResult>;
     exams.value = getStudentTaskListResponse.result.items;
   } catch {
-    alert("异常");
+    // alert("异常");
   }
 });
 
@@ -73,6 +79,7 @@ async function tabChange(index: number) {
   isLoading.value = true;
   const getStudentTaskListResponse = (
     await axiosInstance.post("api/services/app/Task/GetStudentTaskListAsync", {
+      keyword: searchKeyword.value,
       maxResultCount: 90,
       skipCount: 0,
       taskListType: index + 1,
@@ -124,6 +131,10 @@ function logOut() {
   });
   router.push("/login");
 }
+
+watch(searchKeyword, (val) => {
+  tabChange(selectedIndex);
+});
 </script>
 
 <template>
@@ -181,6 +192,24 @@ function logOut() {
         <Tab flex-shrink-0>全部测评</Tab>
         <Tab flex-shrink-0>收藏夹</Tab>
         <Tab flex-shrink-0>已完成</Tab>
+        <div flex-grow-1 hidden sm:flex="~ items-stretch justify-end" m-l-2>
+          <div flex bg-white shadow="md has-[:focus]:inner" p-x-2 rounded-md>
+            <div flex="~ items-center">
+              <MagnifyingGlassIcon class="h-5" />
+            </div>
+            <input
+              m-l-1
+              bg-transparent
+              border-0
+              focus:outline-0
+              justify-self-stretch
+              max-w-60
+              w-full
+              type="text"
+              v-model.lazy="searchKeyword"
+            />
+          </div>
+        </div>
       </TabList>
     </TabGroup>
     <div

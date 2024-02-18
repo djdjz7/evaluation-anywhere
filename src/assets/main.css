@@ -62,3 +62,7 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+input {
+  font-family: inherit;
+}

@@ -137,7 +137,7 @@ async function login() {
 input[type="text"],
 input[type="password"],
 input[type="file"] {
-  font-family: Inter;
+  font-family: inherit;
   @apply p-y-2 p-x-3 border-1 border-solid border-violet/40 rounded-2 dark:bg-dark;
   @apply transition-all duration-200;
   @apply focus:ring-2 ring-offset-1 ring-violet/50;
