@@ -14,6 +14,7 @@ import {
   ArrowLeftStartOnRectangleIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/vue/24/outline";
+import { XCircleIcon } from "@heroicons/vue/16/solid";
 import { useUserInfoStore } from "@/stores/userInfo";
 import { useRoute, useRouter } from "vue-router";
 
@@ -22,6 +23,8 @@ const avatarSrc = ref<string | null>(null);
 const studentName = ref("");
 const router = useRouter();
 const searchKeyword = ref("");
+const showMobileSearch = ref(false);
+const taskCount = ref(0);
 let currentPage = 1;
 let isLoading = ref(false);
 let isToBottom = false;
@@ -48,6 +51,7 @@ onActivated(async () => {
     ).data as CommonResponse<GetStudentTaskListResult>;
     exams.value = getStudentTaskListResponse.result.items;
     isLoading.value = false;
+    taskCount.value = getStudentTaskListResponse.result.totalCount;
   }
 });
 
@@ -56,6 +60,7 @@ onMounted(async () => {
   //   "注意：\n本项目所有实现均为基于事实的猜测，与新测评行为并不完全一致。\n请自行承担使用后果。"
   // );
   try {
+    isLoading.value = true;
     const getUserInfoRespose = (await axiosInstance.get("api/services/app/User/GetInfoAsync"))
       .data as CommonResponse<GetInfoResult>;
     studentName.value = getUserInfoRespose.result.realName;
@@ -69,8 +74,11 @@ onMounted(async () => {
       })
     ).data as CommonResponse<GetStudentTaskListResult>;
     exams.value = getStudentTaskListResponse.result.items;
+    taskCount.value = getStudentTaskListResponse.result.totalCount;
   } catch {
     // alert("异常");
+  } finally {
+    isLoading.value = false;
   }
 });
 
@@ -85,6 +93,8 @@ async function tabChange(index: number) {
       taskListType: index + 1,
     })
   ).data as CommonResponse<GetStudentTaskListResult>;
+
+  if (selectedIndex == 0) taskCount.value = getStudentTaskListResponse.result.totalCount;
 
   exams.value = getStudentTaskListResponse.result.items;
   if (exams.value.length < 90) isToBottom = true;
@@ -188,7 +198,14 @@ watch(searchKeyword, (val) => {
         flex
         flex-shrink-0
       >
-        <Tab flex-shrink-0>待处理</Tab>
+        <Tab flex-shrink-0>
+          <div flex="~ items-center">
+            <span>待处理</span>
+            <div rounded-full bg-red text-white p-x-1 m-l-1 v-if="taskCount != 0">
+              {{ taskCount }}
+            </div>
+          </div>
+        </Tab>
         <Tab flex-shrink-0>全部测评</Tab>
         <Tab flex-shrink-0>收藏夹</Tab>
         <Tab flex-shrink-0>已完成</Tab>
@@ -210,8 +227,29 @@ watch(searchKeyword, (val) => {
             />
           </div>
         </div>
+        <div flex-grow-1 flex-shrink-0 flex="~ justify-end" sm:hidden class="!m-l-2">
+          <button h-8 w-8 class="!p-0" @click="showMobileSearch = true">
+            <MagnifyingGlassIcon class="h-4" />
+          </button>
+        </div>
       </TabList>
     </TabGroup>
+    <div
+      v-if="Boolean(searchKeyword)"
+      space-x-2
+      text-sm
+      m-t-2
+      p-2
+      rounded-xl
+      shadow-lg
+      flex="~ items-center"
+      bg="violet-200 dark:violet-900/40"
+    >
+      <span flex-grow-1 flex-shrink-1 overflow-hidden text-ellipsis
+        >"{{ searchKeyword }}" 的搜索结果：</span
+      >
+      <XCircleIcon class="h-4 text-gray-500" @click="searchKeyword = ''" />
+    </div>
     <div
       @scroll="handleScroll"
       rounded-xl
@@ -230,10 +268,30 @@ watch(searchKeyword, (val) => {
     </div>
   </div>
   <Loading v-if="isLoading" />
+
+  <div v-if="showMobileSearch" fixed top-0 left-0 h-screen w-screen backdrop-blur-lg>
+    <div h-10 m-t-4 m-x-4 flex bg-white shadow="md" p-x-2 rounded-md>
+      <div flex="~ items-center">
+        <MagnifyingGlassIcon class="h-5" />
+      </div>
+      <input
+        m-l-1
+        bg-transparent
+        border-0
+        focus:outline-0
+        justify-self-stretch
+        flex-grow-1
+        type="text"
+        v-model.lazy="searchKeyword"
+        @keyup.enter="showMobileSearch = false"
+      />
+    </div>
+  </div>
 </template>
 
 <style scoped>
 button {
+  font-family: inherit;
   --at-apply: "bg-white hover:bg-violet-100 focus:outline-none focus:bg-violet-100 p-x-4 p-y-2 text-black border-0 shadow-md rounded-md transition-all duration-150";
 }
 button[data-headlessui-state~="selected"] {
