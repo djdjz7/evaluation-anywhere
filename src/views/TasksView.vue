@@ -285,7 +285,18 @@ function showMobileSearch() {
     backdrop-blur-lg
     @click="showingMobileSearch = false"
   >
-    <div h-10 m-t-4 m-x-4 flex bg-white dark:bg-gray-700 shadow="md" p-x-2 rounded-md @click.stop="">
+    <div
+      h-10
+      m-t-4
+      m-x-4
+      flex
+      bg-white
+      dark:bg-gray-700
+      shadow="md"
+      p-x-2
+      rounded-md
+      @click.stop=""
+    >
       <div flex="~ items-center">
         <MagnifyingGlassIcon class="h-5" />
       </div>
