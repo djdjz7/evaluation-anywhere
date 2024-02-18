@@ -81,7 +81,7 @@ async function submit() {
           allAnswers[i]
         )
       ).data;
-      await delay(1000);
+      await delay(300);
     }
 
     await axiosInstance.post(
