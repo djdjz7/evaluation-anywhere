@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Question } from "@/models/GetExamTask";
-import DrawboardArea from "./DrawboardArea.vue";
 import PhtotosArea from "./PhtotosArea.vue";
 import { ref, watch } from "vue";
 import Select from "./Select.vue";
