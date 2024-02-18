@@ -1,0 +1,7 @@
+{
+  "name": "evaluation-anywhere",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}
