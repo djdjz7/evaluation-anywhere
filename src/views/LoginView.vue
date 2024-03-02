@@ -72,7 +72,7 @@ async function login() {
     });
   } catch (e) {
     console.log(e);
-    if(JSON.stringify(e).includes("Network Error")) protocolRef.value.show();
+    if (JSON.stringify(e).includes("Network Error")) protocolRef.value.show();
     else alert(e);
   } finally {
     isLoading.value = false;
@@ -122,6 +122,7 @@ async function login() {
       中育目前并不支持 HTTPS 内容，并且混合协议的请求已在主流浏览器上出于安全目的默认禁用。<br />
       请使用 HTTP，或者在浏览器网站权限设置中允许 ea.djdjz7.top 访问不安全的内容。
     </p>
+  </Popup>
   <Popup title="为何使用 HTTP？" ref="whyRef">
     <p>中育目前并不支持 HTTPS 内容，并且混合协议的请求已在主流浏览器上出于安全目的禁用。</p>
   </Popup>
