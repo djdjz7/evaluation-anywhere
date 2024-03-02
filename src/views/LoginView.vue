@@ -19,16 +19,6 @@ const isLoading = ref(false);
 
 const router = useRouter();
 
-onMounted(() => {
-  if (document.location.protocol.toLowerCase() == "https:") {
-    protocolRef.value.show();
-  }
-});
-
-function goHttp() {
-  document.location.protocol = "http:";
-}
-
 async function login() {
   isLoading.value = true;
   try {
@@ -81,7 +71,9 @@ async function login() {
       },
     });
   } catch (e) {
-    alert(e);
+    console.log(e);
+    if(JSON.stringify(e).includes("Network Error")) protocolRef.value.show();
+    else alert(e);
   } finally {
     isLoading.value = false;
   }
@@ -125,29 +117,11 @@ async function login() {
       </a>
     </div>
   </div>
-  <Popup title="协议错误" ref="protocolRef" :can-close="false">
+  <Popup title="协议错误" ref="protocolRef">
     <p>
-      中育目前并不支持 HTTPS 内容，并且混合协议的请求已在主流浏览器上出于安全目的禁用。<br />
-      请使用 HTTP。
+      中育目前并不支持 HTTPS 内容，并且混合协议的请求已在主流浏览器上出于安全目的默认禁用。<br />
+      请使用 HTTP，或者在浏览器网站权限设置中允许 ea.djdjz7.top 访问不安全的内容。
     </p>
-    <button
-        shadow-md
-        bg-violet-500
-        hover:bg-violet
-        focus:bg-violet
-        focus:outline-none
-        text-white
-        shadow-violet="300 dark:700"
-        hover:shadow-lg
-        focus:shadow-lg
-        p-x-4
-        p-y-2
-        border-0
-        rounded-md
-        transition-all
-        duration-150
-        @click="goHttp">GO HTTP</button>
-  </Popup>
   <Popup title="为何使用 HTTP？" ref="whyRef">
     <p>中育目前并不支持 HTTPS 内容，并且混合协议的请求已在主流浏览器上出于安全目的禁用。</p>
   </Popup>
