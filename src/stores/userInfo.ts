@@ -13,7 +13,7 @@ export const useUserInfoStore = defineStore(
   },
   {
     persist: {
-      storage: sessionStorage,
+      storage: localStorage,
     },
   }
 );
