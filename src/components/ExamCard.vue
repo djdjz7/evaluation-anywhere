@@ -93,7 +93,7 @@ async function updateCollectStatus() {
           rounded-full
         ></span>
         <span
-          v-if="props.exam.isRead === false"
+          v-if="props.exam.taskState == 6 && Boolean(props.exam.isRead) == false"
           text-sm
           m-l-2
           bg-red-500
