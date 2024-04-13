@@ -129,7 +129,7 @@ async function login() {
     <p>
       中育目前并不支持 HTTPS 内容，并且混合协议的请求已在主流浏览器上出于安全目的默认禁用。<br />
       请使用 HTTP，或者在浏览器网站权限设置中允许 ea.djdjz7.top 访问不安全的内容。<br/>
-      <em>若无法采用以上方式：</em>在设置中切换 BaseURL 到 Astrack Proxy 以使用 HTTPS 直接连接。（可能增加延迟）
+      <strong>若无法采用以上方式：</strong>在设置中切换 BaseURL 到 Astrack Proxy 以使用 HTTPS 直接连接。（可能增加延迟）
     </p>
   </Popup>
   <Loading v-if="isLoading" />
