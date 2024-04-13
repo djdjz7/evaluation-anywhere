@@ -57,7 +57,7 @@ const baseUrlStore = useBaseUrlStore();
       ></div>
       <label cursor-pointer for="proxy" p-l-2
         >Astrack Proxy（https 反代，可能增加延迟） thx
-        <a href="https://github.com/Kom3ng" target="_blank">@Astrack</a>!</label
+        <a no-underline text-violet-500 dark:text-violet-300 href="https://github.com/Kom3ng" target="_blank">@Astrack</a>!</label
       >
     </div>
   </div>
