@@ -14,7 +14,6 @@ const account = ref("");
 const password = ref("");
 
 const protocolRef = ref();
-const whyRef = ref();
 const baseUrlPopup = ref<InstanceType<typeof Popup> | null>(null);
 
 const isLoading = ref(false);
@@ -124,23 +123,14 @@ async function login() {
           
         </div>
       </div>
-
-      <a href="#" color-red no-underline m-t-2 @click="whyRef.show()">
-        <div flex="~ items-center justify-center" text-sm>
-          <InformationCircleIcon class="h-5" />
-          <span m-l-1>为何使用 HTTP？</span>
-        </div>
-      </a>
     </div>
   </div>
   <Popup title="协议错误" ref="protocolRef">
     <p>
       中育目前并不支持 HTTPS 内容，并且混合协议的请求已在主流浏览器上出于安全目的默认禁用。<br />
-      请使用 HTTP，或者在浏览器网站权限设置中允许 ea.djdjz7.top 访问不安全的内容。
+      请使用 HTTP，或者在浏览器网站权限设置中允许 ea.djdjz7.top 访问不安全的内容。<br/>
+      <em>若无法采用以上方式：</em>在设置中切换 BaseURL 到 Astrack Proxy 以使用 HTTPS 直接连接。（可能增加延迟）
     </p>
-  </Popup>
-  <Popup title="为何使用 HTTP？" ref="whyRef">
-    <p>中育目前并不支持 HTTPS 内容，并且混合协议的请求已在主流浏览器上出于安全目的禁用。</p>
   </Popup>
   <Loading v-if="isLoading" />
 

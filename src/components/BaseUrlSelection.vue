@@ -56,7 +56,7 @@ const baseUrlStore = useBaseUrlStore();
         rounded-full
       ></div>
       <label cursor-pointer for="proxy" p-l-2
-        >Astrack Proxy（https 反代） thx
+        >Astrack Proxy（https 反代，可能增加延迟） thx
         <a href="https://github.com/Kom3ng" target="_blank">@Astrack</a>!</label
       >
     </div>
