@@ -1,17 +1,21 @@
 import axios from "axios";
 import { useUserInfoStore } from "@/stores/userInfo";
+import { useBaseUrlStore } from "@/stores/baseUrl";
 import type { CommonResponse } from "@/models/CommonResponse";
 import type { RefreshTokenResult } from "@/models/Login";
 import router from "@/router";
 
+const baseURLStore = useBaseUrlStore();
+
 export const axiosInstance = axios.create({
-  baseURL: "http://sxz.api6.zykj.org/",
+  baseURL: baseURLStore.baseUrl,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
 axiosInstance.interceptors.request.use(async (config) => {
+  config.baseURL = baseURLStore.baseUrl;
   const userInfo = useUserInfoStore();
   let timeNow = Date.now();
   if (timeNow < userInfo.expiresAt) {

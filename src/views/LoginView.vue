@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { InformationCircleIcon } from "@heroicons/vue/24/outline";
+import { InformationCircleIcon, Cog6ToothIcon } from "@heroicons/vue/24/outline";
 import { type LoginRequest, type LoginResponse } from "@/models/Login";
 import { type CommonResponse } from "@/models/CommonResponse";
 import axios, { type AxiosRequestConfig } from "axios";
@@ -8,12 +8,14 @@ import { useUserInfoStore } from "@/stores/userInfo";
 import { useRouter } from "vue-router";
 import Popup from "@/components/Popup.vue";
 import Loading from "@/components/Loading.vue";
+import BaseUrlSelection from "@/components/BaseUrlSelection.vue";
 
 const account = ref("");
 const password = ref("");
 
 const protocolRef = ref();
 const whyRef = ref();
+const baseUrlPopup = ref<InstanceType<typeof Popup> | null>(null);
 
 const isLoading = ref(false);
 
@@ -87,28 +89,42 @@ async function login() {
       <h1>登录</h1>
       <input type="text" v-model="account" placeholder="账号" v-on:keyup.enter="login" />
       <input type="password" v-model="password" placeholder="密码" m-t-2 v-on:keyup.enter="login" />
-      <button
-        type="button"
-        m-t-4
-        shadow-md
-        bg-violet-500
-        hover:bg-violet
-        focus:bg-violet
-        focus:outline-none
-        text-white
-        shadow-violet="300 dark:700"
-        hover:shadow-lg
-        focus:shadow-lg
-        p-x-4
-        p-y-2
-        border-0
-        rounded-md
-        transition-all
-        duration-150
-        @click="login"
-      >
-        登 录
-      </button>
+      <div flex="~ items-center justify-center" m-t-4>
+        <button
+          type="button"
+          shadow-md
+          bg-violet-500
+          hover:bg-violet
+          focus:bg-violet
+          focus:outline-none
+          text-white
+          shadow-violet="300 dark:700"
+          hover:shadow-lg
+          focus:shadow-lg
+          p-x-4
+          p-y-2
+          border-0
+          rounded-md
+          transition-all
+          duration-150
+          @click="login"
+        >
+          登 录
+        </button>
+        <div
+          p-1
+          m-l-2
+          rounded-md
+          transition-all
+          duration-150
+          class="cursor-pointer hover:bg-violet/20"
+          flex="~ items-center"
+        >
+          <Cog6ToothIcon @click="baseUrlPopup?.show()" class="h-5 color-violet" />
+          
+        </div>
+      </div>
+
       <a href="#" color-red no-underline m-t-2 @click="whyRef.show()">
         <div flex="~ items-center justify-center" text-sm>
           <InformationCircleIcon class="h-5" />
@@ -127,6 +143,11 @@ async function login() {
     <p>中育目前并不支持 HTTPS 内容，并且混合协议的请求已在主流浏览器上出于安全目的禁用。</p>
   </Popup>
   <Loading v-if="isLoading" />
+
+  <Popup title="设置" ref="baseUrlPopup">
+    <h2>BaseURL 设置</h2>
+    <BaseUrlSelection />
+  </Popup>
 </template>
 
 <style scoped>

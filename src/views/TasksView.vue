@@ -2,6 +2,8 @@
 import { TabGroup, TabList, Tab } from "@headlessui/vue";
 import ExamCard from "@/components/ExamCard.vue";
 import Loading from "@/components/Loading.vue";
+import Popup from "@/components/Popup.vue";
+import BaseUrlSelection from "@/components/BaseUrlSelection.vue";
 import { type CommonResponse } from "@/models/CommonResponse";
 import { type GetStudentTaskListResult } from "@/models/GetStudentTaskListResult";
 import { onActivated, onMounted, ref, watch } from "vue";
@@ -15,6 +17,7 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/vue/24/outline";
 import { XCircleIcon } from "@heroicons/vue/16/solid";
+import { Cog6ToothIcon } from "@heroicons/vue/24/outline";
 import { useUserInfoStore } from "@/stores/userInfo";
 import { useRoute, useRouter } from "vue-router";
 
@@ -26,6 +29,7 @@ const searchKeyword = ref("");
 const showingMobileSearch = ref(false);
 const taskCount = ref(0);
 const mobileInputRef = ref<HTMLInputElement | null>(null);
+const baseUrlPopup = ref<InstanceType<typeof Popup> | null>(null);
 let currentPage = 1;
 let isLoading = ref(false);
 let isToBottom = false;
@@ -155,44 +159,59 @@ function showMobileSearch() {
 
 <template>
   <div flex="~ col" max-h-screen m-x-2>
-    <div class="group" flex="~ items-center" m-t-2 relative self-start>
-      <div v-if="avatarSrc" rounded-full overflow-clip h-8 w-8 m-r-2 shadow-md>
-        <img :src="avatarSrc" h-8 />
+    <div flex="~ items-center" m-t-2>
+      <div class="group" flex="~ items-center" relative self-start>
+        <div v-if="avatarSrc" rounded-full overflow-clip h-8 w-8 m-r-2 shadow-md>
+          <img :src="avatarSrc" h-8 />
+        </div>
+        <UserCircleIcon v-else class="h-8 w-8 m-r-2" />
+        <span font-semibold>{{ studentName }}</span>
+        <div
+          absolute
+          top-0
+          left-0
+          min-w-min
+          h-full
+          backdrop-blur-lg
+          invisible
+          group-hover:visible
+          opacity-0
+          group-hover:opacity-100
+          rounded-lg
+          transition-all
+          duration-150
+          shadow-md
+          flex="~ items-center"
+          class="bg-white/80"
+        >
+          <button
+            @click="logOut"
+            p-x-2
+            bg-transparent
+            class="!text-red !hover:bg-white"
+            flex="~ items-center justify-center"
+            border-0
+            whitespace-nowrap
+          >
+            <ArrowLeftStartOnRectangleIcon class="h-4 w-4" />
+            <span m-l-1 font-semibold>退出登录</span>
+          </button>
+        </div>
       </div>
-      <UserCircleIcon v-else class="h-8 w-8 m-r-2" />
-      <span font-semibold>{{ studentName }}</span>
+      <div flex-grow-1></div>
       <div
-        absolute
-        top-0
-        left-0
-        min-w-min
-        h-full
-        backdrop-blur-lg
-        invisible
-        group-hover:visible
-        opacity-0
-        group-hover:opacity-100
-        rounded-lg
+        p-1
+        m-l-2
+        rounded-md
         transition-all
         duration-150
-        shadow-md
+        class="cursor-pointer hover:bg-violet/20"
         flex="~ items-center"
-        class="bg-white/80"
       >
-        <button
-          @click="logOut"
-          p-x-2
-          bg-transparent
-          class="!text-red !hover:bg-white"
-          flex="~ items-center justify-center"
-          border-0
-          whitespace-nowrap
-        >
-          <ArrowLeftStartOnRectangleIcon class="h-4 w-4" />
-          <span m-l-1 font-semibold>退出登录</span>
-        </button>
+        <Cog6ToothIcon @click="baseUrlPopup?.show()" class="h-5 color-violet" />
       </div>
     </div>
+
     <TabGroup max-w-screen m-t-2 @change="tabChange">
       <TabList
         space-x-2
@@ -314,6 +333,10 @@ function showMobileSearch() {
       />
     </div>
   </div>
+  <Popup title="设置" ref="baseUrlPopup">
+    <h2>BaseURL 设置</h2>
+    <BaseUrlSelection />
+  </Popup>
 </template>
 
 <style scoped>
