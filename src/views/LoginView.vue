@@ -9,6 +9,7 @@ import { useRouter } from "vue-router";
 import Popup from "@/components/Popup.vue";
 import Loading from "@/components/Loading.vue";
 import BaseUrlSelection from "@/components/BaseUrlSelection.vue";
+import { useBaseUrlStore } from "@/stores/baseUrl";
 
 const account = ref("");
 const password = ref("");
@@ -39,7 +40,7 @@ async function login() {
     };
 
     var config: AxiosRequestConfig = {
-      baseURL: "http://sxz.api6.zykj.org/",
+      baseURL: useBaseUrlStore().baseUrl,
       headers: {
         "Content-Type": "application/json",
       },
