@@ -5,15 +5,7 @@ const baseUrlStore = useBaseUrlStore();
 </script>
 <template>
   <div flex="~ col">
-    <div
-      p-y-2
-      flex="~ items-center"
-      cursor-pointer
-      transition-all
-      duration-150
-      class="hover:bg-violet/20"
-      rounded-md
-    >
+    <div>
       <input
         type="radio"
         id="zy"
@@ -22,25 +14,27 @@ const baseUrlStore = useBaseUrlStore();
         value="http://sxz.api6.zykj.org/"
         hidden
       />
-      <div
-        w-1
-        self-stretch
-        :class="{ 'bg-violet': baseUrlStore.baseUrl === 'http://sxz.api6.zykj.org/' }"
-        rounded-full
-      ></div>
-      <label cursor-pointer for="zy" p-l-2>中育服务器直连（需开启“允许不安全内容”）</label>
+
+      <label
+        cursor-pointer
+        for="zy"
+        p-y-2
+        flex="~ items-center"
+        transition-all
+        duration-150
+        class="hover:bg-violet/20"
+        rounded-md
+        ><div
+          w-1
+          self-stretch
+          :class="{ 'bg-violet': baseUrlStore.baseUrl === 'http://sxz.api6.zykj.org/' }"
+          rounded-full
+        ></div>
+        <span m-l-2>中育服务器直连（需开启“允许不安全内容”）</span></label
+      >
     </div>
 
-    <div
-      flex="~ items-center"
-      p-y-2
-      m-t-1
-      cursor-pointer
-      transition-all
-      duration-150
-      class="hover:bg-violet/20"
-      rounded-md
-    >
+    <div>
       <input
         type="radio"
         id="proxy"
@@ -49,15 +43,32 @@ const baseUrlStore = useBaseUrlStore();
         value="https://proxy.astrack.me/zykj/"
         hidden
       />
-      <div
-        w-1
-        self-stretch
-        :class="{ 'bg-violet': baseUrlStore.baseUrl === 'https://proxy.astrack.me/zykj/' }"
-        rounded-full
-      ></div>
-      <label cursor-pointer for="proxy" p-l-2
-        >Astrack Proxy（https 反代，可能增加延迟） thx
-        <a no-underline text-violet-500 dark:text-violet-300 href="https://github.com/Kom3ng" target="_blank">@Astrack</a>!</label
+
+      <label
+        cursor-pointer
+        for="proxy"
+        flex="~ items-center"
+        p-y-2
+        m-t-1
+        transition-all
+        duration-150
+        class="hover:bg-violet/20"
+        rounded-md
+        ><div
+          w-1
+          self-stretch
+          :class="{ 'bg-violet': baseUrlStore.baseUrl === 'https://proxy.astrack.me/zykj/' }"
+          rounded-full
+        ></div>
+        <span m-l-2>Astrack Proxy（https 反代，可能增加延迟）thx </span>
+        <a
+          no-underline
+          text-violet-500
+          dark:text-violet-300
+          href="https://github.com/Kom3ng"
+          target="_blank"
+          >@Astrack</a
+        >!</label
       >
     </div>
   </div>
