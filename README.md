@@ -8,6 +8,9 @@
 > 一些浏览器似乎会将 HTTP 访问重定向至 HTTPS。
 > 解决方案：在浏览器设置中允许 ea.djdjz7.top 访问不安全的内容，即可
 > 在 HTTPS 协议下正常使用。
+>
+> **对于移动端或者某些无法调整该设置的浏览器：**在设置中更改 BaseURL
+> 至 Abstrack Proxy（thx [@Kom3ng](https://github.com/Kom3ng)）
 
 > [!WARNING]
 > 本项目的所有实现均为基于事实的猜测，不保证与新测评的实现完全一致。  
