@@ -25,7 +25,7 @@ axiosInstance.interceptors.request.use(async (config) => {
   if (timeNow < userInfo.refreshExpiresAt) {
     console.log("刷新 token...");
     const refreshTokenResponse = (
-      await axios.post("http://sxz.api6.zykj.org/api/TokenAuth/RefreshToken", null, {
+      await axios.post("http://sxz.api.zykj.org/api/TokenAuth/RefreshToken", null, {
         headers: {
           Authorization: `Bearer ${userInfo.accessToken}`,
           RefreshToken: userInfo.refreshToken,

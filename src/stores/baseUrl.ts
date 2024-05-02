@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 export const useBaseUrlStore = defineStore(
   "baseUrl",
   () => {
-    const baseUrl = ref("http://sxz.api6.zykj.org/");
+    const baseUrl = ref("http://sxz.api.zykj.org/");
     return { baseUrl };
   },
   {

@@ -11,7 +11,7 @@ const baseUrlStore = useBaseUrlStore();
         id="zy"
         name="baseUrlSelection"
         v-model="baseUrlStore.baseUrl"
-        value="http://sxz.api6.zykj.org/"
+        value="http://sxz.api.zykj.org/"
         hidden
       />
 
@@ -27,7 +27,7 @@ const baseUrlStore = useBaseUrlStore();
         ><div
           w-1
           self-stretch
-          :class="{ 'bg-violet': baseUrlStore.baseUrl === 'http://sxz.api6.zykj.org/' }"
+          :class="{ 'bg-violet': baseUrlStore.baseUrl === 'http://sxz.api.zykj.org/' }"
           rounded-full
         ></div>
         <span m-l-2>中育服务器直连（需开启“允许不安全内容”）</span></label
@@ -67,7 +67,7 @@ const baseUrlStore = useBaseUrlStore();
           dark:text-violet-300
           href="https://github.com/Kom3ng"
           target="_blank"
-          >@Astrack</a
+          >@Kom3ng</a
         >!</label
       >
     </div>

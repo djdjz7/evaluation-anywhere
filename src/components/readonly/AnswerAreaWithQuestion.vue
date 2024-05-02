@@ -32,7 +32,7 @@ watch(props, async (val) => {
   ).data as CommonResponse<GetQuestionViewResult>;
   const result = response.result;
   questionView.value = result;
-  const htmlSource = (await axiosInstance.get(`http://sxz.api6.zykj.org${result.path}`)).data;
+  const htmlSource = (await axiosInstance.get(`http://sxz.api.zykj.org${result.path}`)).data;
   const domParser = new DOMParser();
   const doc = domParser.parseFromString(htmlSource, "text/html");
   const html = doc.querySelector(".stem")?.outerHTML;
